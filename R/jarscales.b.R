@@ -1,9 +1,5 @@
 
 # This file is a generated template, your changes will not be overwritten
-# setwd("/home/ekaitz/Desktop/FoodieStats")
-# jmvtools::install()
-# contact@jamovi.org
-
 JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
     "JARScalesClass",
     inherit = JARScalesBase,
@@ -11,9 +7,6 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
         .run = function() {
             require(jmvcore)
 
-            # self$results$text$setContent((atr[,1]>jjar))
-
-            # Get data from UI pane
             atr_names=self$options$attr
             atr=self$data[atr_names]
             N=length(atr)
@@ -21,11 +14,9 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             b=self$options$lik # liking
             like=self$data[b] # liking
 
-            # Scale of the attributes (3 and 5 provided)
             sc=self$options$attrscale
             jjar= switch(sc,"Three"= 2,"Five"= 3,"Seven"= 4,"Nine"= 5)
 
-            # zero buffer
             names_low=data.frame(rep(NA,N))
             names_high=data.frame(rep(NA,N))
             n_low=data.frame(rep(NA,N))
@@ -35,7 +26,7 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             f_high=data.frame(rep(NA,N))
             f_jar=data.frame(rep(NA,N))
 
-            if (N){ # Consumer Reseach
+            if (N){
                 for (k in 1:N){
                     atr[,k]=as.numeric(as.character(atr[,k]))
                     n_high[k,1]=mean((atr[,k]>jjar))*100
@@ -51,7 +42,6 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                 }
             }
 
-            # zero buffer
             mdroph=data.frame(rep(NA,N))
             mdropl=data.frame(rep(NA,N))
             mlow=data.frame(rep(NA,N))
@@ -63,7 +53,6 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             tr3=data.frame(rep(NA,N))
             tr4=data.frame(rep(NA,N))
 
-            # Mean drop - liking analysis
             if (length(like) & N){
                 confid=(self$options$attrhocalpha)/100
                 for (k in 1:N){
@@ -95,7 +84,6 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                 }
             }
 
-            # zero buffer
             qtl=data.frame(rep(NA,N))
             sel=data.frame(rep(NA,N))
             p_tukeyl=data.frame(rep(NA,N))
@@ -105,9 +93,6 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             p_tukeyh=data.frame(rep(NA,N))
             trh=data.frame(rep(NA,N))
 
-            #self$results$text$setContent(f_low>0)
-
-            # Apply Tukey test
             if (self$options$posthoc & length(like)){
                 confid1=(self$options$posthocalpha)/100
                 y1=like[,1]
@@ -152,7 +137,6 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                 }
             }
 
-            # Get data for plotting
             if (self$options$showternary & N){
                 plotData=cbind(n_jar,n_high,n_low)
                 image <- self$results$ternaplot
@@ -174,7 +158,6 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                 #image2$setVisible(TRUE)
             }
 
-            # Results - consumers
             if (N){
                 table <- self$results$Consumidores
                 for (xk in 1:N){
@@ -189,9 +172,6 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                     ))} # close dinamic table
                 }
 
-            #self$results$text$setContent(table2$visible)
-
-            # Result table 2 - Attribute penalty table
             if (length(like) & N){
                 table2 <- self$results$penalizacion
                 for (xk in 1:N){
@@ -209,7 +189,6 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                     ))}
             }
 
-            # Result table 3 - Level penalty table
             if (length(like) & N){
                 table3 <- self$results$MeanDropLow
                 for (xk in 1:N){
@@ -227,7 +206,6 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                     ))}
             }
 
-            # Result table 4 - Level penalty table
             if (length(like) & N){
                 table4 <- self$results$MeanDropHigh
                 for (xk in 1:N){
@@ -245,7 +223,7 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                     ))}
             }
         },
-        .plot=function(image,...) {  # <-- TERNARY PLOT
+        .plot=function(image,...) {
             plotData <- image$state
             TernaryPlot(point="up",atip="JAR",btip="Too High",ctip="Too Low",alab="JAR % \u2192",blab="High % \u2192",clab="Low % \u2190")
             TernaryPoints(plotData, pch = 16)
@@ -255,7 +233,7 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             TernaryText(plotLabels,labels=self$options$attr,col="blue")
             TRUE
         },
-        .plot2=function(image2,...) {  # <-- DIAGNOSIS PLOT
+        .plot2=function(image2,...) {
             plotData <- image2$state
             freq=c(plotData[,3],plotData[,4])
             mdrop=c(plotData[,1],plotData[,2])
@@ -277,7 +255,7 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             abline(v=self$options$threshold,lwd=2,lty=3)
             TRUE
         },
-        .plot3=function(image3,...) {  # <-- BARPLOT
+        .plot3=function(image3,...) {
             plotData3 <- image3$state
             atr_names=self$options$attr
             # Bar diagram
