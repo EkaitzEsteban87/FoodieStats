@@ -1,8 +1,4 @@
 # This file is a generated template, your changes will not be overwritten
-# setwd("/home/ekaitz/Desktop/FoodieStats")
-# jmvtools::install()
-# contact@jamovi.org
-
 sensorywheelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
     "sensorywheelClass",
     inherit = sensorywheelBase,
@@ -54,8 +50,8 @@ sensorywheelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
         },
         .run = function() {
             require(jmvcore)
-            require(ggsunburst) # Install remotes - https://forum.jamovi.org/viewtopic.php?t=2523
-            # Get data from UI pane - a.yaml
+            require(ggsunburst)
+            
             lev_names=self$options$levv
             data0=self$data[lev_names]
             
@@ -70,29 +66,17 @@ sensorywheelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             
             if (ncols>0){
               
-              # self$results$text$setContent(data0)
-              #------------------------------------------------------------
-              # Change colors of the wheel
-              #------------------------------------------------------------   
               df=data0
               unique_words <- unique(unlist(df))
               unique_words <- levels(unique_words) # Ok done (quitar el dict?)
               word_to_number <- as.numeric(factor(unique_words))
               df[] <- word_to_number[match(unlist(df), unique_words)]
               nwords=max(word_to_number) # default colors
-              
-              #self$results$text$setContent(df)
-              
+                            
               empty_df <- data.frame(matrix(NA, nrow = nrows, ncol = ncols))
               res <- table(factor(data0[,1], levels = unique(data0[,1]))) # the key of everything
               nres=length(res)            
-              #------------------------------------------------------------ 
-              # Select Color palette
-              #------------------------------------------------------------ 
               color1=self$options$colorselection
-              #------------------------------------------------------------ 
-              # Select wheel style
-              #------------------------------------------------------------ 
               style1=self$options$wheelstyle
               npalette <- switch(   
                 style1,   
@@ -100,7 +84,6 @@ sensorywheelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                 (nres+2)
               ) 
               
-              # JamoviStylish"=colorRampPalette(c("#6B9DE8", "#E6AC40", "#9F9F9F"))(npalette)
               basecolors <- switch(   
                 color1,   
                 "JamoviStylish"=colorRampPalette(c("#6B9DE8", "#E6AC40"))(npalette),
@@ -162,17 +145,12 @@ sensorywheelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                 hcl.colors(npalette, palette = color1) 
               ) 
               
-              #------------------------------------------------------------
-              # NO ORDER - Using a simple palette
-              #------------------------------------------------------------
               if (style1=="unsorted"){
                 wheelcolors=basecolors}
               else{
                 basecolors=basecolors[1:nres]
               }
-              #------------------------------------------------------------
-              # ORDERED - ring colors
-              #------------------------------------------------------------
+
               if (style1=="sorted"){
                 for (z1 in 1:ncols){
                   row0=0
@@ -186,9 +164,7 @@ sensorywheelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                   }
                 }
               }
-              #------------------------------------------------------------
-              # ORDERED - Faded ring colors begin
-              #------------------------------------------------------------
+
               if (style1=="faded"){
                 for (z1 in 1:ncols){
                   row0=0
@@ -216,7 +192,6 @@ sensorywheelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                 wheelcolors=df2[,2]
               }
               
-              # Add 2 extra options
               leaf1=self$options$leaflength
               data0[,ncols] <- switch(   
                 leaf1,   
@@ -230,14 +205,13 @@ sensorywheelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
               add_attribute=""
               if (self$options$nodelabelrotation){add_attribute="radial"}
               
-              # Set the plot
               plotData <- sunburst_data(data0, type = "lineage", sep=",",node_attributes =add_attribute)
               image <- self$results$wheelplot
               image$setState(plotData) # plot data
               self$results$wheeloptions$setState(wheelcolors) # lo guardo
             }
         },
-        .plot=function(image,...) {  # <-- SUNBURST PLOT
+        .plot=function(image,...) {  
             N=length(self$options$levv)
             if (N>0){
               plotData <- image$state
@@ -246,7 +220,7 @@ sensorywheelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
               leaf=self$options$leafsize
               labelcolor=self$options$labelcolors
               ap=sunburst(plotData, node_labels = T, node_labels.min = 1, leaf_labels.size = leaf, node_labels.size = node, leaf_labels.color = labelcolor,node_labels.color = labelcolor,rects.fill.aes = "name") + scale_fill_manual(values = wheelcolors, guide = F)
-              self$results$showheelplot$setContent(ap) # show plot
+              self$results$showheelplot$setContent(ap)
               TRUE}
         }) # Close - List
 ) # Close - R6::R6Class
