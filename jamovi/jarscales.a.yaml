@@ -1,0 +1,106 @@
+---
+name:  JARScales
+title: Just-About-Right analysis
+menuGroup: FoodieStats
+version: '1.0.0'
+jas: '1.2'
+
+options:
+    - name: data
+      type: Data
+
+# attribute list
+    - name: attr
+      title: List of Attributes
+      type: Variables
+      suggested:
+        - nominal
+        - ordinal
+      permitted:
+        - factor
+
+# attribute scale option list
+    - name: attrscale
+      title: Attribute Scale Points
+      type: List
+      options:
+        - title: Three (3)
+          name:  Three
+        - title: Five (5)
+          name:  Five
+        - title: Seven (7)
+          name:  Seven
+        - title: Nine (9)
+          name:  Nine
+      default: Five
+
+# Liking
+    - name: lik
+      title: Overall liking or Purchase intent
+      type: Variable
+      suggested:
+        - continuous
+      permitted: [numeric]
+
+# threshold value
+    - name: threshold
+      title: Customer (%) threshold
+      type: Number
+      default: 20
+      min: 1
+      max: 99
+
+# threshold value
+    - name: mdropthreshold
+      title: Mean-Drop threshold
+      type: Number
+      default: 1
+      min: 0
+      max: 10
+
+# posthoc checkbox 
+    - name: posthoc
+      title: Level penalty tukey test
+      type: Bool
+      default: True
+
+# Significance level value
+    - name: posthocalpha
+      title: Confidence interval (%)
+      type: Number
+      default: 95
+      min: 1
+      max: 99
+
+# posthoc checkbox 
+    - name: attrhoc
+      title: Weighted penalty t-test
+      type: Bool
+      default: True
+
+# Significance level value
+    - name: attrhocalpha
+      title: Confidence interval (%)
+      type: Number
+      default: 95
+      min: 1
+      max: 99
+
+# showbarras plot checkbox 
+    - name: showbarras
+      title: Show attribute barplot
+      type: Bool
+      default: False
+
+# showternary plot checkbox 
+    - name: showternary
+      title: Show ternary plot
+      type: Bool
+      default: False
+
+# showdiagnose plot checkbox 
+    - name: showdiagnose
+      title: Show diagnostic plot
+      type: Bool
+      default: False
+...
