@@ -1,4 +1,3 @@
-# This file is a generated template, your changes will not be overwritten
 sensorywheelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
     "sensorywheelClass",
     inherit = sensorywheelBase,
@@ -50,8 +49,7 @@ sensorywheelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
         },
         .run = function() {
             require(jmvcore)
-            require(ggsunburst)
-            
+            require(ggsunburst) 
             lev_names=self$options$levv
             data0=self$data[lev_names]
             
@@ -68,13 +66,13 @@ sensorywheelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
               
               df=data0
               unique_words <- unique(unlist(df))
-              unique_words <- levels(unique_words) # Ok done (quitar el dict?)
+              unique_words <- levels(unique_words) 
               word_to_number <- as.numeric(factor(unique_words))
               df[] <- word_to_number[match(unlist(df), unique_words)]
-              nwords=max(word_to_number) # default colors
+              nwords=max(word_to_number) 
                             
               empty_df <- data.frame(matrix(NA, nrow = nrows, ncol = ncols))
-              res <- table(factor(data0[,1], levels = unique(data0[,1]))) # the key of everything
+              res <- table(factor(data0[,1], levels = unique(data0[,1]))) 
               nres=length(res)            
               color1=self$options$colorselection
               style1=self$options$wheelstyle
@@ -207,11 +205,11 @@ sensorywheelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
               
               plotData <- sunburst_data(data0, type = "lineage", sep=",",node_attributes =add_attribute)
               image <- self$results$wheelplot
-              image$setState(plotData) # plot data
-              self$results$wheeloptions$setState(wheelcolors) # lo guardo
+              image$setState(plotData) 
+              self$results$wheeloptions$setState(wheelcolors) 
             }
         },
-        .plot=function(image,...) {  
+        .plot=function(image,...) { 
             N=length(self$options$levv)
             if (N>0){
               plotData <- image$state
@@ -220,7 +218,7 @@ sensorywheelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
               leaf=self$options$leafsize
               labelcolor=self$options$labelcolors
               ap=sunburst(plotData, node_labels = T, node_labels.min = 1, leaf_labels.size = leaf, node_labels.size = node, leaf_labels.color = labelcolor,node_labels.color = labelcolor,rects.fill.aes = "name") + scale_fill_manual(values = wheelcolors, guide = F)
-              self$results$showheelplot$setContent(ap)
+              self$results$showheelplot$setContent(ap) # show plot
               TRUE}
-        }) # Close - List
-) # Close - R6::R6Class
+        }) 
+) 

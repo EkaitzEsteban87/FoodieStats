@@ -1,5 +1,3 @@
-
-# This file is a generated template, your changes will not be overwritten
 JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
     "JARScalesClass",
     inherit = JARScalesBase,
@@ -11,8 +9,8 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             atr=self$data[atr_names]
             N=length(atr)
 
-            b=self$options$lik # liking
-            like=self$data[b] # liking
+            b=self$options$lik 
+            like=self$data[b] 
 
             sc=self$options$attrscale
             jjar= switch(sc,"Three"= 2,"Five"= 3,"Seven"= 4,"Nine"= 5)
@@ -26,7 +24,7 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             f_high=data.frame(rep(NA,N))
             f_jar=data.frame(rep(NA,N))
 
-            if (N){
+            if (N){ 
                 for (k in 1:N){
                     atr[,k]=as.numeric(as.character(atr[,k]))
                     n_high[k,1]=mean((atr[,k]>jjar))*100
@@ -64,9 +62,9 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                     if (self$options$attrhoc) {
                         if (length(jar_raw)>0 & length(nonjar_raw)>0){
                         tr=t.test(jar_raw,nonjar_raw,alternative="two.sided",mu=0,paired=FALSE,var.equal=TRUE,conf.level=confid)
-                        tr1[k,1]=tr$statistic # valor de t (Standardized difference en Xlstat)
-                        tr2[k,1]=tr$stderr # Standard error of the mean (SE)
-                        tr3[k,1]=tr$p.value # p value
+                        tr1[k,1]=tr$statistic 
+                        tr2[k,1]=tr$stderr 
+                        tr3[k,1]=tr$p.value 
                         if (tr$p.value<(1-confid)){tr4[k,1]="Yes"}else{tr4[k,1]="No"}
                     }}
 
@@ -91,8 +89,8 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             qth=data.frame(rep(NA,N))
             seh=data.frame(rep(NA,N))
             p_tukeyh=data.frame(rep(NA,N))
-            trh=data.frame(rep(NA,N))
-
+            trh=data.frame(rep(NA,N))            
+            
             if (self$options$posthoc & length(like)){
                 confid1=(self$options$posthocalpha)/100
                 y1=like[,1]
@@ -105,7 +103,7 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                     if (length(unique(x1))>1 & f_jar[k,1]>0){
                         model=data.frame(y1,x1)
                         fm1=aov(y1~x1,data=model)
-                        df=fm1$df.residual # degree of freedom
+                        df=fm1$df.residual 
                         a=TukeyHSD(fm1)
                         pval0=a$x1[,4]
 
@@ -121,17 +119,17 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                         if (f_low[k,1]>0){
                             if (pvallow<(1-confid1)){trl[k,1]="Yes"}else{trl[k,1]="No"}
                             q0=qtukey(pvallow,3,df,lower.tail = FALSE)
-                            qtl[k,1]=q0/sqrt(2) # idem XLStat - qvalue
-                            sel[k,1]=mdropl[k,1]/qtl[k,1] # Standard error of the mean (SE)
-                            p_tukeyl[k,1]=pvallow # ptukey
+                            qtl[k,1]=q0/sqrt(2) 
+                            sel[k,1]=mdropl[k,1]/qtl[k,1] 
+                            p_tukeyl[k,1]=pvallow 
                         }
 
                         if (f_high[k,1]>0){
                             if (pvalhigh<(1-confid1)){trh[k,1]="Yes"}else{trh[k,1]="No"}
                             q1=qtukey(pvalhigh,3,df,lower.tail = FALSE)
-                            qth[k,1]=q1/sqrt(2) # idem XLStat - tvalue
-                            seh[k,1]=mdroph[k,1]/qth[k,1] # Standard error of the mean (SE)
-                            p_tukeyh[k,1]=pvalhigh # ptukey
+                            qth[k,1]=q1/sqrt(2) 
+                            seh[k,1]=mdroph[k,1]/qth[k,1] 
+                            p_tukeyh[k,1]=pvalhigh 
                         }
                     }
                 }
@@ -140,22 +138,19 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             if (self$options$showternary & N){
                 plotData=cbind(n_jar,n_high,n_low)
                 image <- self$results$ternaplot
-                image$setState(plotData) # save data
-                #image$setVisible(TRUE)
+                image$setState(plotData) 
             }
 
             if (self$options$showbarras & N){
                 plotData3=t(cbind(n_low,n_jar,n_high))
                 image3 <- self$results$barraplot
-                image3$setState(plotData3) # save data
-                #image3$setVisible(TRUE)
+                image3$setState(plotData3) 
             }
 
             if (self$options$showdiagnose & N & length(like)){
                 plotData2=cbind(mdroph,mdropl,n_high,n_low,names_high,names_low)
                 image2 <- self$results$diagplot
-                image2$setState(plotData2) # save data
-                #image2$setVisible(TRUE)
+                image2$setState(plotData2) 
             }
 
             if (N){
@@ -169,7 +164,7 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                     consulow=n_low[xk,1],
                     consujar=n_jar[xk,1],
                     consuhigh=n_high[xk,1]
-                    ))} # close dinamic table
+                    ))} 
                 }
 
             if (length(like) & N){
@@ -223,17 +218,18 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                     ))}
             }
         },
-        .plot=function(image,...) {
+        .plot=function(image,...) { 
             plotData <- image$state
             TernaryPlot(point="up",atip="JAR",btip="Too High",ctip="Too Low",alab="JAR % \u2192",blab="High % \u2192",clab="Low % \u2190")
             TernaryPoints(plotData, pch = 16)
             plotLabels = plotData
             plotLabels[,1]=plotLabels[,1]*0.95
             plotLabels[,2]=plotLabels[,2]*1.05
-            TernaryText(plotLabels,labels=self$options$attr,col="blue")
+            TernaryText(plotLabels,labels=self$options$attr,col="Blue")
             TRUE
         },
-        .plot2=function(image2,...) {
+        .plot2=function(image2,...) { 
+
             plotData <- image2$state
             freq=c(plotData[,3],plotData[,4])
             mdrop=c(plotData[,1],plotData[,2])
@@ -246,7 +242,7 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             } else {
                 yl=c(floor(min(mdrop,na.rm=TRUE)),ceiling(max(mdrop,na.rm=TRUE)))
             }
-            # Diagnose plot
+            
             plot(plotData[,3],plotData[,1],pch="+",col="red",ylim=yl,xlim=xl,xlab="% of customer criticizing",ylab="Mean drop for overall liking")
             points(plotData[,4],plotData[,2],pch="-",col="blue",ylim=yl,xlim=xl,xlab="% of customer criticizing",ylab="Mean drop for overall liking")
             text(freq,mdrop,labels=plotlabels,cex=0.8,font=1,pos=2)
@@ -255,12 +251,11 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             abline(v=self$options$threshold,lwd=2,lty=3)
             TRUE
         },
-        .plot3=function(image3,...) {
+        .plot3=function(image3,...) { 
             plotData3 <- image3$state
             atr_names=self$options$attr
-            # Bar diagram
-            barplot(plotData3,names.arg=atr_names,xlab ="% of customer criticizing (cumulative)",ylab="Attributes",axes=TRUE,col=c("cyan","green","red"),horiz=TRUE)
-            legend("bottomleft",c("Low","JAR","High"),cex = 0.9,fill=c("cyan","green","red"),horiz = TRUE,bty="n")
+            barplot(plotData3,names.arg=atr_names,xlab ="% of customer criticizing (cumulative)",ylab="Attributes",axes=TRUE,col=c("#6B9DE8", "#E6AC40", "#9F9F9F"),horiz=TRUE)
+            legend("bottomleft",c("Low","JAR","High"),cex = 0.9,fill=c("#6B9DE8", "#E6AC40", "#9F9F9F"),horiz = TRUE,bty="n")
             TRUE
-            }) # Close - List
-) # Close - R6::R6Class
+            }) 
+) 

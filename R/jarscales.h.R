@@ -157,7 +157,7 @@ JARScalesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="text",
-                title="Just-About-Right analysis"))
+                title="JAR Descriptives"))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="Consumidores",
@@ -379,7 +379,7 @@ JARScalesBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 weightsSupport = 'auto')
         }))
 
-#' Just-About-Right analysis
+#' Just-About-Right Analysis
 #'
 #' 
 #' @param data .
