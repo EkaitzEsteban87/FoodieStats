@@ -21,12 +21,12 @@ description: >-
   and machine learning approaches to advance product development in the realm of
   gastronomy.
 analyses:
-  - title: Just-About-Right analysis
+  - title: Just-About-Right Analysis
     name: JARScales
     ns: FoodieStats
     menuGroup: FoodieStats
     menuSubgroup: JAR of a single product
-    menuTitle: Just-About-Right analysis
+    menuTitle: Just-About-Right Analysis
   - title: Sensory Wheel Analysis
     name: sensorywheel
     ns: FoodieStats

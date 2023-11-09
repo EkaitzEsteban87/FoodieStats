@@ -1,6 +1,6 @@
 ---
 name:  JARScales
-title: Just-About-Right analysis
+title: Just-About-Right Analysis
 menuGroup: FoodieStats
 version: '1.0.0'
 jas: '1.2'
@@ -36,11 +36,12 @@ options:
 
 # Liking
     - name: lik
-      title: Overall liking or Purchase intent
+      title: Overall Liking or Purchase Intent
       type: Variable
       suggested:
         - continuous
-      permitted: [numeric]
+      permitted: # [numeric]
+        - numeric
 
 # threshold value
     - name: threshold
@@ -88,19 +89,19 @@ options:
 
 # showbarras plot checkbox 
     - name: showbarras
-      title: Show attribute barplot
+      title: Attribute barplot
       type: Bool
       default: False
 
 # showternary plot checkbox 
     - name: showternary
-      title: Show ternary plot
+      title: Ternary plot
       type: Bool
       default: False
 
 # showdiagnose plot checkbox 
     - name: showdiagnose
-      title: Show diagnostic plot
+      title: Diagnostic plot
       type: Bool
       default: False
 ...

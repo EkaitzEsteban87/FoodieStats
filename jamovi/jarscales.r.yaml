@@ -5,7 +5,7 @@ jrs:   '1.1'
 
 items:
     - name:  text
-      title: Just-About-Right analysis
+      title: JAR Descriptives
       type:  Preformatted
 
     - name:  Consumidores

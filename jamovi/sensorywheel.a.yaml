@@ -182,7 +182,7 @@ options:
 
 # Node font size value
     - name: nodesize
-      title: Node Labels size [1-10]
+      title: Node labels size [1-10]
       type: Number
       default: 6
       min: 1
@@ -190,7 +190,7 @@ options:
 
 # Leaf font size value
     - name: leafsize
-      title: Leaf Labels size [1-10]
+      title: Leaf labels size [1-10]
       type: Number
       default: 6
       min: 1

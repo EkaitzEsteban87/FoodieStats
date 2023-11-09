@@ -1,4 +1,4 @@
-title: Just-About-Right analysis
+title: Just-About-Right Analysis
 name: JARScales
 jus: '3.0'
 stage: 0
@@ -20,7 +20,7 @@ children:
       - type: ComboBox
         name: attrscale
   - type: CollapseBox
-    label: Overall liking analysis
+    label: Overall Liking Analysis
     collapsed: true
     stretchFactor: 1
     children:
@@ -29,7 +29,7 @@ children:
         stretchFactor: 1
         children:
           - type: TargetLayoutBox
-            label: Overall liking or Purchase intent
+            label: Overall Liking or Purchase Intent
             children:
               - type: VariablesListBox
                 name: lik

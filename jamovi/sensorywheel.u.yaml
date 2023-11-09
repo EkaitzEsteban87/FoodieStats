@@ -16,10 +16,8 @@ children:
           - type: VariablesListBox
             name: levv
             isTarget: true
-  - type: CollapseBox
-    label: Wheel color configuration
-    collapsed: false
-    stretchFactor: 1
+  - type: Label
+    label: Wheel Color Configuration
     children:
       - type: LayoutBox
         margin: large
@@ -29,10 +27,8 @@ children:
             name: wheelstyle
           - type: ComboBox
             name: colorselection
-  - type: CollapseBox
-    label: Label configuration
-    collapsed: false
-    stretchFactor: 1
+  - type: Label
+    label: Label Configuration
     children:
       - type: LayoutBox
         margin: large
@@ -46,10 +42,8 @@ children:
             format: number
           - type: ComboBox
             name: labelcolors
-  - type: CollapseBox
-    label: Advanced options
-    collapsed: true
-    stretchFactor: 1
+  - type: Label
+    label: Advanced Options
     children:
       - type: LayoutBox
         margin: large
