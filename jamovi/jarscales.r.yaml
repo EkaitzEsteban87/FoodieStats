@@ -44,6 +44,7 @@ items:
           title: 'High (%)'
           type: number
 
+# Weighted-penalty analysis
     - name:  penalizacion
       title: Weighted-penalty analysis
       type: Table
@@ -54,6 +55,7 @@ items:
         - penaltyttest
         - penaltyse
         - penaltyp
+        - penaltyalpha
         - penaltysig
       columns:
         - name: var
@@ -77,6 +79,11 @@ items:
           type: number
           format: zto,pvalue
           visible: "(attrhoc)"
+        - name: penaltyalpha
+          title: 'Alpha'
+          type: number
+          format: zto,pvalue
+          visible: "(attrhoc)"
         - name: penaltysig
           title: 'Significant'
           type: text
@@ -92,6 +99,7 @@ items:
         - qlow
         - selow
         - tukeylow
+        - alphalow
         - siglow
       columns:
         - name: var
@@ -115,6 +123,11 @@ items:
           type: number
           format: zto,pvalue
           visible: "(posthoc)"
+        - name: alphalow
+          title: 'Alpha'
+          type: number
+          format: zto,pvalue
+          visible: "(attrhoc)"
         - name: siglow
           title: 'Significant'
           type: text
@@ -130,6 +143,7 @@ items:
         - qhigh
         - sehigh
         - tukeyhigh
+        - alphahigh
         - sighigh
       columns:
         - name: var
@@ -153,6 +167,11 @@ items:
           type: number
           format: zto,pvalue
           visible: "(posthoc)"
+        - name: alphahigh
+          title: 'Alpha'
+          type: number
+          format: zto,pvalue
+          visible: "(attrhoc)"
         - name: sighigh
           title: 'Significant'
           type: text

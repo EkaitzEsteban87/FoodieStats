@@ -61,7 +61,7 @@ options:
 
 # posthoc checkbox 
     - name: posthoc
-      title: Level penalty tukey test
+      title: Tukey test for level penalty
       type: Bool
       default: True
 
@@ -75,7 +75,7 @@ options:
 
 # posthoc checkbox 
     - name: attrhoc
-      title: Weighted penalty t-test
+      title: t-test for weighted penalty 
       type: Bool
       default: True
 

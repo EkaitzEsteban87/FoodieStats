@@ -63,7 +63,7 @@ sensorywheelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             
             
             if (ncols>0){
-              
+               
               df=data0
               unique_words <- unique(unlist(df))
               unique_words <- levels(unique_words) 
@@ -209,7 +209,8 @@ sensorywheelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
               self$results$wheeloptions$setState(wheelcolors) 
             }
         },
-        .plot=function(image,...) { 
+        .plot=function(image,...) {  
+            require(ggplot2)
             N=length(self$options$levv)
             if (N>0){
               plotData <- image$state

@@ -212,6 +212,7 @@ JARScalesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "penaltyttest",
                     "penaltyse",
                     "penaltyp",
+                    "penaltyalpha",
                     "penaltysig"),
                 columns=list(
                     list(
@@ -241,6 +242,12 @@ JARScalesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                         `format`="zto,pvalue", 
                         `visible`="(attrhoc)"),
                     list(
+                        `name`="penaltyalpha", 
+                        `title`="Alpha", 
+                        `type`="number", 
+                        `format`="zto,pvalue", 
+                        `visible`="(attrhoc)"),
+                    list(
                         `name`="penaltysig", 
                         `title`="Significant", 
                         `type`="text", 
@@ -256,6 +263,7 @@ JARScalesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "qlow",
                     "selow",
                     "tukeylow",
+                    "alphalow",
                     "siglow"),
                 columns=list(
                     list(
@@ -285,6 +293,12 @@ JARScalesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                         `format`="zto,pvalue", 
                         `visible`="(posthoc)"),
                     list(
+                        `name`="alphalow", 
+                        `title`="Alpha", 
+                        `type`="number", 
+                        `format`="zto,pvalue", 
+                        `visible`="(attrhoc)"),
+                    list(
                         `name`="siglow", 
                         `title`="Significant", 
                         `type`="text", 
@@ -300,6 +314,7 @@ JARScalesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "qhigh",
                     "sehigh",
                     "tukeyhigh",
+                    "alphahigh",
                     "sighigh"),
                 columns=list(
                     list(
@@ -328,6 +343,12 @@ JARScalesResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                         `type`="number", 
                         `format`="zto,pvalue", 
                         `visible`="(posthoc)"),
+                    list(
+                        `name`="alphahigh", 
+                        `title`="Alpha", 
+                        `type`="number", 
+                        `format`="zto,pvalue", 
+                        `visible`="(attrhoc)"),
                     list(
                         `name`="sighigh", 
                         `title`="Significant", 

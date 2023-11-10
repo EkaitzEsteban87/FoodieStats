@@ -9,8 +9,8 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             atr=self$data[atr_names]
             N=length(atr)
 
-            b=self$options$lik 
-            like=self$data[b] 
+            b=self$options$lik # liking
+            like=self$data[b] # liking
 
             sc=self$options$attrscale
             jjar= switch(sc,"Three"= 2,"Five"= 3,"Seven"= 4,"Nine"= 5)
@@ -24,7 +24,7 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             f_high=data.frame(rep(NA,N))
             f_jar=data.frame(rep(NA,N))
 
-            if (N){ 
+            if (N){ # Consumer Reseach
                 for (k in 1:N){
                     atr[,k]=as.numeric(as.character(atr[,k]))
                     n_high[k,1]=mean((atr[,k]>jjar))*100
@@ -180,6 +180,7 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                         penaltyttest=res1,
                         penaltyse=res2,
                         penaltyp=res3,
+                        penaltyalpha=(100-(self$options$attrhocalpha))/100,
                         penaltysig=tr4[xk,1]
                     ))}
             }
@@ -197,6 +198,7 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                         qlow=res1,
                         selow=res2,
                         tukeylow=res3,
+                        alphalow=(100-(self$options$posthocalpha))/100,
                         siglow=trl[xk,1]
                     ))}
             }
@@ -214,11 +216,12 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                         qhigh=res1,
                         sehigh=res2,
                         tukeyhigh=res3,
+                        alphahigh=(100-(self$options$posthocalpha))/100,
                         sighigh=trh[xk,1]
                     ))}
             }
         },
-        .plot=function(image,...) { 
+        .plot=function(image,...) {  
             plotData <- image$state
             TernaryPlot(point="up",atip="JAR",btip="Too High",ctip="Too Low",alab="JAR % \u2192",blab="High % \u2192",clab="Low % \u2190")
             TernaryPoints(plotData, pch = 16)
@@ -228,9 +231,13 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             TernaryText(plotLabels,labels=self$options$attr,col="Blue")
             TRUE
         },
-        .plot2=function(image2,...) { 
+        .plot2=function(image2,...) {  
 
-            plotData <- image2$state
+            if (is.null(self$options$lik)){
+              plotData=data.frame(mh=0.4,ml=0.5,ph=10,pl=10,nh="Select overall liking or unselect checkbox",nl="Default plot:")
+            }else{plotData <- image2$state}
+            
+            self$results$text$setContent(plotData)
             freq=c(plotData[,3],plotData[,4])
             mdrop=c(plotData[,1],plotData[,2])
             plotlabels=c(plotData[,5],plotData[,6])
@@ -251,7 +258,7 @@ JARScalesClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             abline(v=self$options$threshold,lwd=2,lty=3)
             TRUE
         },
-        .plot3=function(image3,...) { 
+        .plot3=function(image3,...) {  
             plotData3 <- image3$state
             atr_names=self$options$attr
             barplot(plotData3,names.arg=atr_names,xlab ="% of customer criticizing (cumulative)",ylab="Attributes",axes=TRUE,col=c("#6B9DE8", "#E6AC40", "#9F9F9F"),horiz=TRUE)
