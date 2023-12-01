@@ -1,23 +1,25 @@
 Package: FoodieStats
 Type: Package
 Title: Gastronomic Data Analysis Tool
-Version: 0.1.0
+Version: 0.2.0
 Author: Ekaitz Esteban
 Maintainer: Ekaitz Esteban <eesteban@bculinary.com>
 Description: >-
   FoodieStats is a dedicated statistical module designed for gastronomy
-  professionals. This module covers a range of critical aspects in food and
-  beverage product development. </br></br> * <b>Food and Beverage Product
-  Formulation</b> - Contains experimental design methods used in the creation of
-  food and beverage products and their practical application within the food
-  industry. </br></br> * <b>Sensory and Consumer Data</b> - Integrates methods
-  and tools for in-depth sensory and consumer data analysis, emphasizing
-  measurement scales, sensometrics, and various data collection methods.
-  </br></br> * <b>Food Control and Machine Learning</b> - Includes food control
-  and machine learning approaches to advance product development in the realm of
-  gastronomy.
+  professionals, nutritionists and high-performance athletes. This module covers
+  a range of critical aspects in food and beverage product development.
+  </br></br> * <b>Food and Beverage Product Formulation</b> - Contains
+  experimental design methods used in the creation of food and beverage products
+  and their practical application within the food industry. </br></br> *
+  <b>Sensory and Consumer Data</b> - Integrates methods and tools for in-depth
+  sensory and consumer data analysis, emphasizing measurement scales,
+  sensometrics, and various data collection methods. </br></br> * <b>Food
+  Control and Machine Learning</b> - Includes food control and machine learning
+  approaches to advance product development in the realm of gastronomy.
+  </br></br> * <b>Food Science and Nutrition</b> - Utilizes health-focused
+  analytics to optimize nutritional content.
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 Remotes: EkaitzEsteban87/ggsunburst
-Imports: jmvcore (>= 0.8.5), R6, Ternary, reticulate, ggplot2, ggsunburst
+Imports: jmvcore (>= 0.8.5), R6, Ternary, reticulate, ggsunburst, rsm, ggDoE, unrepx
