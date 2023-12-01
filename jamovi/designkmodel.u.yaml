@@ -1,0 +1,88 @@
+title: Experimental Design
+name: designkmodel
+jus: '3.0'
+stage: 0
+compilerMode: tame
+children:
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: CheckBox
+        name: showdescription
+  - type: VariableSupplier
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: TargetLayoutBox
+        label: Dependent Variable
+        children:
+          - type: VariablesListBox
+            name: yield
+            maxItemCount: 1
+            isTarget: true
+      - type: TargetLayoutBox
+        label: Effects
+        children:
+          - type: VariablesListBox
+            name: vars
+            isTarget: true
+      - type: TargetLayoutBox
+        label: Categorical Effect (optional)
+        children:
+          - type: VariablesListBox
+            name: cats
+            maxItemCount: 1
+            isTarget: true
+  - type: Label
+    label: Main Effects and Interaction Effects Analysis
+    children:
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: CheckBox
+            name: showeffects
+          - type: CheckBox
+            name: showinteraction
+  - type: Label
+    label: Pareto and Half-Normal Analysis
+    children:
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: CheckBox
+            name: showpareto
+          - type: CheckBox
+            name: showhalf            
+          - type: TextBox
+            name: alphaval
+            format: number        
+          - type: ComboBox
+            name: criteria
+  - type: Label
+    label: Experimental Design Model Fitting
+    children:
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: ComboBox
+            name: choosecoded
+          - type: ComboBox
+            name: mupdate
+  - type: Label
+    label: Response Surface Analysis
+    children:
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: CheckBox
+            name: showrsm
+          - type: TextBox
+            name: thetaval
+            format: number
+          - type: TextBox
+            name: phival
+            format: number
