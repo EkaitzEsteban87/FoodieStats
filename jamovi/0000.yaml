@@ -1,0 +1,63 @@
+---
+title: Gastronomic Data Analysis Tool
+name: FoodieStats
+version: 0.2.0
+jms: '1.0'
+authors:
+  - Ekaitz Esteban
+maintainer: Ekaitz Esteban <eesteban@bculinary.com>
+date: '2023-12-31'
+type: R
+description: >-
+  FoodieStats is a dedicated statistical module designed for gastronomy
+  professionals, nutritionists and high-performance athletes. This module covers
+  a range of critical aspects in food and beverage product development.
+  </br></br> * <b>Food and Beverage Product Formulation</b> - Contains
+  experimental design methods used in the creation of food and beverage products
+  and their practical application within the food industry. </br></br> *
+  <b>Sensory and Consumer Data</b> - Integrates methods and tools for in-depth
+  sensory and consumer data analysis, emphasizing measurement scales,
+  sensometrics, and various data collection methods. </br></br> * <b>Food
+  Control and Machine Learning</b> - Includes food control and machine learning
+  approaches to advance product development in the realm of gastronomy.
+  </br></br> * <b>Food Science and Nutrition</b> - Utilizes health-focused
+  analytics to optimize nutritional content.
+analyses:
+  - title: Experimental Design
+    name: designkmodel
+    ns: FoodieStats
+    menuGroup: FoodieStats
+    menuSubgroup: Food Experimental Design
+    menuTitle: Experimental Design
+  - title: Just-About-Right Analysis
+    name: JARScales
+    ns: FoodieStats
+    menuGroup: FoodieStats
+    menuSubgroup: JAR of a single product
+    menuTitle: Just-About-Right Analysis
+datasets:
+  - name: applejuice
+    path: applejuice.omv
+    description: Attribute data on apple juice
+    tags:
+      - JAR
+  - name: purchaseintent
+    path: purchaseintent.omv
+    description: Purchase intent of a given product
+    tags:
+      - JAR
+  - name: redwine
+    path: redwine.omv
+    description: Experimental design for screening red wine processes
+    tags:
+      - DOE
+  - name: beefwellington
+    path: beefwellington.omv
+    description: Experimental design for optimizing the Beef Wellington recipe
+    tags:
+      - DOE
+usesNative: true
+minApp: 1.0.8
+rVersion: 4.3.2
+
+...

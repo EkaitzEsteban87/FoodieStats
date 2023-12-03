@@ -1,0 +1,105 @@
+---
+name:  designkmodel
+title: Experimental Design
+jrs:   '1.1'
+
+items:
+#      for debugging
+
+#      Describing the module
+    - name: description
+      title: description
+      type: Html
+      visible: "(showdescription)"
+      
+    - name:  doetable
+      title: Experimental and Predicted Responses Table
+      type:  Preformatted
+
+    - name: doeanova
+      title: ANOVA Results for Adquired Model
+      type: Preformatted
+          
+    - name: maintable
+      title: '`Model - ${yield}`'
+      type: Table
+      rows: 1
+      columns:
+        - name: cox1
+          title: 'Model equation'
+          type: text
+        - name: rsq1
+          title: 'Multiple R-Squared'
+          type: number
+
+    - name: maintable3k
+      title: '`2k Model splitted by categories - ${yield}`'
+      type: Table
+      rows: 2
+      visible: "(cats)"
+      columns:
+        - name: cox3
+          title: 'Model equation'
+          type: text
+
+#      Plot options - columns
+    - name:  cols
+      type:  Preformatted
+
+#      rsm formula for plots
+    - name:  rsmformula
+      type:  Preformatted
+	
+#      Show plot (do not touch)
+    - name:  showplot
+      type:  Preformatted
+
+#      Plot options - rsm columns
+    - name:  colsrsm
+      type:  Preformatted
+
+#      1 Main effects plot
+    - name: mainplot
+      title: Main Effects Plot
+      type: Image
+      width:  960
+      height: 320
+      renderFun: .mainplot
+      visible: "(showeffects)"
+
+#      2 Interaction plot
+    - name: interactionplot
+      title: Interaction Plot
+      type: Image
+      width:  960
+      height: 320
+      renderFun: .interactionplot
+      visible: "(showinteraction)"
+
+#      3 Pareto plot
+    - name: paretoplot
+      title: Pareto Plot
+      type: Image
+      width:  640
+      height: 320
+      renderFun: .paretoplot
+      visible: "(showpareto)"
+
+#      4 Half-normal plot
+    - name: halfplot
+      title: Half-Normal Plot
+      type: Image
+      width:  640
+      height: 320
+      renderFun: .halfplot
+      visible: "(showhalf)"
+
+#      5 Response Surface Plots
+    - name: rsmplot
+      title: Response Surface Plots
+      type: Image
+      width:  960
+      height: 1280
+      renderFun: .rsmplot
+      visible: "(showrsm)"
+...

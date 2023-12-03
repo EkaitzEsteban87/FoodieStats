@@ -1,0 +1,203 @@
+---
+name:  JARScales
+title: Just-About-Right analysis
+jrs:   '1.1'
+
+items:
+    - name:  text
+      title: JAR Descriptives
+      type:  Preformatted
+
+    - name:  Consumidores
+      title: Consumer Research
+      type: Table
+      rows: (attr)
+      clearWith:  # <-- here
+        - consulow
+        - consujar
+        - consuhigh
+        - flow
+        - fjar
+        - fhigh
+      columns:
+        - name: var
+          title: 'Attributes'
+          type: text
+          content: ($key)
+          combineBelow: true
+        - name: flow
+          title: 'freq. Low'
+          type: integer
+        - name: fjar
+          title: 'freq. Jar'
+          type: integer
+        - name: fhigh
+          title: 'freq. High'
+          type: integer
+        - name: consulow
+          title: 'Low (%)'
+          type: number
+        - name: consujar
+          title: 'Jar (%)'
+          type: number
+        - name: consuhigh
+          title: 'High (%)'
+          type: number
+
+# Weighted-penalty analysis
+    - name:  penalizacion
+      title: Weighted-penalty analysis
+      type: Table
+      rows: (attr)
+      visible: "(lik)"
+      clearWith:  # <-- here
+        - penalty
+        - penaltyttest
+        - penaltyse
+        - penaltyp
+        - penaltyalpha
+        - penaltysig
+      columns:
+        - name: var
+          title: 'Attributes'
+          type: text
+          content: ($key)
+          combineBelow: true
+        - name: penalty
+          title: 'Weighted penalty'
+          type: number
+        - name: penaltyttest
+          title: 't <sub>value</sub>'
+          type: number
+          visible: "(attrhoc)"
+        - name: penaltyse
+          title: 'Std. error'
+          type: number
+          visible: "(attrhoc)"
+        - name: penaltyp
+          title: 'p <sub>value</sub>'
+          type: number
+          format: zto,pvalue
+          visible: "(attrhoc)"
+        - name: penaltyalpha
+          title: 'Alpha'
+          type: number
+          format: zto,pvalue
+          visible: "(attrhoc)"
+        - name: penaltysig
+          title: 'Significant'
+          type: text
+          visible: "(attrhoc)"
+
+    - name:  MeanDropLow
+      title: Penalty analysis (Level Low)
+      type: Table
+      rows: (attr)
+      visible: "(lik)"
+      clearWith:  # <-- here
+        - droplow
+        - qlow
+        - selow
+        - tukeylow
+        - alphalow
+        - siglow
+      columns:
+        - name: var
+          title: 'Attributes'
+          type: text
+          content: ($key)
+          combineBelow: true
+        - name: droplow
+          title: 'Mean-drop low'
+          type: number
+        - name: qlow
+          title: 'q <sub>value</sub>'
+          type: number
+          visible: "(posthoc)"
+        - name: selow
+          title: 'Std. error'
+          type: number
+          visible: "(posthoc)"
+        - name: tukeylow
+          title: 'p <sub>tukey</sub>'
+          type: number
+          format: zto,pvalue
+          visible: "(posthoc)"
+        - name: alphalow
+          title: 'Alpha'
+          type: number
+          format: zto,pvalue
+          visible: "(attrhoc)"
+        - name: siglow
+          title: 'Significant'
+          type: text
+          visible: "(posthoc)"
+
+    - name:  MeanDropHigh
+      title: Penalty analysis (Level High)
+      type: Table
+      rows: (attr)
+      visible: "(lik)"
+      clearWith:  # <-- here
+        - drophigh
+        - qhigh
+        - sehigh
+        - tukeyhigh
+        - alphahigh
+        - sighigh
+      columns:
+        - name: var
+          title: 'Attributes'
+          type: text
+          content: ($key)
+          combineBelow: true
+        - name: drophigh
+          title: 'Mean-drop high'
+          type: number
+        - name: qhigh
+          title: 'q <sub>value</sub>'
+          type: number
+          visible: "(posthoc)"
+        - name: sehigh
+          title: 'Std. error'
+          type: number
+          visible: "(posthoc)"
+        - name: tukeyhigh
+          title: 'p <sub>tukey</sub>'
+          type: number
+          format: zto,pvalue
+          visible: "(posthoc)"
+        - name: alphahigh
+          title: 'Alpha'
+          type: number
+          format: zto,pvalue
+          visible: "(attrhoc)"
+        - name: sighigh
+          title: 'Significant'
+          type: text
+          visible: "(posthoc)"
+
+    - name: barraplot
+      title: Barplot of attributes
+      type: Image
+      width:  640
+      height: 320
+      renderFun: .plot3
+      visible: "(showbarras)"
+	
+    - name: ternaplot
+      title: Ternary Plot of attributes
+      type: Image
+      width:  640
+      height: 640
+      renderFun: .plot
+      visible: "(showternary)"
+
+    - name: diagplot
+      title: Diagnostic Plot of attributes
+      type: Image
+      width:  640
+      height: 640
+      renderFun: .plot2
+      visible: "(showdiagnose)"
+...
