@@ -180,6 +180,8 @@ designkmodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         cols = function() private$.items[["cols"]],
         rsmformula = function() private$.items[["rsmformula"]],
         showplot = function() private$.items[["showplot"]],
+        modellm = function() private$.items[["modellm"]],
+        modelrsm = function() private$.items[["modelrsm"]],
         colsrsm = function() private$.items[["colsrsm"]],
         mainplot = function() private$.items[["mainplot"]],
         interactionplot = function() private$.items[["interactionplot"]],
@@ -240,6 +242,12 @@ designkmodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="showplot"))
+            self$add(jmvcore::Preformatted$new(
+                options=options,
+                name="modellm"))
+            self$add(jmvcore::Preformatted$new(
+                options=options,
+                name="modelrsm"))
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="colsrsm"))
@@ -334,6 +342,8 @@ designkmodelBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   \code{results$cols} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$rsmformula} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$showplot} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$modellm} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$modelrsm} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$colsrsm} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$mainplot} \tab \tab \tab \tab \tab an image \cr
 #'   \code{results$interactionplot} \tab \tab \tab \tab \tab an image \cr
