@@ -5,7 +5,10 @@ jrs:   '1.1'
 
 items:
 #      for debugging
-
+#    - name:  debugger
+#      title: debug    
+#      type:  Preformatted
+      
 #      Describing the module
     - name: description
       title: description
@@ -54,6 +57,14 @@ items:
     - name:  showplot
       type:  Preformatted
 
+#      Plot options - lm model
+    - name:  modellm
+      type:  Preformatted
+      
+#      Plot options - rsm model
+    - name:  modelrsm
+      type:  Preformatted
+      
 #      Plot options - rsm columns
     - name:  colsrsm
       type:  Preformatted
