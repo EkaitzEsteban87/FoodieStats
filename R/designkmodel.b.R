@@ -110,8 +110,7 @@ designkmodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             n=dim(doelm)[1]-1
             modelo <- lm(as.formula(paste(responseName,"~.^",n,sep="")),data=doelm)
             self$results$modellm$setState(list(responseName,n,doelm))
-            #self$results$modellm$setState(modelo)
-            
+
             image3 <- self$results$paretoplot
             image3$setState(doe)
 
@@ -303,28 +302,18 @@ designkmodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             npe=length(rsm::contour.lm(modelo_rsm,as.formula(baseformu),image=FALSE,plot.it=FALSE))
             self$results$colsrsm$setState(npe)
             
-            # self$results$modelrsm$setState(modelo_rsm)
             self$results$modelrsm$setState(list(doecode,rsmformu))
             image5 <- self$results$rsmplot
+            image5$setSize(960,480*npe)
             image5$setState(doersm)
+            #if (npe==1){image5$setSize(960,480)}else{image5$setSize(960,1280)}
+            
 
 #            object1=self$results$modellm$state
 #            object2=self$results$modelrsm$state
 #            xh1=length(serialize(object1,connection=NULL))
 #            xh2=length(serialize(object2,connection=NULL))
 #            self$results$debugger$setContent(cbind(xh1,xh2))
-            
-#            object1=image1$state
-#            xh1=length(serialize(object1,connection=NULL))
-#            object2=image2$state
-#            xh2=length(serialize(object2,connection=NULL))
-#            object3=image3$state
-#            xh3=length(serialize(object3,connection=NULL))
-#            object4=image4$state
-#            xh4=length(serialize(object4,connection=NULL))
-#            object5=image5$state
-#            xh5=length(serialize(object5,connection=NULL))
-#            self$results$debugger$setContent(cbind(xh1,xh2,xh3,xh4,xh5))
             
         },
         .mainplot=function(image1,...) {
@@ -351,8 +340,6 @@ designkmodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
           
           plotlm=self$results$modellm$state
           modelo <- lm(as.formula(paste(plotlm[[1]],"~.^",plotlm[[2]],sep="")),data=plotlm[[3]])
-          
-          #modelo=self$results$modellm$state
           alphaval=(self$options$alphaval)/100
           ap=ggDoE::pareto_plot(modelo,method =self$options$criteria,alpha=alphaval)
           self$results$showplot$setContent(ap)
@@ -363,7 +350,6 @@ designkmodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
           
           plotlm=self$results$modellm$state
           modelo <- lm(as.formula(paste(plotlm[[1]],"~.^",plotlm[[2]],sep="")),data=plotlm[[3]])
-          #modelo=self$results$modellm$state
           alphaval=(self$options$alphaval)/100
           ap=ggDoE::half_normal(modelo,method=self$options$criteria,alpha=alphaval,ref_line=TRUE,label_active=TRUE,margin_errors=TRUE)
           self$results$showplot$setContent(ap)
@@ -376,7 +362,6 @@ designkmodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
           
           plotrsm=self$results$modelrsm$state
           modeloR <- rsm(as.formula(plotrsm[[2]]),data=plotrsm[[1]])
-
           Jamov=colorRampPalette(c("#6B9DE8", "#E6AC40"))(50)
           baseformu <- self$results$rsmformula$state
           
