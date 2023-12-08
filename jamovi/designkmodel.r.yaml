@@ -20,7 +20,7 @@ items:
       type:  Preformatted
 
     - name: doeanova
-      title: ANOVA Results for Adquired Model
+      title: ANOVA Table
       type: Preformatted
           
     - name: maintable
@@ -45,6 +45,10 @@ items:
           title: 'Model equation'
           type: text
 
+#      doe dataset
+    - name:  doedataset
+      type:  Preformatted
+      
 #      Plot options - columns
     - name:  cols
       type:  Preformatted
@@ -76,6 +80,7 @@ items:
       width:  960
       height: 320
       renderFun: .mainplot
+      requiresData: true
       visible: "(showeffects)"
 
 #      2 Interaction plot
@@ -85,6 +90,7 @@ items:
       width:  960
       height: 320
       renderFun: .interactionplot
+      requiresData: true
       visible: "(showinteraction)"
 
 #      3 Pareto plot
@@ -94,6 +100,7 @@ items:
       width:  640
       height: 320
       renderFun: .paretoplot
+      requiresData: true
       visible: "(showpareto)"
 
 #      4 Half-normal plot
@@ -103,6 +110,7 @@ items:
       width:  640
       height: 320
       renderFun: .halfplot
+      requiresData: true
       visible: "(showhalf)"
 
 #      5 Response Surface Plots
@@ -112,5 +120,6 @@ items:
       width:  960
       height: 1280
       renderFun: .rsmplot
+      requiresData: true
       visible: "(showrsm)"
 ...
