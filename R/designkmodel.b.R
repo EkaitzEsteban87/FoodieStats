@@ -69,9 +69,8 @@ designkmodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             
             doe=cbind(vardata2,catdata,responsedata)
             
-            self$results$doedataset$setState(doe)
-            image <- self$results$interactionplot
-            #image$setSize(960, 320)
+            image2 <- self$results$interactionplot
+            image2$setState(doe)
 
             ncat=length(unique(unlist(catdata)))
             
@@ -94,9 +93,8 @@ designkmodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
               doersm=doe
             }
             
-            self$results$doedataset$setState(doersm)
-            image <- self$results$mainplot
-            #image1$setState(doersm)
+            image1 <- self$results$mainplot
+            image1$setState(doersm)
             
             doelm=doersm
             zk=dim(doelm)[2]-1
@@ -109,17 +107,16 @@ designkmodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
               doelm[,k]=uncode
             }
                       
-            n=dim(doelm)[1]-1 # n=3
+            n=dim(doelm)[1]-1
             modelo <- lm(as.formula(paste(responseName,"~.^",n,sep="")),data=doelm)
-            self$results$modellm$setState(modelo)
+            self$results$modellm$setState(list(responseName,n,doelm))
+            #self$results$modellm$setState(modelo)
             
-            self$results$doedataset$setState(doe)
-            image <- self$results$paretoplot
-            #image3$setState(doe)
+            image3 <- self$results$paretoplot
+            image3$setState(doe)
 
-            self$results$doedataset$setState(doe)
-            image <- self$results$halfplot
-            #image4$setState(doe)
+            image4 <- self$results$halfplot
+            image4$setState(doe)
             
             if (is.null(self$options$choosecoded)){x="coded"}else{x=self$options$choosecoded}
             if (x=="coded"){
@@ -306,11 +303,17 @@ designkmodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             npe=length(rsm::contour.lm(modelo_rsm,as.formula(baseformu),image=FALSE,plot.it=FALSE))
             self$results$colsrsm$setState(npe)
             
-            self$results$modelrsm$setState(modelo_rsm)
-            self$results$doedataset$setState(doersm)
-            image <- self$results$rsmplot
-#            image5$setState(doersm)
+            # self$results$modelrsm$setState(modelo_rsm)
+            self$results$modelrsm$setState(list(doecode,rsmformu))
+            image5 <- self$results$rsmplot
+            image5$setState(doersm)
 
+#            object1=self$results$modellm$state
+#            object2=self$results$modelrsm$state
+#            xh1=length(serialize(object1,connection=NULL))
+#            xh2=length(serialize(object2,connection=NULL))
+#            self$results$debugger$setContent(cbind(xh1,xh2))
+            
 #            object1=image1$state
 #            xh1=length(serialize(object1,connection=NULL))
 #            object2=image2$state
@@ -324,45 +327,56 @@ designkmodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
 #            self$results$debugger$setContent(cbind(xh1,xh2,xh3,xh4,xh5))
             
         },
-        .mainplot=function(image,...) {
-          if (is.null(self$results$doedataset$state) || is.null(self$options$yield)){return(FALSE)}
+        .mainplot=function(image1,...) {
+          if (is.null(image1$state) || is.null(self$options$yield)){return(FALSE)}
+          plotdata=image1$state
           tvars <- self$results$cols$state
           ncolumns=switch(tvars,1,2,3,2,3,3,4,4,5,5)
           if (is.null(ncolumns)){ncolumns=5}
-          ap=ggDoE::main_effects(self$results$doedataset$state,response=self$options$yield,n_columns=ncolumns,color_palette ='turbo')
+          ap=ggDoE::main_effects(plotdata,response=self$options$yield,n_columns=ncolumns,color_palette ='turbo')
           self$results$showplot$setContent(ap)
           TRUE
         },
-        .interactionplot=function(image,...) {
-          if (is.null(self$results$doedataset$state) || is.null(self$options$yield) || dim(self$results$doedataset$state)[2]<3){return(FALSE)}
+        .interactionplot=function(image2,...) {
+          if (is.null(image2$state) || is.null(self$options$yield) || dim(image2$state)[2]<3){return(FALSE)}
+          plotdata=image2$state
           tvars <- (self$results$cols$state*(self$results$cols$state-1))/2
           ncolumns=switch(tvars,1,2,3,2,3,3,4,4,5,5)
           if (is.null(ncolumns)){ncolumns=5}
-          ggDoE::interaction_effects(self$results$doedataset$state,response=self$options$yield, colors = c("#6B9DE8", "#E6AC40"),linetypes = c("solid", "dashed"),n_columns=ncolumns)
+          ggDoE::interaction_effects(plotdata,response=self$options$yield, colors = c("#6B9DE8", "#E6AC40"),linetypes = c("solid", "dashed"),n_columns=ncolumns)
           TRUE
         },
-        .paretoplot=function(image,...) {
-          if (is.null(self$results$doedataset$state) || is.null(self$options$yield)){return(FALSE)}
-          modelo=self$results$modellm$state
+        .paretoplot=function(image3,...) {
+          if (is.null(image3$state) || is.null(self$options$yield)){return(FALSE)}
+          
+          plotlm=self$results$modellm$state
+          modelo <- lm(as.formula(paste(plotlm[[1]],"~.^",plotlm[[2]],sep="")),data=plotlm[[3]])
+          
+          #modelo=self$results$modellm$state
           alphaval=(self$options$alphaval)/100
           ap=ggDoE::pareto_plot(modelo,method =self$options$criteria,alpha=alphaval)
           self$results$showplot$setContent(ap)
           TRUE
         },
-        .halfplot=function(image,...){
-          if (is.null(self$results$doedataset$state) || is.null(self$options$yield)){return(FALSE)}
-          modelo=self$results$modellm$state
+        .halfplot=function(image4,...){
+          if (is.null(image4$state) || is.null(self$options$yield)){return(FALSE)}
+          
+          plotlm=self$results$modellm$state
+          modelo <- lm(as.formula(paste(plotlm[[1]],"~.^",plotlm[[2]],sep="")),data=plotlm[[3]])
+          #modelo=self$results$modellm$state
           alphaval=(self$options$alphaval)/100
           ap=ggDoE::half_normal(modelo,method=self$options$criteria,alpha=alphaval,ref_line=TRUE,label_active=TRUE,margin_errors=TRUE)
           self$results$showplot$setContent(ap)
           TRUE
         },
-        .rsmplot=function(image,...) {
-          if (is.null(self$results$doedataset$state) || is.null(self$options$yield) || (self$results$colsrsm$state<1))
+        .rsmplot=function(image5,...) {
+          if (is.null(image5$state) || is.null(self$options$yield) || (self$results$colsrsm$state<1))
             return(FALSE)
           npe=self$results$colsrsm$state
-          modeloR=self$results$modelrsm$state
           
+          plotrsm=self$results$modelrsm$state
+          modeloR <- rsm(as.formula(plotrsm[[2]]),data=plotrsm[[1]])
+
           Jamov=colorRampPalette(c("#6B9DE8", "#E6AC40"))(50)
           baseformu <- self$results$rsmformula$state
           

@@ -208,7 +208,7 @@ designkmodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="doeanova",
-                title="ANOVA Results for Adquired Model"))
+                title="ANOVA Table"))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="maintable",
@@ -355,11 +355,11 @@ designkmodelBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   \code{results$modellm} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$modelrsm} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$colsrsm} \tab \tab \tab \tab \tab a preformatted \cr
-#'   \code{results$mainplot} \tab \tab \tab \tab \tab an image \cr
-#'   \code{results$interactionplot} \tab \tab \tab \tab \tab an image \cr
-#'   \code{results$paretoplot} \tab \tab \tab \tab \tab an image \cr
-#'   \code{results$halfplot} \tab \tab \tab \tab \tab an image \cr
-#'   \code{results$rsmplot} \tab \tab \tab \tab \tab an image \cr
+#'   \code{results$mainplot} \tab \tab \tab \tab \tab the main effects plot \cr
+#'   \code{results$interactionplot} \tab \tab \tab \tab \tab an interaction plot \cr
+#'   \code{results$paretoplot} \tab \tab \tab \tab \tab pareto plot \cr
+#'   \code{results$halfplot} \tab \tab \tab \tab \tab Half-Normal plot \cr
+#'   \code{results$rsmplot} \tab \tab \tab \tab \tab Response Surface plot \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
