@@ -79,7 +79,7 @@ items:
       type: Image
       description: the main effects plot
       width:  960
-      height: 320
+      height: 480
       renderFun: .mainplot
       requiresData: true
       visible: "(showeffects)"
@@ -90,7 +90,7 @@ items:
       type: Image
       description: an interaction plot
       width:  960
-      height: 320
+      height: 480
       renderFun: .interactionplot
       requiresData: true
       visible: "(showinteraction)"
