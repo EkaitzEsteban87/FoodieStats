@@ -77,16 +77,18 @@ items:
     - name: mainplot
       title: Main Effects Plot
       type: Image
+      description: the main effects plot
       width:  960
       height: 320
       renderFun: .mainplot
       requiresData: true
       visible: "(showeffects)"
-
+            
 #      2 Interaction plot
     - name: interactionplot
       title: Interaction Plot
       type: Image
+      description: an interaction plot
       width:  960
       height: 320
       renderFun: .interactionplot
@@ -97,26 +99,29 @@ items:
     - name: paretoplot
       title: Pareto Plot
       type: Image
+      description: pareto plot
       width:  640
       height: 320
       renderFun: .paretoplot
       requiresData: true
       visible: "(showpareto)"
-
+            
 #      4 Half-normal plot
     - name: halfplot
       title: Half-Normal Plot
       type: Image
+      description: Half-Normal plot
       width:  640
       height: 320
       renderFun: .halfplot
       requiresData: true
       visible: "(showhalf)"
-
+            
 #      5 Response Surface Plots
     - name: rsmplot
       title: Response Surface Plots
       type: Image
+      description: Response Surface plot
       width:  960
       height: 1280
       renderFun: .rsmplot
