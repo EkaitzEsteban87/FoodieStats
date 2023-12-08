@@ -177,6 +177,7 @@ designkmodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         doeanova = function() private$.items[["doeanova"]],
         maintable = function() private$.items[["maintable"]],
         maintable3k = function() private$.items[["maintable3k"]],
+        doedataset = function() private$.items[["doedataset"]],
         cols = function() private$.items[["cols"]],
         rsmformula = function() private$.items[["rsmformula"]],
         showplot = function() private$.items[["showplot"]],
@@ -235,6 +236,9 @@ designkmodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                         `type`="text"))))
             self$add(jmvcore::Preformatted$new(
                 options=options,
+                name="doedataset"))
+            self$add(jmvcore::Preformatted$new(
+                options=options,
                 name="cols"))
             self$add(jmvcore::Preformatted$new(
                 options=options,
@@ -258,6 +262,7 @@ designkmodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 width=960,
                 height=320,
                 renderFun=".mainplot",
+                requiresData=TRUE,
                 visible="(showeffects)"))
             self$add(jmvcore::Image$new(
                 options=options,
@@ -266,6 +271,7 @@ designkmodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 width=960,
                 height=320,
                 renderFun=".interactionplot",
+                requiresData=TRUE,
                 visible="(showinteraction)"))
             self$add(jmvcore::Image$new(
                 options=options,
@@ -274,6 +280,7 @@ designkmodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 width=640,
                 height=320,
                 renderFun=".paretoplot",
+                requiresData=TRUE,
                 visible="(showpareto)"))
             self$add(jmvcore::Image$new(
                 options=options,
@@ -282,6 +289,7 @@ designkmodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 width=640,
                 height=320,
                 renderFun=".halfplot",
+                requiresData=TRUE,
                 visible="(showhalf)"))
             self$add(jmvcore::Image$new(
                 options=options,
@@ -290,6 +298,7 @@ designkmodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 width=960,
                 height=1280,
                 renderFun=".rsmplot",
+                requiresData=TRUE,
                 visible="(showrsm)"))}))
 
 designkmodelBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -339,6 +348,7 @@ designkmodelBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   \code{results$doeanova} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$maintable} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$maintable3k} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$doedataset} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$cols} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$rsmformula} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$showplot} \tab \tab \tab \tab \tab a preformatted \cr
