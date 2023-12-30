@@ -1,7 +1,7 @@
 Package: FoodieStats
 Type: Package
 Title: Gastronomic Data Analysis Tool
-Version: 0.2.0
+Version: 0.3.0
 Author: Ekaitz Esteban
 Maintainer: Ekaitz Esteban <eesteban@bculinary.com>
 Description: >-
@@ -21,4 +21,5 @@ Description: >-
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
-Imports: jmvcore (>= 0.8.5), R6, Ternary, rsm, ggDoE, unrepx
+Remotes: EkaitzEsteban87/ggsunburst
+Imports: jmvcore (>= 0.8.5), R6, Ternary, reticulate, ggsunburst, rsm, ggDoE, unrepx

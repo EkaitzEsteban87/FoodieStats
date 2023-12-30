@@ -1,5 +1,6 @@
 exportPattern("^[[:alpha:]]+")
 import(Ternary)
+import(reticulate)
 import(rsm)
 import(ggDoE)
 import(unrepx)
