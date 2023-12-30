@@ -1,0 +1,116 @@
+---
+name:  designrsmmodel
+title: Response Surface Design
+menuGroup: FoodieStats
+version: '1.0.0'
+jas: '1.2'
+
+options:
+    - name: data
+      type: Data
+
+# Show description
+    - name: showdescription
+      title: Show description
+      type: Bool
+      default: False
+
+# Experimental design input data
+    - name: yield
+      title: Dependent Variable
+      type: Variable
+      suggested:
+        - continuous
+      permitted:
+        - numeric
+
+    - name: vars
+      title: Effects
+      type: Variables
+      suggested:
+        - ordinal
+      permitted:
+        - factor
+
+# Choose response surface design
+    - name: rsdesign
+      title: Response Surface Design
+      type: List
+      options:
+        - title: Box–Behnken
+          name:  bbd
+        - title: Circumscribed Central Composite
+          name:  ccc
+        - title: Inscribed Central Composite
+          name:  cci
+        - title: Face Centered Central Composite
+          name:  ccf           
+      default: bbd
+      
+# Significance level value
+    - name: alphaval
+      title: α value (%)
+      type: Number
+      default: 5
+      min: 1
+      max: 25
+
+# Show 1 effect plot
+    - name: showeffects
+      title: Effect plot
+      type: Bool
+      default: False
+
+# Show 2 interaction plot
+    - name: showinteraction
+      title: Interaction plot (only for Box-Behnken designs)
+      type: Bool
+      default: False
+
+# Show 3 pareto plot
+    - name: showpareto
+      title: Pareto plot
+      type: Bool
+      default: False
+     
+# Choose coded model
+    - name: mupdate
+      title: Refine Model
+      type: List
+      options:
+        - title: None
+          name:  default
+        - title: Forward addition
+          name:  forward
+        - title: Backward AIC
+          name:  backward
+        - title: Bidirectional
+          name:  both          
+        - title: Backward alpha
+          name:  backwardalpha          
+        - title: Manual
+          name:  allin   
+      default: default
+
+# Show 4 RSM plot
+    - name: showrsm
+      title: Response Surface plot
+      type: Bool
+      default: False
+
+# Perspective - Azimut
+    - name: thetaval
+      title: Azimut [-180 180]
+      type: Number
+      default: -25
+      min: -180
+      max: 180
+
+# Perspective - Latitude
+    - name: phival
+      title: Latitude [-180 180]
+      type: Number
+      default: 20
+      min: -180
+      max: 180
+...

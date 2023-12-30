@@ -1,7 +1,7 @@
 ---
 title: Gastronomic Data Analysis Tool
 name: FoodieStats
-version: 0.2.0
+version: 0.3.0
 jms: '1.0'
 authors:
   - Ekaitz Esteban
@@ -29,6 +29,12 @@ analyses:
     menuGroup: FoodieStats
     menuSubgroup: Food Experimental Design
     menuTitle: Experimental Design
+  - title: Response Surface Design
+    name: designrsmmodel
+    ns: FoodieStats
+    menuGroup: FoodieStats
+    menuSubgroup: Food Response Surface Design
+    menuTitle: Response Surface Design
   - title: Just-About-Right Analysis
     name: JARScales
     ns: FoodieStats
@@ -56,6 +62,18 @@ datasets:
     description: Experimental design for optimizing the Beef Wellington recipe
     tags:
       - DOE
+  - name: pinsaromana
+    path: pinsaromana.omv
+    description: Innovation in Pinsa Romana Production. Box-Behnken design approach
+    tags:
+      - RSM
+  - name: barleymalting
+    path: barleymalting.omv
+    description: >-
+      Optimization of Malting Parameters for Barley. Circumscribed central
+      composite design approach
+    tags:
+      - RSM
 usesNative: true
 minApp: 1.0.8
 rVersion: 4.3.2

@@ -1,0 +1,132 @@
+---
+name:  designrsmmodel
+title: Response Surface Design
+jrs:   '1.1'
+
+items:
+#      for debugging
+#    - name:  debugger
+#      title: debug    
+#      type:  Preformatted
+      
+#      Describing the module
+    - name: description
+      title: description
+      type: Html
+      visible: "(showdescription)"
+      
+    - name:  doetable
+      title: Experimental and Predicted Responses Table
+      type:  Preformatted
+
+    - name: doetable2
+      title: Experimental Design Table
+      type: Table
+      columns: []
+
+    - name: doeanova
+      title: ANOVA Table
+      type: Preformatted
+ 
+    - name:  designcoded
+      title: Model prediction (Coded)
+      type:  Preformatted
+      
+    - name: maintable
+      title: '`Coded Model - ${yield}`'
+      type: Table
+      rows: 1
+      columns:
+        - name: equ1
+          title: 'Model equation (Coded)'
+          type: text
+        - name: Rsq1
+          title: 'Multiple R-Squared'
+          type: number
+        - name: Ad1
+          title: 'Adjusted R-Squared'
+          type: number
+
+    - name:  designuncoded
+      title: Model prediction (Uncoded)
+      type:  Preformatted
+      
+    - name: maintable2
+      title: '`Uncoded Model - ${yield}`'
+      type: Table
+      rows: 1
+      columns:
+        - name: equ2
+          title: 'Model equation (Uncoded)'
+          type: text
+        - name: Rsq2
+          title: 'Multiple R-Squared'
+          type: number
+        - name: Ad2
+          title: 'Adjusted R-Squared'
+          type: number
+          
+#      doe dataset
+    - name:  doedataset
+      type:  Preformatted
+      
+#      Plot options - columns
+    - name:  cols
+      type:  Preformatted
+
+#      Plot options - pareto
+    - name:  paretodata
+      type:  Preformatted
+      
+#      Plot options - rsm model
+    - name:  modelrsm
+      type:  Preformatted
+      
+#      Plot options - rsm columns
+    - name:  colsrsm
+      type:  Preformatted
+
+#      1 Main effects plot
+    - name: mainplot
+      title: Main Effects Plot
+      type: Image
+      description: the main effects plot
+      width:  960
+      height: 480
+      renderFun: .mainplot
+      requiresData: true
+      visible: "(showeffects)"
+            
+#      2 Interaction plot
+    - name: interactionplot
+      title: Interaction Plot
+      type: Image
+      description: an interaction plot
+      width:  960
+      height: 480
+      renderFun: .interactionplot
+      requiresData: true
+      visible: "(showinteraction)"
+
+#      3 Pareto plot
+    - name: paretoplot
+      title: Pareto Plot
+      type: Image
+      description: pareto plot
+      width:  640
+      height: 320
+      renderFun: .paretoplot
+      requiresData: true
+      visible: "(showpareto)"
+      
+#      4 Response Surface Plots
+    - name: rsmplot
+      title: Response Surface Plots
+      type: Image
+      description: Response Surface plot
+      width:  960
+      height: 1280
+      renderFun: .rsmplot
+      requiresData: true
+      visible: "(showrsm)"
+...
