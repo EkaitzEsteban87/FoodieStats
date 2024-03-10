@@ -16,11 +16,11 @@ designkmodelOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             showpareto = FALSE,
             showhalf = FALSE,
             criteria = "Lenth",
-            choosecoded = "coded",
-            mupdate = "none",
+            mupdate = "default",
             showrsm = FALSE,
             thetaval = -25,
-            phival = 20, ...) {
+            phival = 20,
+            colorselection = "SpectralStylish", ...) {
 
             super$initialize(
                 package="FoodieStats",
@@ -87,20 +87,13 @@ designkmodelOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                     "RMS",
                     "SMedian"),
                 default="Lenth")
-            private$..choosecoded <- jmvcore::OptionList$new(
-                "choosecoded",
-                choosecoded,
-                options=list(
-                    "coded",
-                    "uncoded"),
-                default="coded")
             private$..mupdate <- jmvcore::OptionList$new(
                 "mupdate",
                 mupdate,
                 options=list(
-                    "none",
-                    "automatic"),
-                default="none")
+                    "default",
+                    "backwardalpha"),
+                default="default")
             private$..showrsm <- jmvcore::OptionBool$new(
                 "showrsm",
                 showrsm,
@@ -117,6 +110,62 @@ designkmodelOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 default=20,
                 min=-180,
                 max=180)
+            private$..colorselection <- jmvcore::OptionList$new(
+                "colorselection",
+                colorselection,
+                options=list(
+                    "SpectralStylish",
+                    "JamoviStylish",
+                    "BeachStylish",
+                    "OceanStylish",
+                    "Market",
+                    "Gingerbread",
+                    "Umami",
+                    "SummerSalad",
+                    "FruitCup",
+                    "Delight",
+                    "Greensmoothie",
+                    "Turmeric",
+                    "Snacks",
+                    "Sashimi",
+                    "Macarons",
+                    "Feast",
+                    "Veggies",
+                    "Beetroot",
+                    "Spice",
+                    "Sweet",
+                    "Tropical",
+                    "Breakfast",
+                    "Carrots",
+                    "Stick",
+                    "Tea",
+                    "Decadent",
+                    "Berry",
+                    "Sugary",
+                    "Citrus",
+                    "Chard",
+                    "Shrimp",
+                    "SweetSalad",
+                    "Cheesecake",
+                    "FruitBasket",
+                    "Cayenne",
+                    "Smoothie",
+                    "Mojito",
+                    "Coffee",
+                    "Wine",
+                    "Beer",
+                    "Fish",
+                    "Cheese",
+                    "Bread",
+                    "Chocolate",
+                    "Beef",
+                    "Honey",
+                    "Dairy",
+                    "Vegetables",
+                    "Bean",
+                    "Seafood",
+                    "Octopus"),
+                default="SpectralStylish")
 
             self$.addOption(private$..showdescription)
             self$.addOption(private$..yield)
@@ -128,11 +177,11 @@ designkmodelOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             self$.addOption(private$..showpareto)
             self$.addOption(private$..showhalf)
             self$.addOption(private$..criteria)
-            self$.addOption(private$..choosecoded)
             self$.addOption(private$..mupdate)
             self$.addOption(private$..showrsm)
             self$.addOption(private$..thetaval)
             self$.addOption(private$..phival)
+            self$.addOption(private$..colorselection)
         }),
     active = list(
         showdescription = function() private$..showdescription$value,
@@ -145,11 +194,11 @@ designkmodelOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         showpareto = function() private$..showpareto$value,
         showhalf = function() private$..showhalf$value,
         criteria = function() private$..criteria$value,
-        choosecoded = function() private$..choosecoded$value,
         mupdate = function() private$..mupdate$value,
         showrsm = function() private$..showrsm$value,
         thetaval = function() private$..thetaval$value,
-        phival = function() private$..phival$value),
+        phival = function() private$..phival$value,
+        colorselection = function() private$..colorselection$value),
     private = list(
         ..showdescription = NA,
         ..yield = NA,
@@ -161,11 +210,11 @@ designkmodelOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         ..showpareto = NA,
         ..showhalf = NA,
         ..criteria = NA,
-        ..choosecoded = NA,
         ..mupdate = NA,
         ..showrsm = NA,
         ..thetaval = NA,
-        ..phival = NA)
+        ..phival = NA,
+        ..colorselection = NA)
 )
 
 designkmodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -174,8 +223,18 @@ designkmodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
     active = list(
         description = function() private$.items[["description"]],
         doetable = function() private$.items[["doetable"]],
+        doetable2 = function() private$.items[["doetable2"]],
         doeanova = function() private$.items[["doeanova"]],
+        anovatable = function() private$.items[["anovatable"]],
+        estitabletitleX = function() private$.items[["estitabletitleX"]],
+        estitableX = function() private$.items[["estitableX"]],
         maintable = function() private$.items[["maintable"]],
+        maintable3kCoded = function() private$.items[["maintable3kCoded"]],
+        scalingtitle = function() private$.items[["scalingtitle"]],
+        scalingtable = function() private$.items[["scalingtable"]],
+        estitabletitle = function() private$.items[["estitabletitle"]],
+        estitableOR = function() private$.items[["estitableOR"]],
+        maintable2 = function() private$.items[["maintable2"]],
         maintable3k = function() private$.items[["maintable3k"]],
         doedataset = function() private$.items[["doedataset"]],
         cols = function() private$.items[["cols"]],
@@ -195,7 +254,7 @@ designkmodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             super$initialize(
                 options=options,
                 name="",
-                title="Experimental Design")
+                title="2k Experimental Design")
             self$add(jmvcore::Html$new(
                 options=options,
                 name="description",
@@ -205,34 +264,112 @@ designkmodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 options=options,
                 name="doetable",
                 title="Experimental and Predicted Responses Table"))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="doetable2",
+                title="Experimental Design Table",
+                columns=list()))
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="doeanova",
                 title="ANOVA Table"))
             self$add(jmvcore::Table$new(
                 options=options,
+                name="anovatable",
+                title="`Analysis of Variance Table - Response: ${yield}`",
+                columns=list()))
+            self$add(jmvcore::Preformatted$new(
+                options=options,
+                name="estitabletitleX",
+                title="Coded Model Parameter Estimation Table"))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="estitableX",
+                title="Coded Parameter Estimation Table",
+                columns=list()))
+            self$add(jmvcore::Table$new(
+                options=options,
                 name="maintable",
+                title="`Coded Model - ${yield}`",
+                rows=1,
+                columns=list(
+                    list(
+                        `name`="equ1", 
+                        `title`="Model equation (Coded)", 
+                        `type`="text"),
+                    list(
+                        `name`="Rsq1", 
+                        `title`="R<sup>2</sup>", 
+                        `type`="number"),
+                    list(
+                        `name`="Ad1", 
+                        `title`="R<sub>A</sub><sup>2</sup>", 
+                        `type`="number"),
+                    list(
+                        `name`="Mse1", 
+                        `title`="MSE", 
+                        `type`="number"))))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="maintable3kCoded",
+                title="`Coded 2\u1D4F Model splitted by categories - ${yield}`",
+                rows=2,
+                visible="(cats)",
+                columns=list(
+                    list(
+                        `name`="ccox3", 
+                        `title`="Splitted Coded Model Equation", 
+                        `type`="text"))))
+            self$add(jmvcore::Preformatted$new(
+                options=options,
+                name="scalingtitle",
+                title="Scaling Table"))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="scalingtable",
+                title="Scaling Table",
+                columns=list()))
+            self$add(jmvcore::Preformatted$new(
+                options=options,
+                name="estitabletitle",
+                title="Model Parameter Estimation Table"))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="estitableOR",
+                title="Original Parameter Estimation Table",
+                columns=list()))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="maintable2",
                 title="`Model - ${yield}`",
                 rows=1,
                 columns=list(
                     list(
-                        `name`="cox1", 
-                        `title`="Model equation", 
+                        `name`="equ2", 
+                        `title`="Model Equation", 
                         `type`="text"),
                     list(
-                        `name`="rsq1", 
-                        `title`="Multiple R-Squared", 
+                        `name`="Rsq2", 
+                        `title`="R<sup>2</sup>", 
+                        `type`="number"),
+                    list(
+                        `name`="Ad2", 
+                        `title`="R<sub>A</sub><sup>2</sup>", 
+                        `type`="number"),
+                    list(
+                        `name`="Mse2", 
+                        `title`="MSE", 
                         `type`="number"))))
             self$add(jmvcore::Table$new(
                 options=options,
                 name="maintable3k",
-                title="`2k Model splitted by categories - ${yield}`",
+                title="`2\u1D4F Model splitted by categories - ${yield}`",
                 rows=2,
                 visible="(cats)",
                 columns=list(
                     list(
                         `name`="cox3", 
-                        `title`="Model equation", 
+                        `title`="Splitted Model Equation", 
                         `type`="text"))))
             self$add(jmvcore::Preformatted$new(
                 options=options,
@@ -322,7 +459,7 @@ designkmodelBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 weightsSupport = 'auto')
         }))
 
-#' Experimental Design
+#' 2k Experimental Design
 #'
 #' 
 #' @param data .
@@ -336,17 +473,27 @@ designkmodelBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param showpareto .
 #' @param showhalf .
 #' @param criteria .
-#' @param choosecoded .
 #' @param mupdate .
 #' @param showrsm .
 #' @param thetaval .
 #' @param phival .
+#' @param colorselection .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$description} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$doetable} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$doetable2} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$doeanova} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$anovatable} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$estitabletitleX} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$estitableX} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$maintable} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$maintable3kCoded} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$scalingtitle} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$scalingtable} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$estitabletitle} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$estitableOR} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$maintable2} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$maintable3k} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$doedataset} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$cols} \tab \tab \tab \tab \tab a preformatted \cr
@@ -364,9 +511,9 @@ designkmodelBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
 #'
-#' \code{results$maintable$asDF}
+#' \code{results$doetable2$asDF}
 #'
-#' \code{as.data.frame(results$maintable)}
+#' \code{as.data.frame(results$doetable2)}
 #'
 #' @export
 designkmodel <- function(
@@ -381,11 +528,11 @@ designkmodel <- function(
     showpareto = FALSE,
     showhalf = FALSE,
     criteria = "Lenth",
-    choosecoded = "coded",
-    mupdate = "none",
+    mupdate = "default",
     showrsm = FALSE,
     thetaval = -25,
-    phival = 20) {
+    phival = 20,
+    colorselection = "SpectralStylish") {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("designkmodel requires jmvcore to be installed (restart may be required)")
@@ -414,11 +561,11 @@ designkmodel <- function(
         showpareto = showpareto,
         showhalf = showhalf,
         criteria = criteria,
-        choosecoded = choosecoded,
         mupdate = mupdate,
         showrsm = showrsm,
         thetaval = thetaval,
-        phival = phival)
+        phival = phival,
+        colorselection = colorselection)
 
     analysis <- designkmodelClass$new(
         options = options,

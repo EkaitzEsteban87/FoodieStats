@@ -84,8 +84,8 @@ designrsmmodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
               x0=median(doelm[,k])
               if (design0=="cci"){x1=min(doelm[,k])}else{x1=unname(quantile(doelm[,k],0.15))}
               x2=x0-x1
-              uncode=(unlist(doelm[,k])-x0)/x2
-              doelm[,k]=uncode
+              codif=(unlist(doelm[,k])-x0)/x2
+              doelm[,k]=codif # coded
             }
             
             image1 <- self$results$mainplot
@@ -117,8 +117,8 @@ designrsmmodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             modelformula=jmvcore::composeFormula(responseName,terms1)
             modelformula <- gsub("`", "", modelformula) # clean
             
-            modeloR <- lm(as.formula(modelformula),data=doersm)
-            modeloL <- lm(as.formula(modelformula),data=doelm)
+            modeloR <- lm(as.formula(modelformula),data=doersm) # original vars
+            modeloL <- lm(as.formula(modelformula),data=doelm) # coded vars
             
             Predicted=modeloL$fitted.values
             Residu=modeloL$residuals
@@ -159,27 +159,148 @@ designrsmmodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             # end table
             #-----------------------
             
-            modelbaseL <- coef(modeloL)[names(coef(modeloL))]
-            formulatexL=private$.formulatable(modelbaseL,responseName)
-
-            modelbaseR <- coef(modeloR)[names(coef(modeloR))]
-            formulatexR=private$.formulatable(modelbaseR,responseName)
-
             xtabla=summary(modeloL) 
             R2=xtabla$r.squared 
             adjR2=xtabla$adj.r.squared
-            
-            table <- self$results$maintable
-            table$setRow(rowNo=1, values=list(equ1=formulatexL,Rsq1=R2,Ad1=adjR2))
-            
-            table2 <- self$results$maintable2
-            table2$setRow(rowNo=1, values=list(equ2=formulatexR,Rsq2=R2,Ad2=adjR2))
-            
+            #-----------------------
+            # ANOVA Table - Create table by code
+            #-----------------------                
             anova <- stats::anova(modeloL)
-            self$results$doeanova$setContent(anova)
-
-            checkvars=length(all.vars(as.formula(baseformu)))
+            n0=dim(anova[1])[1]
+            todf <- sum(anova[1])
+            redf <- anova[n0,1] # Residual error df
+            ovdf <- todf-redf # overall model df
+            tosq <- sum(anova[2])
+            resq <- anova[n0,2]
+            ovsq <- tosq-resq # overal model ssq
+            MSE <- resq/redf # mean square error
+            ovmq <- ovsq/ovdf # mean square
+            Fval <- ovmq/MSE # F stats
+            ovpv <- pf(Fval,df1=ovdf,df2=redf,lower.tail=FALSE) # overall model p_value
+            # p_value <- 1 - pf(Fval, ovdf, redf)
             
+            # Fill columns
+            tableANO <- self$results$anovatable
+            
+            tableANO$addColumn(name='nam2', title="Source",type='text')
+            tableANO$addColumn(name='doe2', title="Dof",type='number')
+            tableANO$addColumn(name='ssq2', title="Sum of Squares",type='number')
+            tableANO$addColumn(name='msq2', title="Mean Square",type='number')
+            tableANO$addColumn(name='fva2', title="F-value",type='number')
+            tableANO$addColumn(name='pva2', title="Pr(>F)",type='number',format='zto,pvalue')
+            
+            # Fill Rows
+            row1=list()
+            row1$nam2 <- "Overall Model"
+            row1$doe2 <- ovdf
+            row1$ssq2 <- ovsq
+            row1$msq2 <- ovmq
+            row1$fva2 <- Fval
+            row1$pva2 <- ovpv
+            row1=as.list(row1)
+            tableANO$addRow(rowKey=1,row1)
+            
+            row2=list()
+            row2$nam2 <- "Residual"
+            row2$doe2 <- redf
+            row2$ssq2 <- resq
+            row2$msq2 <- MSE
+            row2=as.list(row2)
+            tableANO$addRow(rowKey=2,row2)   
+            
+            row3=list()
+            row3$nam2 <- "Total"
+            row3$doe2 <- todf
+            row3$ssq2 <- tosq
+            row3=as.list(row3)
+            tableANO$addRow(rowKey=3,row3)  
+            
+            cadena <- paste0("Multiple R-Squared: ", format(R2, digits = 3), "\n","Adjusted R-Squared: ", format(adjR2, digits = 3), "\n","Mean Square Error: ", format(MSE, digits = 3))
+            tableANO$setNote('Note',cadena)
+            #-----------------------
+            # end table
+            #-----------------------          
+            
+            #-----------------------
+            # OR Estimation Table - Create table by code
+            #-----------------------                
+            modeloR <- lm(as.formula(modelformula),data=doersm) # original vars
+            modelbaseR <- coef(modeloR)[names(coef(modeloR))]
+            formulatexR=private$.formulatable(modelbaseR,responseName)
+            est=summary(modeloR)
+            estidata=est$coefficients
+
+            # Fill columns
+            tableOR <- self$results$estitableOR
+            
+            tableOR$addColumn(name='nam1', title="Model Terms",type='text')
+            tableOR$addColumn(name='coe1', title=colnames(estidata)[1],type='number')
+            tableOR$addColumn(name='sse1', title=colnames(estidata)[2],type='number')
+            tableOR$addColumn(name='stu1', title=colnames(estidata)[3],type='number')
+            tableOR$addColumn(name='pva1', title=colnames(estidata)[4],type='number',format='zto,pvalue')
+            
+            # Fill Rows
+            rowo=list()
+            num_rows <- nrow(estidata)
+            for (i in 1:num_rows){
+              rowo$nam1 <- rownames(estidata)[i]
+              rowo$coe1 <- estidata[i,1]
+              rowo$sse1 <- estidata[i,2]
+              rowo$stu1 <- estidata[i,3]
+              rowo$pva1 <- estidata[i,4]
+              
+              rowo=as.list(rowo)
+              tableOR$addRow(rowKey=i,rowo)
+            }
+
+            # with Simple table 2
+            table2 <- self$results$maintable2
+            table2$setRow(rowNo=1, values=list(equ2=formulatexR,Rsq2=R2,Ad2=adjR2,Mse2=MSE))
+            
+
+            #-----------------------
+            # Coded Estimation Table - Create table by code
+            #-----------------------                
+            colnames(doelm)[1:qvars]=paste0("x",1:qvars) # es un poco makarra
+            modelformulaX=private$.getformula(responseName,paste0("x",1:qvars))
+            modeloX <- lm(as.formula(modelformulaX),data=doelm) # coded vars
+            terms2=private$.refinemodel(modeloX,responseName,doelm,alphaval=alpha1)
+            modelformulaX=jmvcore::composeFormula(responseName,terms2)
+            modelformulaX <- gsub("`", "", modelformulaX) # clean
+            modeloX <- lm(as.formula(modelformulaX),data=doelm) # coded vars
+            modelbaseL <- coef(modeloX)[names(coef(modeloX))]
+            formulatexL=private$.formulatable(modelbaseL,responseName)
+            est=summary(modeloX)
+            estidata=est$coefficients
+            
+            # Fill columns
+            tableX <- self$results$estitableX
+            
+            tableX$addColumn(name='nam1', title="Model Terms",type='text')
+            tableX$addColumn(name='coe1', title=colnames(estidata)[1],type='number')
+            tableX$addColumn(name='sse1', title=colnames(estidata)[2],type='number')
+            tableX$addColumn(name='stu1', title=colnames(estidata)[3],type='number')
+            tableX$addColumn(name='pva1', title=colnames(estidata)[4],type='number',format='zto,pvalue')
+            
+            # Fill Rows
+            rowo=list()
+            num_rows <- nrow(estidata)
+            for (i in 1:num_rows){
+              rowo$nam1 <- rownames(estidata)[i]
+              rowo$coe1 <- estidata[i,1]
+              rowo$sse1 <- estidata[i,2]
+              rowo$stu1 <- estidata[i,3]
+              rowo$pva1 <- estidata[i,4]
+              
+              rowo=as.list(rowo)
+              tableX$addRow(rowKey=i,rowo)
+            }
+            
+            # with Simple table 1
+            table <- self$results$maintable
+            table$setRow(rowNo=1, values=list(equ1=formulatexL,Rsq1=R2,Ad1=adjR2,Mse1=MSE))
+            
+            checkvars=length(all.vars(as.formula(baseformu)))
             if (checkvars<2){return()}
             
             npe=length(rsm::contour.lm(modeloR,as.formula(baseformu),image=FALSE,plot.it=FALSE))
@@ -280,8 +401,7 @@ designrsmmodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           TRUE
         },
         .rsmplot=function(image4,...){
-          if (is.null(image4$state) || is.null(self$options$yield) || (self$results$colsrsm$state<1))
-            return(FALSE)
+          if (is.null(image4$state) || is.null(self$options$yield) || (self$results$colsrsm$state<1)){return(FALSE)}
           
           npe=self$results$colsrsm$state
           plotrsm=self$results$modelrsm$state
@@ -296,7 +416,7 @@ designrsmmodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           modelformula <- gsub("`", "", modelformula) # clean
           modeloR <- lm(as.formula(modelformula),data=doersm)
           
-          Jamov=colorRampPalette(c("#6B9DE8", "#E6AC40"))(50)
+          Jamov=private$.colpalletes()(500)
           
           azimut=self$options$thetaval
           latitude=self$options$phival
@@ -313,7 +433,8 @@ designrsmmodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           first <- as.list(varNames)
           second = apply(rbind(varNames,varNames),2,function(x) as.list(x))
           terms0 = c(first,second,interactions)
-          a=jmvcore::composeFormula(responseName,terms0) 
+          a=jmvcore::composeFormula(responseName,terms0)
+          a <- gsub("`","",a) # clean
           return(a)
         },
         .refinemodel=function(modely,responseName,doelm,alphaval=0.05){
@@ -390,16 +511,73 @@ designrsmmodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           modeltex=modely
           namestex <- names(modeltex)
           namestex <- gsub("Intercept","", namestex)
-          namestex <- gsub(":", "*", namestex)
+          namestex <- gsub(":", "\u00b7", namestex)
           names(modeltex) <- namestex
           sign1 <- sign(modeltex)
           sign1tex <- ifelse(sign1 == 1, "+", "-")
-          modeltexcad <- as.character(round(modeltex,6))
+          modeltexcad <- as.character(round(modeltex,4))
           pointss <- sapply(strsplit(modeltexcad, "\\."), function(x) ifelse(length(x) > 1, nchar(x[2]), 0))
           spf=paste0("%.",max(pointss),"f",sep="")
           modeltextt <- sprintf(spf, abs(modeltex))
           modeltextt[1] <- sprintf(spf,modeltex[1])
-          formula0 <- paste0(responsy,"=",modeltextt[1],paste0(sign1tex[-1],modeltextt[-1],"*",names(modeltex)[-1], collapse = ""))
+          formula0 <- paste0(responsy,"=",modeltextt[1],paste0(sign1tex[-1],modeltextt[-1],"\u00b7",names(modeltex)[-1], collapse = ""))
           return(formula0)
+        },
+        .colpalletes=function(...){
+          color1=self$options$colorselection
+          basecolors <- switch(color1,
+            "SpectralStylish"=colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000")),
+            "JamoviStylish"=colorRampPalette(c("#3e6da9","#6B9DE8", "#9f9f9f","lightgray","#E6AC40","#ebbc66")),
+            "BeachStylish"=colorRampPalette(c("orange", "lightyellow", "lightblue", "lightgreen")),
+            "OceanStylish"=colorRampPalette(c("royalblue2", "lightgreen", "darkturquoise","lavender")),
+            "SummerSalad"=colorRampPalette(c("#8A3E73", "#FF282A", "#FBE62D", "#90CF44", "#59B512")),
+            "FruitCup"=colorRampPalette(c("#B42B4D", "#F40224", "#111920", "#FDB70D", "#C1C454")),
+            "Delight"=colorRampPalette(c("#FA4490", "#FCCED4", "#6CE4E7", "#DAF069", "#924B9C")),
+            "Greensmoothie"=colorRampPalette(c("#326414", "#428612", "#54AC5A", "#BCD76D", "#E1EDC1")),
+            "Turmeric"=colorRampPalette(c("#E28401", "#EC9D04", "#F0B51D", "#C83701", "#B00005")),
+            "Snacks"=colorRampPalette(c("#4E070C", "#D22701", "#FF670E", "#FDE4CE", "#AAD15F")),
+            "Market"=colorRampPalette(c("#3E5B8F", "#AB5B84", "#FFCA70", "#FFA789", "#FF6064")),
+            "Sashimi"=colorRampPalette(c("#F45F67", "#FC7100", "#FB8818", "#F5DDC2", "#5CA135")),
+            "Macarons"=colorRampPalette(c("#E85F81", "#F7BFCA", "#DDD8EC", "#E9CDC3", "#CDD96D")),
+            "Feast"=colorRampPalette(c("#883668", "#A01B2C", "#D50102", "#F15623", "#264E01")),
+            "Veggies"=colorRampPalette(c("#829461", "#ABB95B", "#FFF7D9", "#FFC559", "#9C5273")),
+            "Gingerbread"=colorRampPalette(c("#9B1B32", "#547061", "#F3F3F2", "#C69255", "#A1754F")),
+            "Beetroot"=colorRampPalette(c("#835D84", "#CE558F", "#D872A8", "#ACB885", "#EFA55A")),
+            "Spice"=colorRampPalette(c("#C80238", "#F92827", "#FDA501", "#C5C957", "#D19B66")),
+            "Sweet"=colorRampPalette(c("#F6C4C7", "#F1CCD3", "#F5F7F2", "#C1312E", "#951911")),
+            "Tropical"=colorRampPalette(c("#35417B", "#E22A4F", "#FA8D54", "#F4EB67", "#7EC487")),
+            "Breakfast"=colorRampPalette(c("#C6374B", "#D23F40", "#F7EAD4", "#F7D655", "#95A438")),
+            "Carrots"=colorRampPalette(c("#642B52", "#754599", "#9650B8", "#F9F8FD", "#FE7C39")),
+            "Stick"=colorRampPalette(c("#549829", "#93C154", "#F8FCFF", "#115B9A", "#613677")),
+            "Tea"=colorRampPalette(c("#AB002D", "#C00219", "#FFAC67", "#D7D797", "#A6C058")),
+            "Decadent"=colorRampPalette(c("#C64573", "#A6C769", "#FAFAF3", "#FDB14A", "#18AED4")),
+            "Umami"=colorRampPalette(c("#883A61", "#CC010A", "#E7A545", "#72B800", "#189E01")),
+            "Berry"=colorRampPalette(c("#A60839", "#ED0101", "#F9D3A0", "#435272", "#1D121B")),
+            "Sugary"=colorRampPalette(c("#FE7573", "#FFC8D0", "#C3AACD", "#FDEEAB", "#FED28B")),
+            "Citrus"=colorRampPalette(c("#D10134", "#FD423F", "#FE8000", "#FFB701", "#67AD00")),
+            "Chard"=colorRampPalette(c("#C43BA6", "#FE0165", "#F6F7F9", "#FFEB61", "#A0CD01")),
+            "Shrimp"=colorRampPalette(c("#69325A", "#CA0500", "#FA9D83", "#FE8B00", "#397C09")),
+            "SweetSalad"=colorRampPalette(c("#C92038", "#FF0101", "#A44000", "#FEAA00", "#6EA602")),
+            "Cheesecake"=colorRampPalette(c("#D90024", "#E20437", "#FCFBF7", "#2B4456", "#11263B")),
+            "FruitBasket"=colorRampPalette(c("#622B3D", "#FD2A82", "#FF841F", "#FADF3A", "#41522E")),
+            "Cayenne"=colorRampPalette(c("#E20101", "#EF5400", "#F5E5D6", "#FDC707", "#724635")),
+            "Smoothie"=colorRampPalette(c("#eedbc0", "#efbf26", "#b3a126", "#cc8e23", "#d4b729")),
+            "Mojito"=colorRampPalette(c("#8b967e", "#a0ad8d", "#c3cd79", "#e3ecaa", "#5c7444")),
+            "Coffee"=colorRampPalette(c("#ccb1a0", "#f1e2d1", "#907966", "#6c442b", "#f4cc5c")),
+            "Wine"=colorRampPalette(c("#ffb9b9", "#ee7272", "#a31818", "#6d0202", "#360000")),
+            "Beer"=colorRampPalette(c("#FFF897", "#FAE96F", "#F6C101", "#EC9D00", "#DF8D03", "#C96E12")),
+            "Fish"=colorRampPalette(c("#7e7d9e", "#a6adbe", "#577ea2", "#306598", "#002a65")),
+            "Cheese"=colorRampPalette(c("#f7df47", "#f9e02e", "#f9d02e", "#f9c02e", "#f9b02e")),
+            "Bread"=colorRampPalette(c("#e5ccac", "#f2d3a1", "#f2c480", "#b07645", "#8b5220")),
+            "Chocolate"=colorRampPalette(c("#310A0B", "#491B1D", "#743A36", "#B96A59", "#E0A387")),
+            "Beef"=colorRampPalette(c("#F7D5D4", "#E8B3B9", "#CB6862", "#AA3C3B", "#E97856", "#FCB79A")),
+            "Honey"=colorRampPalette(c("#f9c901", "#f6e000", "#985b10", "#6b4701", "#896800")),
+            "Dairy"=colorRampPalette(c("#ffffff", "#ffe8ee", "#d8f4ff", "#f6eee1", "#f2e5d5")),
+            "Vegetables"=colorRampPalette(c("#457d00", "#c6c736", "#96b125", "#fea938", "#fcec9a")),
+            "Bean"=colorRampPalette(c("#736731", "#99a55a", "#e5d080", "#8c683b", "#795a3b")),
+            "Seafood"=colorRampPalette(c("#37412a", "#24b4ab", "#9fe3c1", "#ffffff", "#fa8072")),
+            "Octopus"=colorRampPalette(c("#a6ffff", "#ffaffa", "#ee00a4", "#d79eff", "#a60033"))
+            )
+          return(basecolors)
         }) # Close - List
 ) # Close - R6::R6Class
