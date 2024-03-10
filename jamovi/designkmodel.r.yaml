@@ -1,6 +1,6 @@
 ---
 name:  designkmodel
-title: Experimental Design
+title: 2k Experimental Design
 jrs:   '1.1'
 
 items:
@@ -19,32 +19,103 @@ items:
       title: Experimental and Predicted Responses Table
       type:  Preformatted
 
+    - name: doetable2
+      title: Experimental Design Table
+      type: Table
+      columns: []
+      
     - name: doeanova
       title: ANOVA Table
       type: Preformatted
-          
+
+    - name: anovatable
+      title: '`Analysis of Variance Table - Response: ${yield}`'
+      type: Table
+      columns: []
+
+    - name:  estitabletitleX
+      title: Coded Model Parameter Estimation Table
+      type:  Preformatted
+      
+    - name: estitableX
+      title: Coded Parameter Estimation Table
+      type: Table
+      columns: []
+      
     - name: maintable
+      title: '`Coded Model - ${yield}`'
+      type: Table
+      rows: 1
+      columns:
+        - name: equ1
+          title: 'Model equation (Coded)'
+          type: text
+        - name: Rsq1
+          title: 'R<sup>2</sup>'
+          type: number
+        - name: Ad1
+          title: 'R<sub>A</sub><sup>2</sup>'
+          type: number
+        - name: Mse1
+          title: 'MSE'
+          type: number
+
+    - name: maintable3kCoded
+      title: '`Coded 2ᵏ Model splitted by categories - ${yield}`'
+      type: Table
+      rows: 2
+      visible: "(cats)"
+      columns:
+        - name: ccox3
+          title: 'Splitted Coded Model Equation'
+          type: text
+          
+    - name:  scalingtitle
+      title: Scaling Table
+      type:  Preformatted
+
+    - name: scalingtable
+      title: Scaling Table
+      type: Table
+      columns: []    
+      
+    - name:  estitabletitle
+      title: Model Parameter Estimation Table
+      type:  Preformatted
+      
+    - name: estitableOR
+      title: Original Parameter Estimation Table
+      type: Table
+      columns: []
+
+    - name: maintable2
       title: '`Model - ${yield}`'
       type: Table
       rows: 1
       columns:
-        - name: cox1
-          title: 'Model equation'
+        - name: equ2
+          title: 'Model Equation'
           type: text
-        - name: rsq1
-          title: 'Multiple R-Squared'
+        - name: Rsq2
+          title: 'R<sup>2</sup>'
+          type: number
+        - name: Ad2
+          title: 'R<sub>A</sub><sup>2</sup>'
+          type: number
+        - name: Mse2
+          title: 'MSE'
           type: number
 
     - name: maintable3k
-      title: '`2k Model splitted by categories - ${yield}`'
+      title: '`2ᵏ Model splitted by categories - ${yield}`'
       type: Table
       rows: 2
       visible: "(cats)"
       columns:
         - name: cox3
-          title: 'Model equation'
+          title: 'Splitted Model Equation'
           type: text
-
+          
 #      doe dataset
     - name:  doedataset
       type:  Preformatted

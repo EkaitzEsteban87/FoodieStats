@@ -1,5 +1,5 @@
-title: 2k Experimental Design
-name: designkmodel
+title: Mixture Design
+name: designmixturemodel
 jus: '3.0'
 stage: 0
 compilerMode: tame
@@ -26,66 +26,59 @@ children:
           - type: VariablesListBox
             name: vars
             isTarget: true
-      - type: TargetLayoutBox
-        label: Categorical Effect (optional)
-        children:
-          - type: VariablesListBox
-            name: cats
-            maxItemCount: 1
-            isTarget: true
   - type: Label
-    label: Main Effects and Interaction Effects Analysis
-    children:
-      - type: LayoutBox
-        margin: large
-        style: inline
-        children:
-          - type: CheckBox
-            name: showeffects
-          - type: CheckBox
-            name: showinteraction
-  - type: Label
-    label: Pareto and Half-Normal Analysis
-    children:
-      - type: LayoutBox
-        margin: large
-        style: inline
-        children:
-          - type: CheckBox
-            name: showpareto
-          - type: CheckBox
-            name: showhalf
-          - type: TextBox
-            name: alphaval
-            format: number
-          - type: ComboBox
-            name: criteria
-  - type: Label
-    label: Experimental Design Model Fitting
+    label: Mixture Model Selection
     children:
       - type: LayoutBox
         margin: large
         style: inline
         children:
           - type: ComboBox
-            name: mupdate
+            name: choosemodel
   - type: Label
-    label: Response Surface Analysis
+    label: Main Effects Analysis (Cox direction)
     children:
       - type: LayoutBox
         margin: large
         style: inline
         children:
           - type: CheckBox
-            name: showrsm
+            name: showcox
+      - type: LayoutBox
+#        margin: large
+        style: inline
+        children:            
+          - type: ComboBox
+            name: xaxis
+          - type: ComboBox
+            name: choosevars
+  - type: Label
+    label: Residual error analysis
+    children:
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: CheckBox
+            name: showresidual
+  - type: Label
+    label: Mixture Analysis
+    children:
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: CheckBox
+            name: showmixture
           - type: ComboBox
             name: colorselection
       - type: LayoutBox
         style: inline
-        children:
+        children:     
           - type: TextBox
             name: thetaval
             format: number
           - type: TextBox
             name: phival
             format: number
+#            enable: (rsdesign:bbd)

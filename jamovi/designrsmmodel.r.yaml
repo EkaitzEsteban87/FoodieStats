@@ -27,9 +27,23 @@ items:
     - name: doeanova
       title: ANOVA Table
       type: Preformatted
- 
+
+    - name: anovatable
+      title: '`Analysis of Variance Table - Response: ${yield}`'
+      type: Table
+      columns: []
+
+    - name:  estitabletitleX
+      title: Coded Model Parameter Estimation Table
+      type:  Preformatted
+      
+    - name: estitableX
+      title: Coded Parameter Estimation Table
+      type: Table
+      columns: []
+      
     - name:  designcoded
-      title: Model prediction (Coded)
+      title: Model prediction (Coded factors)
       type:  Preformatted
       
     - name: maintable
@@ -41,29 +55,44 @@ items:
           title: 'Model equation (Coded)'
           type: text
         - name: Rsq1
-          title: 'Multiple R-Squared'
+          title: 'R<sup>2</sup>'
           type: number
         - name: Ad1
-          title: 'Adjusted R-Squared'
+          title: 'R<sub>A</sub><sup>2</sup>'
+          type: number
+        - name: Mse1
+          title: 'MSE'
           type: number
 
+    - name:  estitabletitle
+      title: Model Parameter Estimation Table
+      type:  Preformatted
+      
+    - name: estitableOR
+      title: Original Parameter Estimation Table
+      type: Table
+      columns: []
+      
     - name:  designuncoded
-      title: Model prediction (Uncoded)
+      title: Model prediction (Original factors)
       type:  Preformatted
       
     - name: maintable2
-      title: '`Uncoded Model - ${yield}`'
+      title: '`Model - ${yield}`'
       type: Table
       rows: 1
       columns:
         - name: equ2
-          title: 'Model equation (Uncoded)'
+          title: 'Model equation'
           type: text
         - name: Rsq2
-          title: 'Multiple R-Squared'
+          title: 'R<sup>2</sup>'
           type: number
         - name: Ad2
-          title: 'Adjusted R-Squared'
+          title: 'R<sub>A</sub><sup>2</sup>'
+          type: number
+        - name: Mse2
+          title: 'MSE'
           type: number
           
 #      doe dataset

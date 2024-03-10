@@ -1,6 +1,6 @@
 ---
-name:  designkmodel
-title: 2k Experimental Design
+name:  designmixturemodel
+title: Mixture Design
 menuGroup: FoodieStats
 version: '1.0.0'
 jas: '1.2'
@@ -31,120 +31,64 @@ options:
         - ordinal
       permitted:
         - factor
+       
+# Choose Mixture model
+    - name: choosemodel
+      title: Select Mixture Model
+      type: List
+      options:
+        - title: Linear
+          name:  "1"
+        - title: Quadratic
+          name:  "2"
+        - title: Full Cubic
+          name:  "3"
+        - title: Special Cubic
+          name:  "4"  
+        - title: Special Quartic
+          name:  "1.5"            
+      default: "1"
 
-    - name: cats
-      title: Categorical Effect (optional)
-      type: Variable
-      suggested:
-        - nominal
-      permitted:
-        - factor
-
-# Significance level value
-    - name: alphaval
-      title: α value (%)
-      type: Number
-      default: 5
-      min: 1
-      max: 25
-
-# Show 1 effect plot
-    - name: showeffects
+# Show 1 Main effect plot
+    - name: showcox
       title: Effect plot
       type: Bool
       default: False
 
-# Show 2 interaction plot
-    - name: showinteraction
-      title: Interaction effect plot
-      type: Bool
-      default: False
+# Choose x-axis in effect plot (cox)
+    - name: xaxis
+      title: x-axis selection
+      type: List
+      options:
+        - title: Deviation from centroid
+          name:  centroid
+        - title: Mixture proportion
+          name:  mixtureproportion       
+      default: centroid
 
-# Show 3 pareto plot
-    - name: showpareto
-      title: Pareto plot
-      type: Bool
-      default: False
-
-# Show 4 half plot
-    - name: showhalf
-      title: Half plot
+# Choose labels (cox)
+    - name: choosevars
+      title: Label selection
+      type: List
+      options:
+        - title: Default labels
+          name:  original
+        - title: Mixture labels
+          name:  mixtures   
+      default: original
+         
+# Show 2 residual plot
+    - name: showresidual
+      title: Residual plot
       type: Bool
       default: False
       
-# Choose criteria
-    - name: criteria
-      title: Method
-      type: List
-      options:
-        - title: Lenth
-          name:  Lenth
-        - title: Daniel
-          name:  Daniel
-        - title: Juan and Pena
-          name:  JuanPena
-        - title: Zahn
-          name:  Zahn
-        - title: Weighted Zahn
-          name:  WZahn
-        - title: RMS
-          name:  RMS
-        - title: Median
-          name:  SMedian
-      default: Lenth
-
-# Choose coded model
-#    - name: choosecoded
-#      title: Coded or uncoded model
-#      type: List
-#      options:
-#        - title: Coded
-#          name:  coded
-#        - title: Uncoded
-#          name:  uncoded
-#      default: coded
-
-# Choose coded model
-    - name: mupdate
-      title: Refine Model
-      type: List
-      options:
-        - title: None
-          name:  default
-#        - title: Forward addition
-#          name:  forward
-#        - title: Backward AIC
-#          name:  backward
-#        - title: Bidirectional
-#          name:  both
-        - title: Backward alpha
-          name:  backwardalpha          
-#        - title: Manual
-#          name:  allin         
-      default: default
-      
-# Choose coded model
-#    - name: mupdate
-#      title: Refine Model
-#      type: List
-#      options:
-#        - title: None
-#          name:  none
-#        - title: Automatic
-#          name:  automatic
-#      default: none
-
-# Manual model update
-#    - name: modelTerms
-#      title: Model Terms
-#      type: Terms
-
-# Show 5 RSM plot
-    - name: showrsm
-      title: Response Surface plot
+# Show 3 Mixture plot
+    - name: showmixture
+      title: Mixture plot
       type: Bool
       default: False
-
+      
 # Perspective - Azimut
     - name: thetaval
       title: Azimuth ±180º (←)
@@ -268,6 +212,5 @@ options:
           name:  Seafood
         - title: Octopus
           name:  Octopus        
-      default: SpectralStylish      
-
+      default: SpectralStylish
 ...

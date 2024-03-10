@@ -1,7 +1,7 @@
 ---
 title: Gastronomic Data Analysis Tool
 name: FoodieStats
-version: 0.3.0
+version: 0.5.4
 jms: '1.0'
 authors:
   - Ekaitz Esteban
@@ -23,18 +23,24 @@ description: >-
   </br></br> * <b>Food Science and Nutrition</b> - Utilizes health-focused
   analytics to optimize nutritional content.
 analyses:
-  - title: Experimental Design
+  - title: 2k Experimental Design
     name: designkmodel
     ns: FoodieStats
     menuGroup: FoodieStats
-    menuSubgroup: Food Experimental Design
-    menuTitle: Experimental Design
+    menuSubgroup: 2k Food Screening Design
+    menuTitle: 2k Experimental Design
   - title: Response Surface Design
     name: designrsmmodel
     ns: FoodieStats
     menuGroup: FoodieStats
     menuSubgroup: Food Response Surface Design
     menuTitle: Response Surface Design
+  - title: Mixture Design
+    name: designmixturemodel
+    ns: FoodieStats
+    menuGroup: FoodieStats
+    menuSubgroup: Food Mixture Design
+    menuTitle: Mixture Design
   - title: Just-About-Right Analysis
     name: JARScales
     ns: FoodieStats
@@ -74,6 +80,20 @@ datasets:
       composite design approach
     tags:
       - RSM
+  - name: chickfeed
+    path: chickfeed.omv
+    description: >-
+      Experiments with mixtures. Chick feeding purified diet experiment (J.A.
+      Cornell)
+    tags:
+      - Mixture
+  - name: fruitpunch
+    path: fruitpunch.omv
+    description: >-
+      Experiments with mixtures. Fruit Punch juice concentrate experiment (J.A.
+      Cornell)
+    tags:
+      - Mixture
 usesNative: true
 minApp: 1.0.8
 rVersion: 4.3.2

@@ -1,0 +1,139 @@
+---
+name:  designmixturemodel
+title: Mixture Design
+jrs:   '1.1'
+
+items:
+#      for debugging
+#    - name:  debugger
+#      title: debug    
+#      type:  Preformatted
+      
+#      Describing the module
+    - name: description
+      title: description
+      type: Html
+      visible: "(showdescription)"
+      
+    - name:  doetable
+      title: Experimental and Predicted Responses Table
+      type:  Preformatted
+
+    - name: doetable2
+      title: Experimental Design Table
+      type: Table
+      columns: []
+
+    - name: doeanova
+      title: ANOVA Table
+      type: Preformatted
+
+    - name: anovatable
+      title: '`Analysis of Variance Table - Response: ${yield}`'
+      type: Table
+      columns: []
+      
+    - name:  estitabletitle
+      title: Model Parameter Estimation Table
+      type:  Preformatted
+      
+    - name: estitable
+      title: Parameter Estimation Table
+      type: Table
+      columns: []
+      
+    - name:  designcoded
+      title: Mixture Model Prediction
+      type:  Preformatted
+      
+    - name: maintable
+      title: '`Mixture Model - response: ${yield}`'
+      type: Table
+      rows: 1
+      columns:
+        - name: equ1
+          title: 'Mixture model equation'
+          type: text
+        - name: Rsq1
+          title: 'R<sup>2</sup>'
+          type: number
+        - name: Ad1
+          title: 'R<sub>A</sub><sup>2</sup>'
+          type: number
+        - name: Mse1
+          title: 'MSE'
+          type: number
+          
+    - name:  designuncoded
+      title: Mixture Proportions
+      type:  Preformatted
+
+    - name: scalingtable
+      title: Mixture Scaling Table
+      type: Table
+      columns: []      
+          
+#      doe dataset
+#    - name:  doedataset
+#      type:  Preformatted
+      
+#      Plot options - columns
+    - name:  cols
+      type:  Preformatted
+
+#      Plot options - 2D ternary data
+    - name:  ternarydata
+      type:  Preformatted
+      
+#      Plot options - 3D ternary data
+#    - name:  ternaryformula
+#      type:  Preformatted
+      
+#      Plot options - rsm columns
+#    - name:  colsrsm
+#      type:  Preformatted
+           
+#      1 Main Effect plot (Coxplot)
+    - name: coxplot
+      title: Main Effects Plot
+      type: Image
+      description: the main effects plot
+      width:  960
+      height: 480
+      renderFun: .coxplot
+      requiresData: true
+      visible: "(showcox)"
+      
+#      2 residual plot
+    - name: residualplot
+      title: Residual Plot
+      type: Image
+      description: a residual plot
+      width:  960
+      height: 480
+      renderFun: .residualplot
+      requiresData: true
+      visible: "(showresidual)"
+      
+#      3 Mixture Plots
+    - name: mixtureplot
+      title: Mixture Plots
+      type: Image
+      description: Mixture plot
+      width:  960
+      height: 480
+      renderFun: .mixtureplot
+      requiresData: true
+      visible: "(showmixture)"
+      
+#      3 Mixture Plots
+#    - name: mixture4kplot
+#      title: Mixture 4k Plots
+#      type: Image
+#      description: Mixture plot
+#      width:  960
+#      height: 480
+#      renderFun: .mixture4kplot
+#      requiresData: true
+#      visible: "(showmixture)"      
+...

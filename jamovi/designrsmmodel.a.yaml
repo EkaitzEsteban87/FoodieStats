@@ -39,6 +39,8 @@ options:
       options:
         - title: Box–Behnken
           name:  bbd
+        - title: 3ᵏ Full Factorial
+          name:  bbd  
         - title: Circumscribed Central Composite
           name:  ccc
         - title: Inscribed Central Composite
@@ -63,7 +65,7 @@ options:
 
 # Show 2 interaction plot
     - name: showinteraction
-      title: Interaction plot (only for Box-Behnken designs)
+      title: Interaction plot (only for Box-Behnken & Full Factorial designs)
       type: Bool
       default: False
 
@@ -100,7 +102,7 @@ options:
 
 # Perspective - Azimut
     - name: thetaval
-      title: Azimut [-180 180]
+      title: Azimuth ±180º (←)
       type: Number
       default: -25
       min: -180
@@ -108,9 +110,118 @@ options:
 
 # Perspective - Latitude
     - name: phival
-      title: Latitude [-180 180]
+      title: Latitude ±180º (↑)
       type: Number
       default: 20
       min: -180
       max: 180
+
+# Color selection
+    - name: colorselection
+      title: Color palette
+      type: List
+      options:
+        - title: Spectral Style
+          name:  SpectralStylish      
+        - title: Jamovi Style
+          name:  JamoviStylish
+        - title: Beach Style
+          name:  BeachStylish
+        - title: Ocean Style
+          name:  OceanStylish
+        - title: Market Style
+          name:  Market
+        - title: Gingerbread Style
+          name:  Gingerbread
+        - title: Umami Style
+          name:  Umami
+        - title: Summer Salad
+          name:  SummerSalad
+        - title: Fruit Cup
+          name:  FruitCup
+        - title: Rainbow Delight
+          name:  Delight
+        - title: Green Smoothie
+          name:  Greensmoothie
+        - title: Turmeric
+          name:  Turmeric
+        - title: Healthy Snacks
+          name:  Snacks
+        - title: Sashimi
+          name:  Sashimi
+        - title: Macarons
+          name:  Macarons
+        - title: Feast
+          name:  Feast
+        - title: Veggies
+          name:  Veggies
+        - title: Beetroot
+          name:  Beetroot
+        - title: Spice Rack
+          name:  Spice
+        - title: Sweet Fig
+          name:  Sweet
+        - title: Tropical
+          name:  Tropical
+        - title: Continental Breakfast
+          name:  Breakfast
+        - title: Purple Carrots
+          name:  Carrots
+        - title: Celery Stick
+          name:  Stick
+        - title: Tea and Cherries
+          name:  Tea
+        - title: Decadent Delight
+          name:  Decadent
+        - title: Berry Parfait
+          name:  Berry
+        - title: Sugary
+          name:  Sugary
+        - title: Citrus Twist
+          name:  Citrus
+        - title: Rainbow Chard
+          name:  Chard
+        - title: Shrimp Boil
+          name:  Shrimp
+        - title: Sweet Salad
+          name:  SweetSalad
+        - title: Berry Cheesecake
+          name:  Cheesecake
+        - title: Fruit Basket
+          name:  FruitBasket
+        - title: Cayenne Spicy
+          name:  Cayenne
+        - title: Smoothie
+          name:  Smoothie
+        - title: Mojito
+          name:  Mojito
+        - title: Coffee
+          name:  Coffee
+        - title: Wine
+          name:  Wine
+        - title: Beer
+          name:  Beer
+        - title: Fish
+          name:  Fish
+        - title: Cheese
+          name:  Cheese
+        - title: Bread
+          name:  Bread
+        - title: Chocolate
+          name:  Chocolate
+        - title: Beef Meat
+          name:  Beef
+        - title: Honey
+          name:  Honey
+        - title: Dairy
+          name:  Dairy
+        - title: Vegetables
+          name:  Vegetables
+        - title: Bean Legumes
+          name:  Bean
+        - title: Seafood
+          name:  Seafood
+        - title: Octopus
+          name:  Octopus        
+      default: SpectralStylish      
 ...

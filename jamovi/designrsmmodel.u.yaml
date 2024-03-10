@@ -77,6 +77,11 @@ children:
         children:
           - type: CheckBox
             name: showrsm
+          - type: ComboBox
+            name: colorselection
+      - type: LayoutBox
+        style: inline
+        children:     
           - type: TextBox
             name: thetaval
             format: number
