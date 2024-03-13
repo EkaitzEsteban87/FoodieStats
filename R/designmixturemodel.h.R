@@ -17,7 +17,9 @@ designmixturemodelOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::
             showmixture = FALSE,
             thetaval = -25,
             phival = 20,
-            colorselection = "SpectralStylish", ...) {
+            colorselection = "SpectralStylish",
+            latentvar = "1",
+            latentplane = "0", ...) {
 
             super$initialize(
                 package="FoodieStats",
@@ -49,8 +51,8 @@ designmixturemodelOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::
                 options=list(
                     "1",
                     "2",
-                    "3",
                     "4",
+                    "3",
                     "1.5"),
                 default="1")
             private$..showcox <- jmvcore::OptionBool$new(
@@ -147,6 +149,29 @@ designmixturemodelOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::
                     "Seafood",
                     "Octopus"),
                 default="SpectralStylish")
+            private$..latentvar <- jmvcore::OptionList$new(
+                "latentvar",
+                latentvar,
+                options=list(
+                    "1",
+                    "2",
+                    "3",
+                    "4"),
+                default="1")
+            private$..latentplane <- jmvcore::OptionList$new(
+                "latentplane",
+                latentplane,
+                options=list(
+                    "0",
+                    "0.1",
+                    "0.2",
+                    "0.3",
+                    "0.4",
+                    "0.5",
+                    "0.6",
+                    "0.7",
+                    "0.8"),
+                default="0")
 
             self$.addOption(private$..showdescription)
             self$.addOption(private$..yield)
@@ -160,6 +185,8 @@ designmixturemodelOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::
             self$.addOption(private$..thetaval)
             self$.addOption(private$..phival)
             self$.addOption(private$..colorselection)
+            self$.addOption(private$..latentvar)
+            self$.addOption(private$..latentplane)
         }),
     active = list(
         showdescription = function() private$..showdescription$value,
@@ -173,7 +200,9 @@ designmixturemodelOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::
         showmixture = function() private$..showmixture$value,
         thetaval = function() private$..thetaval$value,
         phival = function() private$..phival$value,
-        colorselection = function() private$..colorselection$value),
+        colorselection = function() private$..colorselection$value,
+        latentvar = function() private$..latentvar$value,
+        latentplane = function() private$..latentplane$value),
     private = list(
         ..showdescription = NA,
         ..yield = NA,
@@ -186,7 +215,9 @@ designmixturemodelOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::
         ..showmixture = NA,
         ..thetaval = NA,
         ..phival = NA,
-        ..colorselection = NA)
+        ..colorselection = NA,
+        ..latentvar = NA,
+        ..latentplane = NA)
 )
 
 designmixturemodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -208,7 +239,7 @@ designmixturemodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::
         ternarydata = function() private$.items[["ternarydata"]],
         coxplot = function() private$.items[["coxplot"]],
         residualplot = function() private$.items[["residualplot"]],
-        mixtureplot = function() private$.items[["mixtureplot"]]),
+        mixture4kplot = function() private$.items[["mixture4kplot"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -309,11 +340,11 @@ designmixturemodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::
                 visible="(showresidual)"))
             self$add(jmvcore::Image$new(
                 options=options,
-                name="mixtureplot",
+                name="mixture4kplot",
                 title="Mixture Plots",
                 width=960,
                 height=480,
-                renderFun=".mixtureplot",
+                renderFun=".mixture4kplot",
                 requiresData=TRUE,
                 visible="(showmixture)"))}))
 
@@ -354,6 +385,8 @@ designmixturemodelBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
 #' @param thetaval .
 #' @param phival .
 #' @param colorselection .
+#' @param latentvar .
+#' @param latentplane .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$description} \tab \tab \tab \tab \tab a html \cr
@@ -371,7 +404,7 @@ designmixturemodelBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
 #'   \code{results$ternarydata} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$coxplot} \tab \tab \tab \tab \tab the main effects plot \cr
 #'   \code{results$residualplot} \tab \tab \tab \tab \tab a residual plot \cr
-#'   \code{results$mixtureplot} \tab \tab \tab \tab \tab Mixture plot \cr
+#'   \code{results$mixture4kplot} \tab \tab \tab \tab \tab Mixture plot for 3 and 4 variables \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
@@ -394,7 +427,9 @@ designmixturemodel <- function(
     showmixture = FALSE,
     thetaval = -25,
     phival = 20,
-    colorselection = "SpectralStylish") {
+    colorselection = "SpectralStylish",
+    latentvar = "1",
+    latentplane = "0") {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("designmixturemodel requires jmvcore to be installed (restart may be required)")
@@ -421,7 +456,9 @@ designmixturemodel <- function(
         showmixture = showmixture,
         thetaval = thetaval,
         phival = phival,
-        colorselection = colorselection)
+        colorselection = colorselection,
+        latentvar = latentvar,
+        latentplane = latentplane)
 
     analysis <- designmixturemodelClass$new(
         options = options,

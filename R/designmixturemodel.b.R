@@ -49,9 +49,10 @@ designmixturemodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6
         },
         .run = function() {
             qvars=length(self$options$vars)
+            
             if (is.null(self$options$vars) || is.null(self$options$yield) || qvars<3){return()}
             self$results$cols$setState(qvars)
-            
+
             varNames <- self$options$vars
             responseName <- self$options$yield
 
@@ -79,7 +80,6 @@ designmixturemodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6
             zk=dim(doelm)[2]-1
             row0=rowSums(vardata2)
             
-            #scaling <- data.frame(matrix(NA, nrow = zk, ncol = 2))
             scaling <- cbind(matrix(1, nrow = zk, ncol = 1),matrix(0, nrow = zk, ncol = 1))
             
             tolerance <- 1e-2 # sometimes data is rounded
@@ -93,16 +93,9 @@ designmixturemodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6
               }
             }
               
-            # self$results$debugger$setContent(scaling)
-
             selmodel=as.numeric(self$options$choosemodel)
             modelformula=private$.getformula(responseName,varNames,model=selmodel,scheffe=-1)
             modely <- lm(as.formula(modelformula),data=doelm)
-
-            # modely=mixexp::MixModel(doelm,responseName,mixcomps=c(a),model=selmodel)
-            # modely2=lm(yield~x1+x2+x3+x1:x2+x1:x3+x2:x3+x1:x2:x3+I(x1*x2*(x1-x2))+I(x1*x3*(x1-x3))+I(x2*x3*(x2-x3))-1,data=frame0)
-            # modely=lm(yield~x1+x2+x3+x1:x2+x1:x3+x2:x3+x1:x2:x3-1,data=doelm)
-            # modely2=lm(yield~x1+x2+x3+x1:x2+x1:x3+x2:x3+x1:x2:x3+cubic(x1,x2)-1,data=doelm)
 
             # Residual Plot
             image2 <- self$results$residualplot
@@ -112,15 +105,18 @@ designmixturemodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6
             coe[is.na(coe)] <- 0 # NA correction
             
             # Mixture Plot
-            image5 <- self$results$mixtureplot
-            image5$setState(coe)
-            self$results$ternarydata$setState(doelm)
-            #self$results$ternaryformula$setState(modelformula)
+            #image5 <- self$results$mixtureplot
+            #image5$setState(coe)
+            #self$results$ternarydata$setState(doelm)
+            
             # image5$setSize(960,480*npe)
-
+            
             # Pruebas Mixture 4k plot
-            #image6 <- self$results$mixture4kplot
-            #image6$setState(coe)
+            image6 <- self$results$mixture4kplot
+            image6$setState(coe)
+            self$results$ternarydata$setState(doelm)
+            
+            # self$results$debugger$setContent(scaling)
             
             # Main effect plot (cox direction)
             image3 <- self$results$coxplot
@@ -463,111 +459,26 @@ designmixturemodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6
           }
           TRUE
         },
-        .mixtureplot=function(image5,...){
-          qvars=length(self$options$vars)
-          if (is.null(image5$state) || is.null(self$options$yield) || qvars !=3){return(FALSE)}
-          
-          selmodel=as.numeric(self$options$choosemodel)
-          dat=self$results$ternarydata$state
-          
-          if (is.null(self$options$choosevars)){selvars="original"}else{selvars=self$options$choosevars} # ensure default
-          if (selvars=="original"){
-            varNames=colnames(dat)[1:qvars]
-          }else{
-            varNames=paste0("x",1:qvars)
-            colnames(dat)[1:qvars]=varNames
-          }
-          responseName=colnames(dat)[qvars+1]
-          modelformula=private$.getformula(responseName,varNames,model=selmodel,scheffe=-1)
-
-          par(mar=rep(0.1,4))
-          par(mfcol=c(1,2))
-          
-          atipX=varNames[1]
-          btipX=varNames[3]
-          ctipX=varNames[2]
-          alabX <- paste0("\u2190 ",atipX," %")
-          blabX <- paste0(btipX," % \u2192")
-          clabX <- paste0("\u2190 ",ctipX," %")
-          Ternary::TernaryPlot(point="up",atip=atipX,btip=btipX,ctip=ctipX,alab=alabX,blab=blabX,clab=clabX,clockwise = FALSE)
-          #Ternary::TernaryPlot(point="up",atip="x1",btip="x3",ctip="x2",alab="\u2190 x1 %",blab="x3 % \u2192",clab="\u2190 x2 %",clockwise = FALSE)
-          
-          if (selmodel==1){
-            FunctionToContour=function(a,c,b,...){
-              coe=image5$state
-              coe[1]*a+coe[2]*b+coe[3]*c}
-          }
-
-          if (selmodel==2){
-            FunctionToContour=function(a,c,b,...){
-              coe=image5$state
-              coe[1]*a+coe[2]*b+coe[3]*c+coe[4]*a*b+coe[5]*a*c+coe[6]*b*c}
-          }          
-
-          # Full Cubic I(x1*x2*(x1-x2))+I(x1*x3*(x1-x3))+I(x2*x3*(x2-x3))
-          if (selmodel==3){ 
-            FunctionToContour=function(a,c,b,...){
-              coe=image5$state
-              coe[1]*a+coe[2]*b+coe[3]*c+coe[4]*a*b*(a-b)+coe[5]*a*c*(a-c)+coe[6]*b*c*(b-c)+coe[7]*a*b+coe[8]*a*c+coe[9]*b*c+coe[10]*a*b*c}
-          }   
-
-          if (selmodel==4){
-            FunctionToContour=function(a,c,b,...){
-              coe=image5$state
-              coe[1]*a+coe[2]*b+coe[3]*c+coe[4]*a*b+coe[5]*a*c+coe[6]*b*c+coe[7]*a*b*c}
-          } 
-
-          # Special Quartic x2:x3:I(x1^2) x1:x3:I(x2^2) x1:x2:I(x3^2) 
-          if (selmodel==1.5){ 
-            FunctionToContour=function(a,c,b,...){
-              coe=image5$state
-              coe[1]*a+coe[2]*b+coe[3]*c+coe[4]*a*b+coe[5]*a*c+coe[6]*b*c+coe[7]*a*a*b*c+coe[8]*b*b*a*c+coe[9]*c*c*a*b}
-          } 
-          
-          # TODO - Ternary package must be updated - be careful FunctionToContour
-          # https://github.com/ms609/Ternary/blob/master/R/Contours.R
-          #contourval=Ternary::TernaryContour(FunctionToContour, 
-          contourval=private$.TernaryContour(FunctionToContour,
-                                             col=private$.colpalletes(),
-                                             direction = getOption("ternDirection", 1L),
-                                             resolution=128L,filled=TRUE,
-                                             nlevels = 20)
-          
-          zRange <- range(contourval$z,na.rm=TRUE)
-          
-          #valuesgrid <- seq(0.1,0.9,by=0.1)
-          valuesgrid <- seq(0,1,by=0.1)
-          coord_list <- list()
-          for (val in valuesgrid) {
-            coord1 <- data.frame(A = c(val, 0),B = c(0, val),C = c(1 - val, 1 - val))
-            coord2 <- data.frame(A = c(1 - val, 1 - val),B = c(val, 0),C = c(0, val))
-            coord3 <- data.frame(A = c(0, val),B = c(1 - val, 1 - val),C = c(val, 0))
-            coord_list[[length(coord_list) + 1]] <- coord1
-            coord_list[[length(coord_list) + 1]] <- coord2
-            coord_list[[length(coord_list) + 1]] <- coord3
-          }
-          for (coords in coord_list) {Ternary::AddToTernary(lines,coords,col="lightgray",lty="dotted",lwd=0.1)}
-          
-          Ternary::TernaryPoints(dat[c(1,3,2)], pch = 16) # design points - counterwise=FALSE
-          Ternary::TernaryPolygon(diag(3)) # triangular frame
-          
-          private$.showlegend(location="topleft",zRange,insetv=0.01,colo=private$.colpalletes()) # Legend 1
-          
-          azimut=self$options$thetaval
-          latitude=self$options$phival
-          
-          private$.wirePlot3(varNames,responseName,data=dat,form=modelformula,theta=azimut,phi=latitude,steps=200,legRange=zRange,col=private$.colpalletes())
-          TRUE
-        },
         .TernaryContour = function(Func, resolution = 96L, direction = getOption("ternDirection", 1L),
                                    region = getOption("ternRegion", ternRegionDefault),within = NULL, filled = FALSE, legend, legend... = list(),
                                    nlevels = 10, levels = pretty(zlim, nlevels), zlim,
                                    color.palette = function(n) viridisLite::viridis(n, alpha = 0.6),
                                    fill.col = color.palette(length(levels) - 1),...) {
         
-          x <- seq(-0.5, 0.5, length.out = resolution)
-          y <- seq(0, sqrt(0.75), length.out = resolution)
-
+          if (direction == 1L) {
+            x <- seq(-0.5, 0.5, length.out = resolution)
+            y <- seq(0, sqrt(0.75), length.out = resolution)
+          } else if (direction == 2L) {
+            x <- seq(0, sqrt(0.75), length.out = resolution)
+            y <- seq(-0.5, 0.5, length.out = resolution)
+          } else if (direction == 3L) {
+            x <- seq(-0.5, 0.5, length.out = resolution)
+            y <- seq(-sqrt(0.75), 0, length.out = resolution)
+          } else { # (direction == 4) 
+            x <- seq(-sqrt(0.75), 0, length.out = resolution)
+            y <- seq(-0.5, 0.5, length.out = resolution)
+          }
+          
           ternRegionDefault <- structure(cbind(
             a = c(min = 0, max = 100),
             b = c(0, 100),
@@ -866,5 +777,260 @@ designmixturemodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6
           modeltextt[1] <- sprintf(spf,modeltex[1])
           formula0 <- paste0(responsy,"=",modeltextt[1],"\u00b7",names(modeltex)[1],paste0(sign1tex[-1],modeltextt[-1],"\u00b7",names(modeltex)[-1], collapse = "")) # Scheffe
           return(formula0)
+        },
+        .mixture4kplot=function(image6,...){
+          qvars=length(self$options$vars)
+          if (is.null(image6$state) || is.null(self$options$yield) || qvars >4){return(FALSE)}
+          
+          selmodel=as.numeric(self$options$choosemodel)
+          dat=self$results$ternarydata$state
+          
+          if (is.null(self$options$choosevars)){selvars="original"}else{selvars=self$options$choosevars} # ensure default
+          if (selvars=="original"){
+            varNames=colnames(dat)[1:qvars]
+          }else{
+            varNames=paste0("x",1:qvars)
+            colnames(dat)[1:qvars]=varNames
+          }
+          responseName=colnames(dat)[qvars+1]
+          modelformula=private$.getformula(responseName,varNames,model=selmodel,scheffe=-1)
+          
+          par(mar=rep(0.1,4))
+          par(mfcol=c(1,2))
+          
+          if (is.null(self$options$latentvar)){latent_var=1}else{latent_var=as.numeric(self$options$latentvar)} # ensure default
+          if (is.null(self$options$latentplane)){latent_plane=0}else{latent_plane=as.numeric(self$options$latentplane)} # ensure default
+
+          indx=c(1,3,2) # default
+          dirX=1 # default
+          pointX="up" # default
+          
+          if (qvars==4 && latent_var==1){indx=c(2,4,3)}
+          if (qvars==4 && latent_var==2){
+            indx=c(1,4,3)
+            dirX=2
+            pointX="right"}         
+          if (qvars==4 && latent_var==3){
+            indx=c(1,4,2)
+            dirX=2
+            pointX="right"}
+          if (qvars==4 && latent_var==4){
+            indx=c(1,3,2)
+            dirX=2
+            pointX="right"}
+          
+          atipX = varNames[indx[1]]
+          btipX = varNames[indx[2]]
+          ctipX = varNames[indx[3]]
+
+          if ((qvars==4 && latent_var==1) || qvars==3){
+            alabX <- paste0("\u2190 ",atipX," %")
+            blabX <- paste0(btipX," % \u2192")
+            clabX <- paste0("\u2190 ",ctipX," %")
+          }else{
+            alabX <- paste0(atipX," % \u2192")
+            blabX <- paste0("\u2190 ",btipX," %")
+            clabX <- paste0("\u2190 ",ctipX," %")     
+          }
+          
+          axlabs=seq(0, 1-latent_plane, by = 0.1)
+          gridl=10*(1-latent_plane)
+          Ternary::TernaryPlot(point=pointX,atip=atipX,btip=btipX,ctip=ctipX,alab=alabX,blab=blabX,clab=clabX,clockwise = FALSE,axis.labels = axlabs, grid.lines = gridl)
+          #Ternary::TernaryPlot(point="up",atip="x1",btip="x3",ctip="x2",alab="\u2190 x1 %",blab="x3 % \u2192",clab="\u2190 x2 %",clockwise = FALSE)
+          
+          # Models for 3 variables
+          if (selmodel==1 && qvars==3){
+            FunctionToContour=function(a,c,b,...){
+              coe=image6$state
+              coe[1]*a+coe[2]*b+coe[3]*c}
+          }
+          
+          if (selmodel==2 && qvars==3){
+            FunctionToContour=function(a,c,b,...){
+              coe=image6$state
+              coe[1]*a+coe[2]*b+coe[3]*c+coe[4]*a*b+coe[5]*a*c+coe[6]*b*c}
+          }
+          
+          # I(x1*x2*(x1-x2))+I(x1*x3*(x1-x3))+I(x2*x3*(x2-x3))
+          if (selmodel==3 && qvars==3){  # Full Cubic 
+            FunctionToContour=function(a,c,b,...){
+              coe=image6$state
+              coe[1]*a+coe[2]*b+coe[3]*c+coe[4]*a*b*(a-b)+coe[5]*a*c*(a-c)+coe[6]*b*c*(b-c)+coe[7]*a*b+coe[8]*a*c+coe[9]*b*c+coe[10]*a*b*c}
+          } 
+          
+          if (selmodel==4 && qvars==3){ # Special Cubic
+            FunctionToContour=function(a,c,b,...){
+              coe=image6$state
+              coe[1]*a+coe[2]*b+coe[3]*c+coe[4]*a*b+coe[5]*a*c+coe[6]*b*c+coe[7]*a*b*c}
+          } 
+          
+          # Special Quartic x2:x3:I(x1^2) x1:x3:I(x2^2) x1:x2:I(x3^2) 
+          if (selmodel==1.5 && qvars==3){ 
+            FunctionToContour=function(a,c,b,...){
+              coe=image6$state
+              coe[1]*a+coe[2]*b+coe[3]*c+coe[4]*a*b+coe[5]*a*c+coe[6]*b*c+coe[7]*a*a*b*c+coe[8]*b*b*a*c+coe[9]*c*c*a*b}
+          } 
+          
+          # Models for 4 variables
+          if (selmodel==1 && qvars==4){
+            FunctionToContour=function(a,c,b,...){
+              coe=image6$state
+              latent_var=as.numeric(self$options$latentvar) # latent var
+              xx=c(1,2,3,4)
+              xx=xx[-latent_var]
+              ct=as.numeric(self$options$latentplane) # latent plane
+              (1-ct)*coe[xx[1]]*a+(1-ct)*coe[xx[2]]*b+(1-ct)*coe[xx[3]]*c+coe[latent_var]*ct}
+          }
+          
+          if (selmodel==2 && qvars==4){
+            FunctionToContour=function(a,c,b,...){
+              coe=image6$state
+              # linear
+              latent_var=as.numeric(self$options$latentvar) # latent var
+              xx=c(1,2,3,4)
+              xx=xx[-latent_var]
+              ct=as.numeric(self$options$latentplane) # latent plane
+              # quadratic
+              vz=c(1,2,3,4)
+              cz=combn(vz,2,simplify=TRUE)
+              foo1=which(cz==latent_var,arr.ind=TRUE)[,2] # latent
+              foo2=setdiff(1:ncol(cz),foo1) # rest
+              indx1=foo1+4 # latent
+              indx2=foo2+4 # rest
+              (1-ct)*coe[xx[1]]*a+(1-ct)*coe[xx[2]]*b+(1-ct)*coe[xx[3]]*c+coe[latent_var]*ct+(1-ct)*coe[indx1[1]]*a*ct+(1-ct)*coe[indx1[2]]*b*ct+(1-ct)*coe[indx1[3]]*c*ct+(1-ct)^2*coe[indx2[1]]*a*b+(1-ct)^2*coe[indx2[2]]*a*c+(1-ct)^2*coe[indx2[3]]*b*c}
+          }  
+          
+          if (selmodel==4 && qvars==4){
+            FunctionToContour=function(a,c,b,...){
+              coe=image6$state
+              # linear
+              latent_var=as.numeric(self$options$latentvar) # latent var
+              xx=c(1,2,3,4)
+              xx=xx[-latent_var]
+              ct=as.numeric(self$options$latentplane) # latent plane
+              # quadratic
+              vz=c(1,2,3,4)
+              cz=combn(vz,2,simplify=TRUE)
+              foo1=which(cz==latent_var,arr.ind=TRUE)[,2] # latent
+              foo2=setdiff(1:ncol(cz),foo1) # rest
+              indx1=foo1+4 # latent
+              indx2=foo2+4 # rest
+              # special cubic
+              cc=combn(vz,3,simplify=TRUE)
+              foo3=which(cc==latent_var,arr.ind=TRUE)[,2] # latent
+              foo4=setdiff(1:ncol(cc),foo3) # rest
+              indx3=foo3+10 # latent
+              indx4=foo4+10 # rest
+              (1-ct)*coe[xx[1]]*a+(1-ct)*coe[xx[2]]*b+(1-ct)*coe[xx[3]]*c+coe[latent_var]*ct+(1-ct)*coe[indx1[1]]*a*ct+(1-ct)*coe[indx1[2]]*b*ct+(1-ct)*coe[indx1[3]]*c*ct+(1-ct)^2*coe[indx2[1]]*a*b+(1-ct)^2*coe[indx2[2]]*a*c+(1-ct)^2*coe[indx2[3]]*b*c+(1-ct)^2*coe[indx3[1]]*a*b*ct+(1-ct)^2*coe[indx3[2]]*a*c*ct+(1-ct)^2*coe[indx3[3]]*b*c*ct+(1-ct)^3*coe[indx4[1]]*a*b*c}
+          }    
+  
+          if (selmodel==3 && qvars==4){return(FALSE)} # Not implemented yet
+          if (selmodel==1.5 && qvars==4){return(FALSE)} # Not implemented yet
+
+          # TODO - Ternary package must be updated - be careful FunctionToContour - AN UPDATE MAY BROKE THE PLOT
+          # https://github.com/ms609/Ternary/blob/master/R/Contours.R
+          # https://github.com/ms609/Ternary/blob/23ec29c6b3e37f0a91451f96dff4f080b147e3f5/R/Contours.R#L701
+          
+          contourval=private$.TernaryContour(FunctionToContour,
+                                             col=private$.colpalletes(),
+                                             direction = dirX,
+                                             resolution=128L,
+                                             filled=TRUE,
+                                             nlevels = 20)
+          
+          zRange <- range(contourval$z,na.rm=TRUE)
+          
+          valuesgrid <- seq(0,1,by=1/gridl)
+          coord_list <- list()
+          for (val in valuesgrid) {
+            coord1 <- data.frame(A = c(val, 0),B = c(0, val),C = c(1 - val, 1 - val))
+            coord2 <- data.frame(A = c(1 - val, 1 - val),B = c(val, 0),C = c(0, val))
+            coord3 <- data.frame(A = c(0, val),B = c(1 - val, 1 - val),C = c(val, 0))
+            coord_list[[length(coord_list) + 1]] <- coord1
+            coord_list[[length(coord_list) + 1]] <- coord2
+            coord_list[[length(coord_list) + 1]] <- coord3
+          }
+          for (coords in coord_list) {Ternary::AddToTernary(lines,coords,col="lightgray",lty="dotted",lwd=0.1)}
+          
+          # Aqui sustituir dat por points en el plano
+          if (qvars==3){Ternary::TernaryPoints(dat[indx], pch = 16)} # design points - counterwise=FALSE
+          if (qvars==4){
+            datt=dat[dat[latent_var]==latent_plane,]
+            if (dim(datt)[1]!=0){Ternary::TernaryPoints(datt[indx], pch = 16)}
+          }
+          
+          Ternary::TernaryPolygon(diag(3)) # triangular frame
+          private$.showlegend(location="topright",zRange,insetv=0.01,colo=private$.colpalletes()) # Legend 
+
+          if(qvars==4){
+            simplex = function(n){qr.Q(qr(matrix(1,nrow=n)),complete=TRUE)[,-1]}
+            tetra = simplex(4)
+            df0=rbind(c(1,0,0,0),c(0,1,0,0),c(0,0,1,0),c(0,0,0,1))
+            colnames(df0)=varNames
+            
+            df2 = t(apply(df0,1,function(x) x /sum(x)))
+            dfa=bary2cart(tetra,df2)
+            
+            x <- seq(-1,1, length.out = 10)
+            y <- seq(-1,1, length.out = 10)
+            z <- outer(x, y, function(a, b) a*b)
+            xlim <- c(-0.2, 0.83)
+            ylim <- c(-0.2, 0.83)
+            zlim <- c(-0.2, 0.83)
+            
+            per = persp(x,y,z, phi = 135, theta = -120, scale = TRUE, col = "transparent",border = FALSE, box = FALSE, xlim = xlim, ylim = ylim, zlim = zlim)
+            
+            points(trans3d(x = dfa[,1], y = dfa[,2], z = dfa[,3], pmat = per), pch=19) # points
+            comb <- combn(4,2)
+            for(q in 1:6){
+              q0=comb[1,q]
+              q1=comb[2,q]
+              x00=trans3d(x=dfa[q0,1],y=dfa[q0,2],z=dfa[q0,3], pmat = per)$x
+              y00=trans3d(x=dfa[q0,1],y=dfa[q0,2],z=dfa[q0,3], pmat = per)$y
+              x11=trans3d(x=dfa[q1,1],y=dfa[q1,2],z=dfa[q1,3], pmat = per)$x
+              y11=trans3d(x=dfa[q1,1],y=dfa[q1,2],z=dfa[q1,3], pmat = per)$y
+              lines(c(x00, x11), c(y00, y11), col = "black", lwd = 1)
+            }
+            offs=0.02
+            
+            for(k in 1:4){ # labels
+              x1=trans3d(x=dfa[k,1],y=dfa[k,2],z=dfa[k,3], pmat = per)$x
+              y1=trans3d(x=dfa[k,1],y=dfa[k,2],z=dfa[k,3], pmat = per)$y
+              text(x1+offs,y1+offs, labels = colnames(df0)[k], lwd = 1,col = "#0A0A0A", cex = 1.2,font=2) #x2
+            }
+            
+            ct=as.numeric(self$options$latentplane) # latent plane
+            if (qvars==4 && latent_var==1){df1=rbind(c(ct,1-ct,0,0),c(ct,0,1-ct,0),c(ct,0,0,1-ct))}
+            if (qvars==4 && latent_var==2){df1=rbind(c(1-ct,ct,0,0),c(0,ct,1-ct,0),c(0,ct,0,1-ct))}         
+            if (qvars==4 && latent_var==3){df1=rbind(c(1-ct,0,ct,0),c(0,1-ct,ct,0),c(0,0,ct,1-ct))}
+            if (qvars==4 && latent_var==4){df1=rbind(c(1-ct,0,0,ct),c(0,1-ct,0,ct),c(0,0,1-ct,ct))}
+            
+            df3 = t(apply(df1,1,function(x) x /sum(x)))
+            dfaa=bary2cart(tetra,df3)
+            
+            comb <- combn(3,2)
+            for(q in 1:3){
+              print(q)
+              q0=comb[1,q]
+              q1=comb[2,q]
+              x00=trans3d(x=dfaa[q0,1],y=dfaa[q0,2],z=dfaa[q0,3], pmat = per)$x
+              y00=trans3d(x=dfaa[q0,1],y=dfaa[q0,2],z=dfaa[q0,3], pmat = per)$y
+              x11=trans3d(x=dfaa[q1,1],y=dfaa[q1,2],z=dfaa[q1,3], pmat = per)$x
+              y11=trans3d(x=dfaa[q1,1],y=dfaa[q1,2],z=dfaa[q1,3], pmat = per)$y
+              lines(c(x00, x11), c(y00, y11), col = "red", lwd = 2,lty=6)
+            }
+            
+            gonx=trans3d(x=dfaa[,1],y=dfaa[,2],z=dfaa[,3], pmat = per)$x
+            gony=trans3d(x=dfaa[,1],y=dfaa[,2],z=dfaa[,3], pmat = per)$y
+            dfaaa=cbind(gonx,gony)
+            polygon(dfaaa, col = rgb(1, 0, 0, alpha = 0.3), border = NA)
+          }        
+          
+          if(qvars==3){
+            azimut=self$options$thetaval
+            latitude=self$options$phival
+            private$.wirePlot3(varNames,responseName,data=dat,form=modelformula,theta=azimut,phi=latitude,steps=200,legRange=zRange,col=private$.colpalletes())
+          }
+          TRUE
         }) # Close - List
 ) # Close - R6::R6Class
