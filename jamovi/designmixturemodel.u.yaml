@@ -45,9 +45,8 @@ children:
           - type: CheckBox
             name: showcox
       - type: LayoutBox
-#        margin: large
         style: inline
-        children:            
+        children:
           - type: ComboBox
             name: xaxis
           - type: ComboBox
@@ -72,13 +71,38 @@ children:
             name: showmixture
           - type: ComboBox
             name: colorselection
+            enable: (showmixture)
+  - type: CollapseBox
+    label: Advanced plot options for 3 component mixture
+    collapsed: true
+    stretchFactor: 1         
+    children:
       - type: LayoutBox
+        margin: large
         style: inline
-        children:     
+        children:
           - type: TextBox
             name: thetaval
             format: number
+            enable: (showmixture)
           - type: TextBox
             name: phival
             format: number
-#            enable: (rsdesign:bbd)
+            enable: (showmixture)
+  - type: CollapseBox
+    label: Advanced plot options for 4 component mixture
+    collapsed: true
+    stretchFactor: 1         
+    children:            
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: ComboBox
+            name: latentvar
+            enable: (showmixture)
+#            enable: (vars.selected().length === 4)
+          - type: ComboBox
+            name: latentplane
+            enable: (showmixture)
+

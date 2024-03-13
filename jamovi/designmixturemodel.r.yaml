@@ -116,24 +116,13 @@ items:
       visible: "(showresidual)"
       
 #      3 Mixture Plots
-    - name: mixtureplot
+    - name: mixture4kplot
       title: Mixture Plots
       type: Image
-      description: Mixture plot
+      description: Mixture plot for 3 and 4 variables
       width:  960
       height: 480
-      renderFun: .mixtureplot
+      renderFun: .mixture4kplot
       requiresData: true
-      visible: "(showmixture)"
-      
-#      3 Mixture Plots
-#    - name: mixture4kplot
-#      title: Mixture 4k Plots
-#      type: Image
-#      description: Mixture plot
-#      width:  960
-#      height: 480
-#      renderFun: .mixture4kplot
-#      requiresData: true
-#      visible: "(showmixture)"      
+      visible: "(showmixture)"      
 ...

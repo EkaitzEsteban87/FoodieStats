@@ -25,7 +25,7 @@ options:
         - numeric
 
     - name: vars
-      title: Effects
+      title: Effects (Mixture components)
       type: Variables
       suggested:
         - ordinal
@@ -41,10 +41,10 @@ options:
           name:  "1"
         - title: Quadratic
           name:  "2"
+        - title: Special Cubic
+          name:  "4"           
         - title: Full Cubic
           name:  "3"
-        - title: Special Cubic
-          name:  "4"  
         - title: Special Quartic
           name:  "1.5"            
       default: "1"
@@ -213,4 +213,43 @@ options:
         - title: Octopus
           name:  Octopus        
       default: SpectralStylish
+      
+# Choose latent variable
+    - name: latentvar
+      title: Off-axis variable
+      type: List
+      options:
+        - title: x1
+          name:  "1"
+        - title: x2
+          name:  "2"
+        - title: x3
+          name:  "3"
+        - title: x4
+          name:  "4"          
+      default: "1"      
+# Choose latent plane
+    - name: latentplane
+      title: Off-axis plane
+      type: List
+      options:
+        - title: "0"
+          name:  "0"
+        - title: "0.1"
+          name:  "0.1"
+        - title: "0.2"
+          name:  "0.2"
+        - title: "0.3"
+          name:  "0.3"
+        - title: "0.4"
+          name:  "0.4"
+        - title: "0.5"
+          name:  "0.5"
+        - title: "0.6"
+          name:  "0.6"
+        - title: "0.7"
+          name:  "0.7"
+        - title: "0.8"
+          name:  "0.8"        
+      default: "0"          
 ...
