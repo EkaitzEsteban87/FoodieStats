@@ -365,7 +365,8 @@ designmixturemodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6
             colnames(df0)=varNames
             
             df2 = t(apply(df0,1,function(x) x /sum(x)))
-            dfa=bary2cart(tetra,df2)
+            #dfa=bary2cart(tetra,df2)
+            dfa=df2%*%tetra
             
             x <- seq(-1,1, length.out = 10)
             y <- seq(-1,1, length.out = 10)
@@ -969,7 +970,8 @@ designmixturemodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6
             colnames(df0)=varNames
             
             df2 = t(apply(df0,1,function(x) x /sum(x)))
-            dfa=bary2cart(tetra,df2)
+            #dfa=bary2cart(tetra,df2)
+            dfa=df2%*%tetra
             
             x <- seq(-1,1, length.out = 10)
             y <- seq(-1,1, length.out = 10)
@@ -1006,7 +1008,8 @@ designmixturemodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6
             if (qvars==4 && latent_var==4){df1=rbind(c(1-ct,0,0,ct),c(0,1-ct,0,ct),c(0,0,1-ct,ct))}
             
             df3 = t(apply(df1,1,function(x) x /sum(x)))
-            dfaa=bary2cart(tetra,df3)
+            #dfaa=bary2cart(tetra,df3)
+            dfaa=df3%*%tetra
             
             comb <- combn(3,2)
             for(q in 1:3){
