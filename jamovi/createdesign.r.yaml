@@ -1,0 +1,37 @@
+---
+name:  createdesign
+title: Create an Experimental Design
+jrs:   '1.1'
+
+items:
+###      for debugging
+#    - name:  debugger
+#      title: Testing - Debugging
+#      type:  Preformatted
+      
+#      Describing the module
+    - name: description
+      title: description
+      type: Html
+      visible: "(showdescription)"
+      
+    - name:  designtabletitle
+      title: Experimental Design Table
+      type:  Preformatted
+
+    - name: designtable
+      title: Experimental Design Table with coded factors
+      type: Table
+      columns: []
+
+#      1 Design point Plots
+    - name: designplot
+      title: Design Points Plot
+      type: Image
+      description: the design points plot
+      width:  480
+      height: 480
+      renderFun: .designplot
+      requiresData: true
+      visible: "(expdesign:scd || expdesign:sld)"      
+...

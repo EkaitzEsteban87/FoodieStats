@@ -1,7 +1,7 @@
 ---
 title: Gastronomic Data Analysis Tool
 name: FoodieStats
-version: 0.6.0
+version: 0.7.1
 jms: '1.0'
 authors:
   - Ekaitz Esteban
@@ -23,6 +23,12 @@ description: >-
   </br></br> * <b>Food Science and Nutrition</b> - Utilizes health-focused
   analytics to optimize nutritional content.
 analyses:
+  - title: Create an Experimental Design
+    name: createdesign
+    ns: FoodieStats
+    menuGroup: FoodieStats
+    menuSubgroup: Select an Experimental Design
+    menuTitle: Create an Experimental Design
   - title: 2k Experimental Design
     name: designkmodel
     ns: FoodieStats

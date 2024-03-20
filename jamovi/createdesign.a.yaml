@@ -1,0 +1,107 @@
+---
+name:  createdesign
+title: Create an Experimental Design
+menuGroup: FoodieStats
+version: '1.0.0'
+jas: '1.2'
+
+options:
+    - name: data
+      type: Data
+
+# Show description
+    - name: showdescription
+      title: Show description
+      type: Bool
+      default: False
+
+# Choose experimental design
+    - name: expdesign
+      title: Experimental designs
+      type: List
+      options:
+        - title: 2ᵏ Full Factorial design
+          name:  2k
+        - title: 3ᵏ Full Factorial design
+          name:  3k
+#        - title: nᵏ Full Factorial design
+#          name:  nk
+        - title: 2ᵏ⁻ᵖ Fractional Factorial design
+          name:  ff2k
+        - title: Box-Behnken design
+          name:  bbd
+        - title: Central Composite design
+          name:  ccd
+        - title: Simplex Centroid Mixture design
+          name:  scd
+        - title: Simplex Lattice Mixture design
+          name:  sld   
+      default: 2k
+      
+# Number of factors (all)
+    - name: nvars
+      title: Number of factors
+      type: Number
+      default: 3
+      min: 2
+      max: 25
+
+# Number of levels (sld)
+    - name: nlevels
+      title: Number of equally spaced levels
+      type: Number
+      default: 3
+      min: 2
+      max: 99
+
+# Choose resolution (only fractional)
+    - name: resolut
+      title: Select the resolution
+      type: List
+      options:
+        - title: Resolution III
+          name:  "3"
+        - title: Resolution IV
+          name:  "4"
+        - title: Resolution V
+          name:  "5"
+      default: "5"
+
+# Number of Centers (ccd, bbd)
+    - name: cubecp
+      title: Number of center points
+      type: Number
+      default: 3
+      min: 0
+      max: 99
+
+# Number of Centers Stars (only ccd)
+    - name: starcp
+      title: Number of star center points
+      type: Number
+      default: 1
+      min: 0
+      max: 99
+   
+# Inscribed (only ccd)
+    - name: inscribed
+      title: Inscribed Central Composite design
+      type: Bool
+      default: False
+
+# Choose Alpha value (only ccd)
+    - name: staralpha
+      title: Select α distance (star to center)
+      type: List
+      options:
+        - title: Rotatable α distance
+          name:  rotatable
+        - title: Orthogonal α distance
+          name:  orthogonal
+        - title: Spherical α distance
+          name:  spherical
+        - title: Face centered α distance
+          name:  faces          
+      default: rotatable
+
+...

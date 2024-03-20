@@ -1,0 +1,76 @@
+title: Create an Experimental Design
+name: createdesign
+jus: '3.0'
+stage: 0
+compilerMode: tame
+children:
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: CheckBox
+        name: showdescription
+  - type: Label
+    label: Select an experimental design
+    children:        
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: ComboBox
+            name: expdesign
+  - type: Label
+    label: General design options
+    children:        
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: TextBox
+            name: nvars
+            format: number
+          - type: TextBox
+            name: cubecp
+            format: number
+            enable: (expdesign:bbd || expdesign:ccd)  
+  - type: Label
+    label: Fractional Factorial design options
+    children:        
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: ComboBox
+            name: resolut
+            enable: (expdesign:ff2k)        
+  - type: Label
+    label: Central Composite design options
+    children:
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: TextBox
+            name: starcp
+            format: number
+            enable: (expdesign:ccd)
+          - type: CheckBox
+            name: inscribed
+            enable: (expdesign:ccd)
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:            
+          - type: ComboBox
+            name: staralpha
+            enable: (expdesign:ccd)     
+  - type: Label
+    label: Simplex Lattice Mixture design options
+    children:        
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: TextBox
+            name: nlevels
+            format: number
+            enable: (expdesign:sld)
