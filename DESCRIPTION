@@ -1,7 +1,7 @@
 Package: FoodieStats
 Type: Package
 Title: Gastronomic Data Analysis Tool
-Version: 0.7.1
+Version: 0.7.3
 Author: Ekaitz Esteban
 Maintainer: Ekaitz Esteban <eesteban@bculinary.com>
 Description: >-
