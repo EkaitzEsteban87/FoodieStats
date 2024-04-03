@@ -20,7 +20,7 @@ items:
       type:  Preformatted
 
     - name: designtable
-      title: Experimental Design Table with coded factors
+      title: Experimental Design Matrix with coded factors
       type: Table
       columns: []
 
@@ -33,5 +33,19 @@ items:
       height: 480
       renderFun: .designplot
       requiresData: true
-      visible: "(expdesign:scd || expdesign:sld)"      
+      visible: "(expdesign:scd || expdesign:sld)"
+
+    - name: writeexcel
+      title: Write Design Matrix
+      type: Output
+      initInRun: true
+      clearWith:
+        - nvars
+        - expdesign
+        - nlevels
+        - cubecp
+        - starcp
+        - resolut
+        - inscribed
+        - staralpha
 ...

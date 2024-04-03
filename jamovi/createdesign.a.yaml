@@ -104,4 +104,8 @@ options:
           name:  faces          
       default: rotatable
 
+# Write data in spreadsheet
+    - name: writeexcel
+      title: Write Design Matrix
+      type: Output
 ...

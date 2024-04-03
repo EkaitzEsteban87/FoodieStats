@@ -74,3 +74,14 @@ children:
             name: nlevels
             format: number
             enable: (expdesign:sld)
+  - type: CollapseBox
+    label: Save Design Matrix in Spreadsheet
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        stretchFactor: 1
+        children:
+          - type: Output
+            name: writeexcel
