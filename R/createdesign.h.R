@@ -83,6 +83,8 @@ createdesignOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                     "spherical",
                     "faces"),
                 default="rotatable")
+            private$..writeexcel <- jmvcore::OptionOutput$new(
+                "writeexcel")
 
             self$.addOption(private$..showdescription)
             self$.addOption(private$..expdesign)
@@ -93,6 +95,7 @@ createdesignOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             self$.addOption(private$..starcp)
             self$.addOption(private$..inscribed)
             self$.addOption(private$..staralpha)
+            self$.addOption(private$..writeexcel)
         }),
     active = list(
         showdescription = function() private$..showdescription$value,
@@ -103,7 +106,8 @@ createdesignOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         cubecp = function() private$..cubecp$value,
         starcp = function() private$..starcp$value,
         inscribed = function() private$..inscribed$value,
-        staralpha = function() private$..staralpha$value),
+        staralpha = function() private$..staralpha$value,
+        writeexcel = function() private$..writeexcel$value),
     private = list(
         ..showdescription = NA,
         ..expdesign = NA,
@@ -113,7 +117,8 @@ createdesignOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         ..cubecp = NA,
         ..starcp = NA,
         ..inscribed = NA,
-        ..staralpha = NA)
+        ..staralpha = NA,
+        ..writeexcel = NA)
 )
 
 createdesignResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -123,7 +128,8 @@ createdesignResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         description = function() private$.items[["description"]],
         designtabletitle = function() private$.items[["designtabletitle"]],
         designtable = function() private$.items[["designtable"]],
-        designplot = function() private$.items[["designplot"]]),
+        designplot = function() private$.items[["designplot"]],
+        writeexcel = function() private$.items[["writeexcel"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -143,7 +149,7 @@ createdesignResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             self$add(jmvcore::Table$new(
                 options=options,
                 name="designtable",
-                title="Experimental Design Table with coded factors",
+                title="Experimental Design Matrix with coded factors",
                 columns=list()))
             self$add(jmvcore::Image$new(
                 options=options,
@@ -153,7 +159,21 @@ createdesignResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 height=480,
                 renderFun=".designplot",
                 requiresData=TRUE,
-                visible="(expdesign:scd || expdesign:sld)"))}))
+                visible="(expdesign:scd || expdesign:sld)"))
+            self$add(jmvcore::Output$new(
+                options=options,
+                name="writeexcel",
+                title="Write Design Matrix",
+                initInRun=TRUE,
+                clearWith=list(
+                    "nvars",
+                    "expdesign",
+                    "nlevels",
+                    "cubecp",
+                    "starcp",
+                    "resolut",
+                    "inscribed",
+                    "staralpha")))}))
 
 createdesignBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "createdesignBase",
@@ -173,7 +193,7 @@ createdesignBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 pause = NULL,
                 completeWhenFilled = FALSE,
                 requiresMissings = FALSE,
-                weightsSupport = 'auto')
+                weightsSupport = 'none')
         }))
 
 #' Create an Experimental Design
@@ -195,6 +215,7 @@ createdesignBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'   \code{results$designtabletitle} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$designtable} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$designplot} \tab \tab \tab \tab \tab the design points plot \cr
+#'   \code{results$writeexcel} \tab \tab \tab \tab \tab an output \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

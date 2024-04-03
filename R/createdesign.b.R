@@ -61,54 +61,42 @@ createdesignClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
           navar=paste0("x",1:qvars)
           formulas=private$.formulaeList(n=qvars)
           
-          # Make a 2^(k-p) fractional design
+          # 2^(k-p) fractional design
           if (design0=="ff2k"){
             foo=FrF2::FrF2(nruns=NULL,nfactors = qvars, resolution = resol, randomize = FALSE,replications=1,factor.names =navar)
             fooo=as.numeric(as.character(unlist(foo)))
             design <- matrix(fooo, nrow = dim(foo)[1], byrow = FALSE)}
           
-          # Make Full 2^k design
+          # Full 2^k design
           if (design0=="2k"){design=AlgDesign::gen.factorial(levels=2,nVars=qvars,center=TRUE,varNames = navar)}
           
-          # Make Full 3^k design
+          # Full 3^k design
           if (design0=="3k"){design=AlgDesign::gen.factorial(levels=3,nVars=qvars,center=TRUE,varNames = navar)}          
 
-          # Make Full n^k design
+          # Full n^k design
           #if (design0=="nk"){design=AlgDesign::gen.factorial(levels=niveles,nVars=qvars,center=TRUE,varNames = navar)} 
           
-          # Make Box-behnken design
+          # Box-behnken design
           if (design0=="bbd"){
             behnken=rsm::bbd(k=qvars,n0 = centerC,randomize = FALSE,coding=formulas)
             numcol=ncol(behnken)
             design=behnken[,(numcol-qvars+1):numcol]
           }
           
-          # Make Central Composite design
+          # Central Composite design
           if (design0=="ccd"){
-            # Checking some values...
-            nf=2^(qvars) # cube points (factorial)
-            nruns=(2^(qvars))+2*qvars+centerC+centerS # Number of runs
-            #centerC=round(4*sqrt(nf)+4-(2*qvars)) # add center point for ortogonality and rotatability - Meta-Model Development - Bouzid AIT-AMIR, Philippe POUGNET and Abdelkhalak EL HAMI.
-            alphasphe=sqrt(qvars)
-            alpharot=(2^(qvars))^(1/4)
-            alphaorto=sqrt((nf*(2*qvars+centerS))/(2*(nf+centerC))) # Codigo R https://rdrr.io/cran/rsm/src/R/ccd.pick.R
-            #alphaorto=sqrt((sqrt(nf*nruns)-nf)/2) # Meta-Model Development - Bouzid AIT-AMIR, Philippe POUGNET and Abdelkhalak EL HAMI.
-            #alphaorto=((sqrt(nruns)-sqrt(nf))^2*(nf/4))^(1/4)  # https://en.wikipedia.org/wiki/Central_composite_design (Myers, 1971)
-            
             composite=rsm::ccd(basis=qvars,randomize = FALSE,alpha=alpha0,n0 = c(centerC,centerS),inscribed=inscr,oneblock=TRUE,coding=formulas)
             numcol=ncol(composite)
             design=composite[,(numcol-qvars+1):numcol]
           }
           
-          # Make Simplex Centroid Mixture design
+          # Simplex Centroid Mixture design
           if (design0=="scd"){design=mixexp::SCD(qvars)}
           
-          # Make Simplex Lattice Mixture design
+          # Simplex Lattice Mixture design
           if (design0=="sld"){design=AlgDesign::gen.mixture(niveles,navar)}          
           
-          image1 <- self$results$designplot
-          image1$setState(design)
-          # Make Simplex Lattice + process Mixture design (Work in progress)
+          # Simplex Lattice + process Mixture design (Work in progress)
           
           #self$results$debugger$setContent(design)
           
@@ -130,14 +118,33 @@ createdesignClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
             table0$addRow(rowKey=i,row)
           }
           
+          designname=private$.designnames()
           lev1=paste0(sort(unique(unlist(format(design,digits=3)))),collapse =", ")
           if (design0=="ff2k"){lev1="-1, 1"}
-          chain <- paste0("Total No. of runs: ",num_rows, "\n","Coded levels: ",lev1)
+          chain <- paste0(designname," - Total No. of runs: ",num_rows, "\n"," - Coded levels: ",lev1)
           table0$setNote('Note',chain)
           #-----------------------
           # end table
-          #-----------------------          
+          #-----------------------
+          
+          # Add more features
+          image1 <- self$results$designplot
+          image1$setState(design)
+          private$.saveOutputs(design) # SpreadSheet
 
+        },
+        .designnames=function(...){
+          design0=self$options$expdesign
+          designname <- switch(design0,
+                               "2k"="2k Full Factorial",
+                               "3k"="3k Full Factorial",
+                               "ff2k"="2k Fractional Factorial",
+                               "bbd"="Box-Behnken",
+                               "ccd"="Central Composite",
+                               "scd"="Simplex Central Mixture",
+                               "sld"="Simplex Lattice Mixture"
+                               )
+          return(designname)
         },
         .formulaeList=function(n){
           Lformulas <- list()
@@ -159,5 +166,19 @@ createdesignClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
           
           mixexp::DesignPoints(design)
           TRUE
+        },
+        .saveOutputs = function(design,...) {
+          if (self$options$writeexcel && self$results$writeexcel$isNotFilled()) {
+            n=as.numeric(self$options$nvars)
+            keys <- 1:n
+            titles <- paste0("x",keys)
+            descriptions <- paste0("Design matrix model ",self$options$expdesign," - Coded variable x",keys)
+            measureTypes <- rep("continuous",n)
+            
+            self$results$writeexcel$set(keys=keys,titles=titles,descriptions=descriptions,measureTypes=measureTypes)
+            self$results$writeexcel$setRowNums(rownames(as.data.frame(design)))
+            
+            for (i in 1:n) {self$results$writeexcel$setValues(values=design[,i],index=i)}
+          }
         }) # Close - List
 ) # Close - R6::R6Class
