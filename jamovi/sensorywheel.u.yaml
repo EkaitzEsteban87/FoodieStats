@@ -1,0 +1,55 @@
+title: Sensory Wheel Analysis
+name: sensorywheel
+jus: '3.0'
+stage: 0
+compilerMode: tame
+children:
+  - type: CheckBox
+    name: showdescription
+  - type: VariableSupplier
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: TargetLayoutBox
+        label: Levels of the wheel
+        children:
+          - type: VariablesListBox
+            name: levv
+            isTarget: true
+  - type: Label
+    label: Wheel Color Configuration
+    children:
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: ComboBox
+            name: wheelstyle
+          - type: ComboBox
+            name: colorselection
+  - type: Label
+    label: Label Configuration
+    children:
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: TextBox
+            name: nodesize
+            format: number
+          - type: TextBox
+            name: leafsize
+            format: number
+          - type: ComboBox
+            name: labelcolors
+  - type: Label
+    label: Advanced Options
+    children:
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: ComboBox
+            name: leaflength
+          - type: CheckBox
+            name: nodelabelrotation

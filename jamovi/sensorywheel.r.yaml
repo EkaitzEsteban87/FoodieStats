@@ -1,0 +1,35 @@
+name:  sensorywheel
+title: Sensory Wheel Analysis
+jrs:   '1.1'
+
+items:
+#      for debugging
+#    - name:  debugger
+#      title: debug    
+#      type:  Preformatted
+
+#      for describing the wheel
+    - name: description
+      title: description
+      type: Html
+      visible: "(showdescription)"
+
+#      Plot options (colors, fontsize...)
+    - name:  wheeloptions
+      type:  Preformatted
+	
+#      Show plot
+    - name:  showheelplot
+      type:  Preformatted
+
+#      Sensory Wheel Plot
+    - name: wheelplot
+      title: Sensory Wheel Plot
+      type: Image
+      description: Flavor Wheel
+      width:  960
+      height: 960
+      renderFun: .plot
+      requiresData: true
+#      visible: "(showwheel)"
+...
