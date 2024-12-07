@@ -172,6 +172,8 @@ designmixturemodelOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::
                     "0.7",
                     "0.8"),
                 default="0")
+            private$..writeexcel <- jmvcore::OptionOutput$new(
+                "writeexcel")
 
             self$.addOption(private$..showdescription)
             self$.addOption(private$..yield)
@@ -187,6 +189,7 @@ designmixturemodelOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::
             self$.addOption(private$..colorselection)
             self$.addOption(private$..latentvar)
             self$.addOption(private$..latentplane)
+            self$.addOption(private$..writeexcel)
         }),
     active = list(
         showdescription = function() private$..showdescription$value,
@@ -202,7 +205,8 @@ designmixturemodelOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::
         phival = function() private$..phival$value,
         colorselection = function() private$..colorselection$value,
         latentvar = function() private$..latentvar$value,
-        latentplane = function() private$..latentplane$value),
+        latentplane = function() private$..latentplane$value,
+        writeexcel = function() private$..writeexcel$value),
     private = list(
         ..showdescription = NA,
         ..yield = NA,
@@ -217,7 +221,8 @@ designmixturemodelOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::
         ..phival = NA,
         ..colorselection = NA,
         ..latentvar = NA,
-        ..latentplane = NA)
+        ..latentplane = NA,
+        ..writeexcel = NA)
 )
 
 designmixturemodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -239,7 +244,8 @@ designmixturemodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::
         ternarydata = function() private$.items[["ternarydata"]],
         coxplot = function() private$.items[["coxplot"]],
         residualplot = function() private$.items[["residualplot"]],
-        mixture4kplot = function() private$.items[["mixture4kplot"]]),
+        mixture4kplot = function() private$.items[["mixture4kplot"]],
+        writeexcel = function() private$.items[["writeexcel"]]),
     private = list(),
     public=list(
         initialize=function(options) {
@@ -346,7 +352,16 @@ designmixturemodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::
                 height=480,
                 renderFun=".mixture4kplot",
                 requiresData=TRUE,
-                visible="(showmixture)"))}))
+                visible="(showmixture)"))
+            self$add(jmvcore::Output$new(
+                options=options,
+                name="writeexcel",
+                title="Write Design Model",
+                initInRun=TRUE,
+                clearWith=list(
+                    "vars",
+                    "yield",
+                    "choosemodel")))}))
 
 designmixturemodelBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "designmixturemodelBase",
@@ -366,7 +381,7 @@ designmixturemodelBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 pause = NULL,
                 completeWhenFilled = FALSE,
                 requiresMissings = FALSE,
-                weightsSupport = 'auto')
+                weightsSupport = 'none')
         }))
 
 #' Mixture Design
@@ -405,6 +420,7 @@ designmixturemodelBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
 #'   \code{results$coxplot} \tab \tab \tab \tab \tab the main effects plot \cr
 #'   \code{results$residualplot} \tab \tab \tab \tab \tab a residual plot \cr
 #'   \code{results$mixture4kplot} \tab \tab \tab \tab \tab Mixture plot for 3 and 4 variables \cr
+#'   \code{results$writeexcel} \tab \tab \tab \tab \tab an output \cr
 #' }
 #'
 #' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:

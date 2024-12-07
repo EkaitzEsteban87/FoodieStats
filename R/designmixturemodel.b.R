@@ -300,6 +300,9 @@ designmixturemodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6
             # end table
             #-----------------------        
             
+            # Add more features
+            private$.saveOutputs(modelformula) # SpreadSheet
+            
             #------------------------
             # Check Status
             #------------------------
@@ -1035,5 +1038,17 @@ designmixturemodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6
             private$.wirePlot3(varNames,responseName,data=dat,form=modelformula,theta=azimut,phi=latitude,steps=200,legRange=zRange,col=private$.colpalletes())
           }
           TRUE
+        },
+        .saveOutputs = function(modelformula,...) {
+          if (self$options$writeexcel && self$results$writeexcel$isNotFilled()) {
+            titles <- paste0(self$options$yield,"ModelFormula")
+            descriptions <- paste0("Prediction model for ",self$options$yield)
+            measureTypes <- "nominal"
+            
+            self$results$writeexcel$set(keys=1,titles=titles,descriptions=descriptions,measureTypes=measureTypes)
+            #self$results$debugger$setContent(self$results$writeexcel$set)
+            self$results$writeexcel$setRowNums("1")
+            self$results$writeexcel$setValues(values=modelformula,index=1)
+          }
         }) # Close - List
 ) # Close - R6::R6Class
