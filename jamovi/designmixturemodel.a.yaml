@@ -251,5 +251,10 @@ options:
           name:  "0.7"
         - title: "0.8"
           name:  "0.8"        
-      default: "0"          
+      default: "0"  
+
+# Write data in spreadsheet
+    - name: writeexcel
+      title: Write Design Model
+      type: Output      
 ...

@@ -1,0 +1,100 @@
+---
+name:  desirability
+title: Desirability Optimization
+jrs:   '1.1'
+
+items:
+#      for debugging
+#    - name:  debugger
+#      title: debug    
+#      type:  Preformatted
+      
+#      Describing the module
+    - name: description
+      title: description
+      type: Html
+      visible: "(showdescription)"
+      
+    - name:  doetable
+      title: Experimental Table 
+      type:  Preformatted
+
+    - name: doetable2
+      title: Experimental Optimization Table (original values, mixture proportions and multiple responses)
+      type: Table
+      columns: []
+
+    - name:  designuncoded
+      title: Mixture Proportions
+      type:  Preformatted
+
+    - name: scalingtable
+      title: Mixture Scaling Table
+      type: Table
+      columns: []    
+      
+    - name:  designcoded
+      title: Desirability Optimization Table
+      type:  Preformatted
+      
+    - name: desitable1
+      title: Optimal Point Coordinates (original values and mixture proportions)
+      type: Table
+      columns: []
+
+    - name: desitable2
+      title: Desirability Values at Optimal Point
+      type: Table
+      columns: []
+
+    - name: desitable3
+      title: Prediction Values at Optimal Point
+      type: Table
+      columns: []
+      
+    - name:  optpoint
+      type:  Preformatted
+
+    - name:  ternarydata
+      type:  Preformatted
+      
+    - name:  desirabilitydata
+      type:  Preformatted
+      
+    - name:  desirabilitymodels
+      type:  Preformatted
+      
+    - name:  desiresponse
+      type:  Preformatted
+                 
+#      2 Overall desirability plot
+    - name: overall4kplot
+      title: Overall Desirability Plot (mixture proportions)
+      type: Image
+      description: Desirability plot for 3 and 4 variables
+      width:  960
+      height: 480
+      renderFun: .overall4kplot
+      requiresData: true
+      visible: "(showoverall)" 
+
+#      3 Individual desirability plots
+    - name: individual4kplot
+      title: Individual Desirability Plots (mixture proportions)
+      type: Image
+      description: Individual Desirability Plots for 3 and 4 variables
+      width:  960
+      height: 480
+      renderFun: .individual4kplot
+      requiresData: true
+      visible: "(showindividuals)" 
+      
+#    - name: writeexcel
+#      title: Write Desirability Values
+#      type: Output
+#      initInRun: true
+#      clearWith:
+#        - vars
+#        - yield
+#        - modelinfo
+...

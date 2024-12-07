@@ -1,0 +1,461 @@
+---
+name:  desirability
+title: Desirability Optimization
+menuGroup: FoodieStats
+version: '1.0.0'
+jas: '1.2'
+
+options:
+    - name: data
+      type: Data
+
+# Show description
+    - name: showdescription
+      title: Show description
+      type: Bool
+      default: False
+
+    - name: vars
+      title: Mixture components (Effects)
+      type: Variables
+      suggested:
+        - ordinal
+      permitted:
+        - factor 
+
+# Desirability #01 - Input data
+    - name: d1yield
+      title: Response 01
+      type: Variable
+      suggested:
+        - continuous
+      permitted:
+        - numeric
+      
+# Desirability #01 - Model Formula
+    - name: d1modelinfo
+      title: Model Formula 01
+      type: Variable
+      suggested:
+        - nominal
+      permitted:
+        - factor
+        
+# Desirability #01 - Choose type
+    - name: d1type
+      title: Des. Type
+      type: List
+      options:
+        - title: None
+          name:  dNone       
+        - title: Maximize
+          name:  dMax
+        - title: Minimize
+          name:  dMin 
+        - title: Target
+          name:  dTarget            
+      default: dNone
+
+# Desirability #01 - Choose low bound
+    - name: d1low
+      title: Mininum
+      type: Number
+      default: 0
+
+# Desirability #01 - Choose high bound
+    - name: d1high
+      title: Maximum
+      type: Number
+      default: 10
+
+# Desirability #01 - Choose Target value
+    - name: d1target
+      title: Target value
+      type: Number
+      default: 5
+
+# Desirability #02 - Input data
+    - name: d2yield
+      title: Response 02
+      type: Variable
+      suggested:
+        - continuous
+      permitted:
+        - numeric
+        
+# Desirability #02 - Model Formula
+    - name: d2modelinfo
+      title: Model Formula
+      type: Variable
+      suggested:
+        - nominal
+      permitted:
+        - factor
+        
+# Desirability #02 - Choose type
+    - name: d2type
+      title: Des. Type
+      type: List
+      options:
+        - title: None
+          name:  dNone         
+        - title: Maximize
+          name:  dMax
+        - title: Minimize
+          name:  dMin 
+        - title: Target
+          name:  dTarget            
+      default: dNone
+
+# Desirability #02 - Choose low bound
+    - name: d2low
+      title: Mininum
+      type: Number
+      default: 0
+
+# Desirability #02 - Choose high bound
+    - name: d2high
+      title: Maximum
+      type: Number
+      default: 10
+
+# Desirability #02 - Choose Target value
+    - name: d2target
+      title: Target value
+      type: Number
+      default: 5
+
+# Desirability #03 - Input data
+    - name: d3yield
+      title: Response 3
+      type: Variable
+      suggested:
+        - continuous
+      permitted:
+        - numeric
+        
+# Desirability #03 - Model Formula
+    - name: d3modelinfo
+      title: Model Formula
+      type: Variable
+      suggested:
+        - nominal
+      permitted:
+        - factor
+        
+# Desirability #03 - Choose type
+    - name: d3type
+      title: Des. Type
+      type: List
+      options:
+        - title: None
+          name:  dNone      
+        - title: Maximize
+          name:  dMax
+        - title: Minimize
+          name:  dMin 
+        - title: Target
+          name:  dTarget            
+      default: dNone
+
+# Desirability #03 - Choose low bound
+    - name: d3low
+      title: Mininum
+      type: Number
+      default: 0
+
+# Desirability #03 - Choose high bound
+    - name: d3high
+      title: Maximum
+      type: Number
+      default: 10
+
+# Desirability #03 - Choose Target value
+    - name: d3target
+      title: Target value
+      type: Number
+      default: 5
+
+# Desirability #04 - Input data
+    - name: d4yield
+      title: Response 4
+      type: Variable
+      suggested:
+        - continuous
+      permitted:
+        - numeric
+        
+# Desirability #04 - Model Formula
+    - name: d4modelinfo
+      title: Model Formula
+      type: Variable
+      suggested:
+        - nominal
+      permitted:
+        - factor
+        
+# Desirability #04 - Choose type
+    - name: d4type
+      title: Des. Type
+      type: List
+      options:
+        - title: None
+          name:  dNone
+        - title: Maximize
+          name:  dMax
+        - title: Minimize
+          name:  dMin 
+        - title: Target
+          name:  dTarget            
+      default: dNone
+
+# Desirability #04 - Choose low bound
+    - name: d4low
+      title: Minimum
+      type: Number
+      default: 0
+
+# Desirability #04 - Choose high bound
+    - name: d4high
+      title: Maximum
+      type: Number
+      default: 10
+
+# Desirability #04 - Choose Target value
+    - name: d4target
+      title: Target value
+      type: Number
+      default: 5
+
+# Desirability #05 - Input data
+    - name: d5yield
+      title: Response 5
+      type: Variable
+      suggested:
+        - continuous
+      permitted:
+        - numeric
+        
+# Desirability #05 - Model Formula
+    - name: d5modelinfo
+      title: Model Formula
+      type: Variable
+      suggested:
+        - nominal
+      permitted:
+        - factor
+        
+# Desirability #05 - Choose type
+    - name: d5type
+      title: Des. Type
+      type: List
+      options:
+        - title: None
+          name:  dNone
+        - title: Maximize
+          name:  dMax
+        - title: Minimize
+          name:  dMin 
+        - title: Target
+          name:  dTarget            
+      default: dNone
+
+# Desirability #05 - Choose low bound
+    - name: d5low
+      title: Minimum
+      type: Number
+      default: 0
+
+# Desirability #05 - Choose high bound
+    - name: d5high
+      title: Maximum
+      type: Number
+      default: 10
+
+# Desirability #05 - Choose Target value
+    - name: d5target
+      title: Target value
+      type: Number
+      default: 5
+      
+# Show 2 residual plot
+    - name: showoverall
+      title: Overall desirability
+      type: Bool
+      default: False
+      
+# Show 3 Mixture plot
+    - name: showindividuals
+      title: Individuals
+      type: Bool
+      default: False
+      
+# Perspective - Azimut
+    - name: thetaval
+      title: Azimuth ±180º (←)
+      type: Number
+      default: -25
+      min: -180
+      max: 180
+
+# Perspective - Latitude
+    - name: phival
+      title: Latitude ±180º (↑)
+      type: Number
+      default: 20
+      min: -180
+      max: 180
+
+# Color selection
+    - name: colorselection
+      title: Color palette
+      type: List
+      options:
+        - title: Spectral Style
+          name:  SpectralStylish      
+        - title: Jamovi Style
+          name:  JamoviStylish
+        - title: Beach Style
+          name:  BeachStylish
+        - title: Ocean Style
+          name:  OceanStylish
+        - title: Market Style
+          name:  Market
+        - title: Gingerbread Style
+          name:  Gingerbread
+        - title: Umami Style
+          name:  Umami
+        - title: Summer Salad
+          name:  SummerSalad
+        - title: Fruit Cup
+          name:  FruitCup
+        - title: Rainbow Delight
+          name:  Delight
+        - title: Green Smoothie
+          name:  Greensmoothie
+        - title: Turmeric
+          name:  Turmeric
+        - title: Healthy Snacks
+          name:  Snacks
+        - title: Sashimi
+          name:  Sashimi
+        - title: Macarons
+          name:  Macarons
+        - title: Feast
+          name:  Feast
+        - title: Veggies
+          name:  Veggies
+        - title: Beetroot
+          name:  Beetroot
+        - title: Spice Rack
+          name:  Spice
+        - title: Sweet Fig
+          name:  Sweet
+        - title: Tropical
+          name:  Tropical
+        - title: Continental Breakfast
+          name:  Breakfast
+        - title: Purple Carrots
+          name:  Carrots
+        - title: Celery Stick
+          name:  Stick
+        - title: Tea and Cherries
+          name:  Tea
+        - title: Decadent Delight
+          name:  Decadent
+        - title: Berry Parfait
+          name:  Berry
+        - title: Sugary
+          name:  Sugary
+        - title: Citrus Twist
+          name:  Citrus
+        - title: Rainbow Chard
+          name:  Chard
+        - title: Shrimp Boil
+          name:  Shrimp
+        - title: Sweet Salad
+          name:  SweetSalad
+        - title: Berry Cheesecake
+          name:  Cheesecake
+        - title: Fruit Basket
+          name:  FruitBasket
+        - title: Cayenne Spicy
+          name:  Cayenne
+        - title: Smoothie
+          name:  Smoothie
+        - title: Mojito
+          name:  Mojito
+        - title: Coffee
+          name:  Coffee
+        - title: Wine
+          name:  Wine
+        - title: Beer
+          name:  Beer
+        - title: Fish
+          name:  Fish
+        - title: Cheese
+          name:  Cheese
+        - title: Bread
+          name:  Bread
+        - title: Chocolate
+          name:  Chocolate
+        - title: Beef Meat
+          name:  Beef
+        - title: Honey
+          name:  Honey
+        - title: Dairy
+          name:  Dairy
+        - title: Vegetables
+          name:  Vegetables
+        - title: Bean Legumes
+          name:  Bean
+        - title: Seafood
+          name:  Seafood
+        - title: Octopus
+          name:  Octopus        
+      default: SpectralStylish
+      
+# Choose latent variable
+    - name: latentvar
+      title: Off-axis variable
+      type: List
+      options:
+        - title: x1
+          name:  "1"
+        - title: x2
+          name:  "2"
+        - title: x3
+          name:  "3"
+        - title: x4
+          name:  "4"          
+      default: "1"      
+# Choose latent plane
+    - name: latentplane
+      title: Off-axis plane
+      type: List
+      options:
+        - title: "0"
+          name:  "0"
+        - title: "0.1"
+          name:  "0.1"
+        - title: "0.2"
+          name:  "0.2"
+        - title: "0.3"
+          name:  "0.3"
+        - title: "0.4"
+          name:  "0.4"
+        - title: "0.5"
+          name:  "0.5"
+        - title: "0.6"
+          name:  "0.6"
+        - title: "0.7"
+          name:  "0.7"
+        - title: "0.8"
+          name:  "0.8"        
+      default: "0"  
+
+# Write data in spreadsheet
+#    - name: writeexcel
+#      title: Write Desirability Values
+#      type: Output      
+...

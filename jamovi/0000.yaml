@@ -1,12 +1,12 @@
 ---
 title: Gastronomic Data Analysis Tool
 name: FoodieStats
-version: 0.8.1
+version: 0.9.3
 jms: '1.0'
 authors:
   - Ekaitz Esteban
 maintainer: Ekaitz Esteban <eesteban@bculinary.com>
-date: '2023-12-31'
+date: '2024-12-31'
 type: R
 description: >-
   FoodieStats is a dedicated statistical module designed for gastronomy
@@ -47,6 +47,12 @@ analyses:
     menuGroup: FoodieStats
     menuSubgroup: Food Mixture Design
     menuTitle: Mixture Design
+  - title: Desirability Optimization
+    name: desirability
+    ns: FoodieStats
+    menuGroup: FoodieStats
+    menuSubgroup: Mixture Design Optimization
+    menuTitle: Desirability Optimization
   - title: Just-About-Right Analysis
     name: JARScales
     ns: FoodieStats
@@ -57,7 +63,6 @@ analyses:
     name: sensorywheel
     ns: FoodieStats
     menuGroup: FoodieStats
-    menuSubgroup: Sensory wheel plot
     menuTitle: Sensory Wheel Analysis
 datasets:
   - name: applejuice
@@ -106,25 +111,20 @@ datasets:
       Cornell)
     tags:
       - Mixture
-  - name: applewheel
-    path: applewheel.omv
+  - name: icecream
+    path: icecream.omv
+    description: Optimal formulation of clean-label ice cream using desirability functions
+    tags:
+      - Mixture
+      - Desirability
+  - name: oliveoil
+    path: oliveoil.omv
     description: >-
-      A New Sensory Approach Combined with a Text- Mining Tool to Create a
-      Sensory Lexicon and Profile of Monovarietal Apple Juices
+      Formulation of extra virgin olive oil blends using four Croatian olive oil
+      varieties
     tags:
-      - Sensory Wheel
-  - name: rakiwheel
-    path: rakiwheel.omv
-    description: >-
-      Sensory Lexicon and Major Volatiles of Raki Using Descriptive Analysis and
-      GC-FID/MS
-    tags:
-      - Sensory Wheel
-  - name: coffeewheel
-    path: coffeewheel.omv
-    description: Adapted from Specialty Coffee Association of America
-    tags:
-      - Sensory Wheel
+      - Mixture
+      - Desirability
 usesNative: true
 minApp: 1.0.8
 rVersion: 4.3.2

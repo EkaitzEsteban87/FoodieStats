@@ -1,0 +1,262 @@
+title: Desirability Optimization
+name: desirability
+jus: '3.0'
+stage: 0
+compilerMode: tame
+children:
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: CheckBox
+        name: showdescription
+  - type: VariableSupplier
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: TargetLayoutBox
+        label: Mixture components (Effects)
+        children:
+          - type: VariablesListBox
+            name: vars
+            isTarget: true
+  - type: CollapseBox 
+    label: Desirability Profiling and Optimization   
+    collapsed: true
+    stretchFactor: 1   
+    children:
+      - type: Label 
+        label: Desirability Profiling for response 01
+      - type: VariableSupplier 
+        persistentItems: false 
+        stretchFactor: 1 
+        children:  
+          - type: TargetLayoutBox
+            label: Response 01
+            children:
+              - type: VariablesListBox
+                name: d1yield
+                maxItemCount: 1
+                isTarget: true
+          - type: TargetLayoutBox
+            label: Model Formula 01
+            children:
+              - type: VariablesListBox
+                name: d1modelinfo
+                maxItemCount: 1
+                isTarget: true              
+      - type: LayoutBox
+        margin: large
+        style: inline  # Add 
+        children:
+          - type: ComboBox
+            name: d1type
+          - type: TextBox
+            name: d1low
+            format: number
+            enable: (d1type:dMax || d1type:dMin || d1type:dTarget)
+          - type: TextBox
+            name: d1high
+            format: number
+            enable: (d1type:dMax || d1type:dMin || d1type:dTarget)
+          - type: TextBox
+            name: d1target
+            format: number
+            enable: (d1type:dTarget)
+      - type: Label 
+        label: Desirability Profiling for response 02
+      - type: VariableSupplier
+        persistentItems: false
+        stretchFactor: 1
+        children:
+          - type: TargetLayoutBox
+            label: Response 02
+            children:
+              - type: VariablesListBox
+                name: d2yield
+                maxItemCount: 1
+                isTarget: true
+          - type: TargetLayoutBox
+            label: Model Formula 02
+            children:
+              - type: VariablesListBox
+                name: d2modelinfo
+                maxItemCount: 1
+                isTarget: true
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: ComboBox
+            name: d2type
+          - type: TextBox
+            name: d2low
+            format: number
+            enable: (d2type:dMax || d2type:dMin || d2type:dTarget) 
+          - type: TextBox
+            name: d2high
+            format: number
+            enable: (d2type:dMax || d2type:dMin || d2type:dTarget) 
+          - type: TextBox
+            name: d2target
+            format: number
+            enable: (d2type:dTarget) 
+      - type: Label 
+        label: Desirability Profiling for response 03
+      - type: VariableSupplier
+        persistentItems: false
+        stretchFactor: 1
+        children:
+          - type: TargetLayoutBox
+            label: Response 03
+            children:
+              - type: VariablesListBox
+                name: d3yield
+                maxItemCount: 1
+                isTarget: true
+          - type: TargetLayoutBox
+            label: Model Formula 03
+            children:
+              - type: VariablesListBox
+                name: d3modelinfo
+                maxItemCount: 1
+                isTarget: true
+      - type: LayoutBox
+        margin: large
+        style: inline    
+        children:
+          - type: ComboBox
+            name: d3type
+          - type: TextBox
+            name: d3low
+            format: number
+            enable: (d3type:dMax || d3type:dMin || d3type:dTarget) 
+          - type: TextBox
+            name: d3high
+            format: number
+            enable: (d3type:dMax || d3type:dMin || d3type:dTarget)  
+          - type: TextBox
+            name: d3target
+            format: number
+            enable: (d3type:dTarget)
+      - type: Label 
+        label: Desirability Profiling for response 04
+      - type: VariableSupplier
+        persistentItems: false
+        stretchFactor: 1
+        children:
+          - type: TargetLayoutBox
+            label: Response 04
+            children:
+              - type: VariablesListBox
+                name: d4yield
+                maxItemCount: 1
+                isTarget: true
+          - type: TargetLayoutBox
+            label: Model Formula 04
+            children:
+              - type: VariablesListBox
+                name: d4modelinfo
+                maxItemCount: 1
+                isTarget: true
+      - type: LayoutBox
+        margin: large
+        style: inline      
+        children:
+          - type: ComboBox
+            name: d4type
+          - type: TextBox
+            name: d4low
+            format: number
+            enable: (d4type:dMax || d4type:dMin || d4type:dTarget)         
+          - type: TextBox
+            name: d4high
+            format: number
+            enable: (d4type:dMax || d4type:dMin || d4type:dTarget)         
+          - type: TextBox
+            name: d4target
+            format: number
+            enable: (d4type:dTarget)    
+      - type: Label 
+        label: Desirability Profiling for response 05        
+      - type: VariableSupplier
+        persistentItems: false
+        stretchFactor: 1
+        children:
+          - type: TargetLayoutBox
+            label: Response 05
+            children:
+              - type: VariablesListBox
+                name: d5yield
+                maxItemCount: 1
+                isTarget: true
+          - type: TargetLayoutBox
+            label: Model Formula 05
+            children:
+              - type: VariablesListBox
+                name: d5modelinfo
+                maxItemCount: 1
+                isTarget: true
+      - type: LayoutBox
+        margin: large
+        style: inline          
+        children:
+          - type: ComboBox
+            name: d5type
+          - type: TextBox
+            name: d5low
+            format: number
+            enable: (d5type:dMax || d5type:dMin || d5type:dTarget) 
+          - type: TextBox
+            name: d5high
+            format: number
+            enable: (d5type:dMax || d5type:dMin || d5type:dTarget)        
+          - type: TextBox
+            name: d5target
+            format: number
+            enable: (d5type:dTarget)
+  - type: Label
+    label: Desirability Mixture Plots
+    children:
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: CheckBox
+            name: showoverall   
+          - type: CheckBox
+            name: showindividuals       
+          - type: ComboBox
+            name: colorselection
+            enable: (showoverall || showindividuals)
+  - type: CollapseBox
+    label: Advanced plot options for 3 component mixture
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: TextBox
+            name: thetaval
+            format: number
+            enable: (showoverall || showindividuals)
+          - type: TextBox
+            name: phival
+            format: number
+            enable: (showoverall || showindividuals)
+  - type: CollapseBox
+    label: Advanced plot options for 4 component mixture
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: ComboBox
+            name: latentvar
+            enable: (showoverall || showindividuals)
+          - type: ComboBox
+            name: latentplane
+            enable: (showoverall || showindividuals)

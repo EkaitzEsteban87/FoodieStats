@@ -4,9 +4,9 @@ jrs:   '1.1'
 
 items:
 #      for debugging
-#    - name:  debugger
-#      title: debug    
-#      type:  Preformatted
+    - name:  debugger
+      title: debug    
+      type:  Preformatted
 
 #      for describing the wheel
     - name: description

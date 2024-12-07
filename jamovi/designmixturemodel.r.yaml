@@ -124,5 +124,14 @@ items:
       height: 480
       renderFun: .mixture4kplot
       requiresData: true
-      visible: "(showmixture)"      
+      visible: "(showmixture)" 
+
+    - name: writeexcel
+      title: Write Design Model
+      type: Output
+      initInRun: true
+      clearWith:
+        - vars
+        - yield
+        - choosemodel  
 ...
