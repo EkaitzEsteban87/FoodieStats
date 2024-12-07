@@ -45,13 +45,13 @@ analyses:
     name: designmixturemodel
     ns: FoodieStats
     menuGroup: FoodieStats
-    menuSubgroup: Food Mixture Design
+    menuSubgroup: Food and Beverage Mixture Modeling and Optimization
     menuTitle: Mixture Design
   - title: Desirability Optimization
     name: desirability
     ns: FoodieStats
     menuGroup: FoodieStats
-    menuSubgroup: Mixture Design Optimization
+    menuSubgroup: Food and Beverage Mixture Modeling and Optimization
     menuTitle: Desirability Optimization
   - title: Just-About-Right Analysis
     name: JARScales
