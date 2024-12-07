@@ -59,11 +59,6 @@ analyses:
     menuGroup: FoodieStats
     menuSubgroup: JAR of a single product
     menuTitle: Just-About-Right Analysis
-  - title: Sensory Wheel Analysis
-    name: sensorywheel
-    ns: FoodieStats
-    menuGroup: FoodieStats
-    menuTitle: Sensory Wheel Analysis
 datasets:
   - name: applejuice
     path: applejuice.omv
