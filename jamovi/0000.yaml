@@ -65,12 +65,6 @@ analyses:
     menuGroup: FoodieStats
     menuSubgroup: CATA analysis for products
     menuTitle: Check All That Apply
-  - title: Sensory Wheel Analysis
-    name: sensorywheel
-    ns: FoodieStats
-    menuGroup: FoodieStats
-    menuSubgroup: Sensory Wheel method
-    menuTitle: Sensory Wheel Analysis
 datasets:
   - name: applejuice
     path: applejuice.omv
@@ -137,25 +131,6 @@ datasets:
     description: Attribute data on mango-ginger kombucha
     tags:
       - CATA
-  - name: applewheel
-    path: applewheel.omv
-    description: >-
-      A New Sensory Approach Combined with a Text- Mining Tool to Create a
-      Sensory Lexicon and Profile of Monovarietal Apple Juices
-    tags:
-      - Sensory Wheel
-  - name: rakiwheel
-    path: rakiwheel.omv
-    description: >-
-      Sensory Lexicon and Major Volatiles of Raki Using Descriptive Analysis and
-      GC-FID/MS
-    tags:
-      - Sensory Wheel
-  - name: coffeewheel
-    path: coffeewheel.omv
-    description: Adapted from Specialty Coffee Association of America
-    tags:
-      - Sensory Wheel
 usesNative: true
 minApp: 1.0.8
 rVersion: 4.3.2
