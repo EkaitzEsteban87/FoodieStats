@@ -1,0 +1,97 @@
+---
+name:  CATA
+title: Check All That Apply
+menuGroup: FoodieStats
+version: '1.0.0'
+jas: '1.2'
+
+options:
+    - name: data
+      type: Data
+
+# Show description
+    - name: showdescription
+      title: Show description
+      type: Bool
+      default: False
+      
+# Split all data - consumers
+    - name: cons
+      title: Consumers
+      type: Variable
+      suggested:
+        - nominal # id
+      permitted:
+        - factor # id
+        
+# Split all data - product
+    - name: produ
+      title: Products
+      type: Variable
+      suggested:
+        - nominal
+      permitted:
+        - factor
+
+# Split all data - Liking
+    - name: lik
+      title: Overall Liking (optional)
+      type: Variable
+      suggested:
+        - continuous
+      permitted: # [numeric]
+        - numeric
+        
+# Split all data - attribute list
+    - name: attr
+      title: List of Attributes
+      type: Variables
+      suggested:
+        - ordinal
+      permitted:
+        - factor
+
+# Significance level value
+    - name: alphaval
+      title: α value (%)
+      type: Number
+      default: 5
+      min: 1
+      max: 25
+      
+# showattricheck plot checkbox 
+    - name: showattricheck
+      title: Attributes plot
+      type: Bool
+      default: True
+
+# showconsucheck plot checkbox 
+    - name: showconsucheck
+      title: Consumers plot
+      type: Bool
+      default: True
+
+# showheatmap plot checkbox 
+    - name: showheatmap
+      title: Heatmap plot
+      type: Bool
+      default: True
+
+# showproductable checkbox 
+    - name: showproductable
+      title: Product table
+      type: Bool
+      default: False
+      
+# showmusthave plot checkbox 
+    - name: showmusthave
+      title: Must have plot
+      type: Bool
+      default: False
+
+# showelicitation plot checkbox 
+    - name: showelicitation
+      title: Elicitation plot
+      type: Bool
+      default: False      
+...

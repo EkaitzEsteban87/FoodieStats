@@ -1,0 +1,102 @@
+---
+name:  CATA
+title: Check All That Apply
+jrs:   '1.1'
+
+items:
+#      for debugging
+#    - name:  debugger
+#      title: debug    
+#      type:  Preformatted
+      
+#      Describing the module
+    - name: description
+      title: description
+      type: Html
+      visible: "(showdescription)"
+      
+#    - name:  text
+#      title: CATA data Validation 
+#      type:  Preformatted
+
+    - name: attricheck
+      title: Validation of checked attributes
+      type: Image
+      width:  640
+      height: 320
+      renderFun: .attricheck
+      visible: "(showattricheck)"
+
+    - name: consucheck
+      title: Validation of checked attributes for each consumer
+      type: Image
+      width:  960
+      height: 320
+      renderFun: .consucheck
+      visible: "(showconsucheck)"
+
+    - name: heatmap
+      title: Checked percentage for each consumer and each attribute
+      type: Image
+      width:  640
+      height: 640
+      renderFun: .heatmap
+      visible: "(showheatmap)"
+
+# Data for ploting labels
+    - name:  heatmapdata
+      type:  Preformatted
+ 
+    - name: productable
+      title: Product Percentage Table
+      type: Table
+      visible: "(showproductable)"
+      columns: []  
+
+    - name: attrCochranQ
+      title: Cochran Q test for each attribute
+      type: Table
+      rows: (attr)
+#      visible: "(lik)"      
+#      clearWith:  # <-- here
+#        - drophigh
+#        - qhigh
+#        - sehigh
+      columns:
+        - name: var
+          title: 'Attributes'
+          type: text
+          content: ($key)
+          combineBelow: true
+        - name: attrQ
+          title: 'Cochran Q <sub>value</sub>'
+          type: number
+        - name: attrQp
+          title: 'p <sub>value</sub>'
+          type: number
+          format: zto,pvalue
+        - name: commQ
+          title: 'Comments'
+          type: text
+
+    - name: contingencytable
+      title: Contingency Table for Test of independence between the products and attributes
+      type: Table
+      columns: []  
+
+    - name: musthaveplot
+      title: Penalty analysis plot (Must have - Nice to have)
+      type: Image
+      width:  640
+      height: 640
+      renderFun: .musthaveplot
+      visible: "(showmusthave)"
+
+    - name: elicitationplots
+      title: Elicitation difference for each product
+      type: Image
+      width:  640
+      height: 640
+      renderFun: .elicitationplots
+      visible: "(showelicitation)"
+...

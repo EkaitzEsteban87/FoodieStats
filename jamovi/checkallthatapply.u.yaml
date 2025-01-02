@@ -1,0 +1,78 @@
+title: Check All That Apply
+name: CATA
+jus: '3.0'
+stage: 0
+compilerMode: tame
+children:
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: CheckBox
+        name: showdescription
+  - type: VariableSupplier
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: TargetLayoutBox
+        label: Consumers
+        children:
+          - type: VariablesListBox
+            name: cons
+            maxItemCount: 1
+            isTarget: true
+      - type: TargetLayoutBox
+        label: Products
+        children:
+          - type: VariablesListBox
+            name: produ
+            maxItemCount: 1
+            isTarget: true
+      - type: TargetLayoutBox
+        label: Overall Liking (optional)
+        children:
+          - type: VariablesListBox
+            name: lik
+            maxItemCount: 1
+            isTarget: true
+      - type: TargetLayoutBox
+        label: List of Attributes
+        children:
+          - type: VariablesListBox
+            name: attr
+            isTarget: true
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: alphaval
+        format: number
+  - type: Label
+    label: CATA data validation plots
+    children:
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: CheckBox
+            name: showattricheck
+          - type: CheckBox
+            name: showconsucheck
+          - type: CheckBox
+            name: showheatmap
+          - type: CheckBox
+            name: showproductable
+  - type: CollapseBox
+    label: Elicitation rates and penalty analysis
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        style: inline
+        children:
+          - type: CheckBox
+            name: showmusthave
+            enable: (lik)
+          - type: CheckBox
+            name: showelicitation
+            enable: (lik)
