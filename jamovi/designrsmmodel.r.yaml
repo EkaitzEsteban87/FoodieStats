@@ -24,6 +24,11 @@ items:
       type: Table
       columns: []
 
+    - name: scalingtable
+      title: RSM Scaling Table
+      type: Table
+      columns: []  
+      
     - name: doeanova
       title: ANOVA Table
       type: Preformatted
@@ -63,6 +68,20 @@ items:
         - name: Mse1
           title: 'MSE'
           type: number
+
+    - name:  optitabletitle
+      title: Response Surface Optimization
+      type:  Preformatted
+
+    - name: optimizator1
+      title: Maximum Value and Its Coordinates (original and coded values)
+      type: Table
+      columns: []
+      
+    - name: optimizator2
+      title: Minimum Value and Its Coordinates (original and coded values)
+      type: Table
+      columns: []      
 
     - name:  estitabletitle
       title: Model Parameter Estimation Table
