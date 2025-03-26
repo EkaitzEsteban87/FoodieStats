@@ -207,12 +207,16 @@ designrsmmodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         description = function() private$.items[["description"]],
         doetable = function() private$.items[["doetable"]],
         doetable2 = function() private$.items[["doetable2"]],
+        scalingtable = function() private$.items[["scalingtable"]],
         doeanova = function() private$.items[["doeanova"]],
         anovatable = function() private$.items[["anovatable"]],
         estitabletitleX = function() private$.items[["estitabletitleX"]],
         estitableX = function() private$.items[["estitableX"]],
         designcoded = function() private$.items[["designcoded"]],
         maintable = function() private$.items[["maintable"]],
+        optitabletitle = function() private$.items[["optitabletitle"]],
+        optimizator1 = function() private$.items[["optimizator1"]],
+        optimizator2 = function() private$.items[["optimizator2"]],
         estitabletitle = function() private$.items[["estitabletitle"]],
         estitableOR = function() private$.items[["estitableOR"]],
         designuncoded = function() private$.items[["designuncoded"]],
@@ -246,6 +250,11 @@ designrsmmodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 options=options,
                 name="doetable2",
                 title="Experimental Design Table",
+                columns=list()))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="scalingtable",
+                title="RSM Scaling Table",
                 columns=list()))
             self$add(jmvcore::Preformatted$new(
                 options=options,
@@ -291,6 +300,20 @@ designrsmmodelResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                         `name`="Mse1", 
                         `title`="MSE", 
                         `type`="number"))))
+            self$add(jmvcore::Preformatted$new(
+                options=options,
+                name="optitabletitle",
+                title="Response Surface Optimization"))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="optimizator1",
+                title="Maximum Value and Its Coordinates (original and coded values)",
+                columns=list()))
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="optimizator2",
+                title="Minimum Value and Its Coordinates (original and coded values)",
+                columns=list()))
             self$add(jmvcore::Preformatted$new(
                 options=options,
                 name="estitabletitle",
@@ -421,12 +444,16 @@ designrsmmodelBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #'   \code{results$description} \tab \tab \tab \tab \tab a html \cr
 #'   \code{results$doetable} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$doetable2} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$scalingtable} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$doeanova} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$anovatable} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$estitabletitleX} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$estitableX} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$designcoded} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$maintable} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$optitabletitle} \tab \tab \tab \tab \tab a preformatted \cr
+#'   \code{results$optimizator1} \tab \tab \tab \tab \tab a table \cr
+#'   \code{results$optimizator2} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$estitabletitle} \tab \tab \tab \tab \tab a preformatted \cr
 #'   \code{results$estitableOR} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$designuncoded} \tab \tab \tab \tab \tab a preformatted \cr

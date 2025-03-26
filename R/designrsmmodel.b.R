@@ -80,12 +80,16 @@ designrsmmodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             
             if (is.null(self$options$rsdesign)){design0="bbd"}else{design0=self$options$rsdesign} # ensure default
             
+            scaling <- cbind(matrix(1, nrow = zk, ncol = 1),matrix(0, nrow = zk, ncol = 1))
+            
             for (k in 1:zk){
               x0=median(doelm[,k])
               if (design0=="cci"){x1=min(doelm[,k])}else{x1=unname(quantile(doelm[,k],0.15))}
               x2=x0-x1
               codif=(unlist(doelm[,k])-x0)/x2
               doelm[,k]=codif # coded
+              scaling[k,1]=x2
+              scaling[k,2]=x0
             }
             
             image1 <- self$results$mainplot
@@ -158,6 +162,9 @@ designrsmmodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             #-----------------------
             # end table
             #-----------------------
+            
+            private$.scalingtable(varNames,scaling)
+            
             
             xtabla=summary(modeloL) 
             R2=xtabla$r.squared 
@@ -310,11 +317,55 @@ designrsmmodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
             image4$setSize(960,480*npe)
             image4$setState(doersm)
             
-            #object1=image1$state
+            # mesh-grid optimization method #
+            
+            xnames=all.vars(modeloL$terms)[-1]
+            xnames_ordenado <- xnames[match(varNames, xnames, nomatch = 0)]
+            xnames <- xnames_ordenado[xnames_ordenado != ""]
+            
+            ovars=length(xnames)
+            levl=switch(as.character(ovars),"3"=101,"4"=31,"5"=21,"6"=11,"7"=8,5)
+            x=AlgDesign::gen.factorial(levels=levl,nVars=ovars,center=TRUE)
+            xx=x/max(x)
+            colnames(xx)=xnames # add this
+            
+            resultado=stats::predict(modeloL,xx)
+            maxid=which.max(resultado)
+            minid=which.min(resultado)
+            x00=xx[maxid,]
+            x11=xx[minid,]
+            resmax=c(x00,resultado[maxid])
+            resmin=c(x11,resultado[minid])
+            
+            # gradient-based optimization method #
+            
+            fr <- function(x0,modeloL,maxi,xnames) {
+              df <- as.data.frame(t(x0))
+              names(df)=xnames
+              res=stats::predict(modeloL,df)
+              if (maxi){res=-res} # max y min
+              return(res)
+            }
+            
+            resmax1=stats::optim(par=x00,fn=fr,gr=NULL,method="L-BFGS-B",lower=-1,upper=1,hessian=FALSE,modeloL,maxi=TRUE,xnames)
+            resmax1$value=-resmax1$value
+            resmin1=stats::optim(par=x11,fn=fr,gr=NULL,method="L-BFGS-B",lower=-1,upper=1,hessian=FALSE,modeloL,maxi=FALSE,xnames)
+          
+            vars_eliminadas <- setdiff(varNames,xnames)
+            indices_eliminados <- match(vars_eliminadas,varNames)
+            indx_res <- setdiff(seq_along(varNames), indices_eliminados)
+            
+            tablemax <- self$results$optimizator1
+            tablemin <- self$results$optimizator2
+            
+            private$.maxmintable(xnames,responseName,resmax1$par,resmax1$value,scaling,indx_res,tablemax)
+            private$.maxmintable(xnames,responseName,resmin1$par,resmin1$value,scaling,indx_res,tablemin)
+            
+            #object1=tablemax$state
             #object2=self$results$paretodata$state
             #xh1=length(serialize(object1,connection=NULL))
             #xh2=length(serialize(object2,connection=NULL))
-            #self$results$debugger$setContent(cbind(xh1,xh2))
+            #self$results$debugger$setContent(xh1)
             
         },
         .mainplot=function(image1,...){
@@ -522,6 +573,40 @@ designrsmmodelClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Clas
           modeltextt[1] <- sprintf(spf,modeltex[1])
           formula0 <- paste0(responsy,"=",modeltextt[1],paste0(sign1tex[-1],modeltextt[-1],"\u00b7",names(modeltex)[-1], collapse = ""))
           return(formula0)
+        },
+        .scalingtable=function(varNames,scaling){
+          table4 <- self$results$scalingtable
+          
+          qvars=length(self$options$vars)
+          
+          # Fill columns
+          table4$addColumn(name='nam4', title="Model Terms",type='text')
+          table4$addColumn(name='sca4', title="Scaling formula",type='text')
+          # Fill Rows
+          xa=paste0("x",1:qvars) 
+          rowz=list()
+          for (i in 1:qvars){
+            rowz$nam4 <- varNames[i]
+            rowz$sca4 <- paste0("= ",scaling[i,1],"\u00b7",xa[i],"+",scaling[i,2])
+            rowz=as.list(rowz)
+            table4$addRow(rowKey=i,rowz)
+          }
+        },
+        .maxmintable=function(varNames,responseName,optpoint,optoutputs,scalingraw,indx,table1){
+          qvars=length(varNames)
+          scaling=scalingraw[indx,]
+
+          # Fill columns Table 1
+          for (i in 1:qvars){table1$addColumn(name=paste0("v",i), title=varNames[i], type='number')}
+          for (i in 1:qvars){table1$addColumn(name=paste0("cod",i), title=paste0("x",indx[i]), type='number')}
+          table1$addColumn(name=paste0("yie",1),title=paste0(responseName[1]),type='number')
+          
+          # Fill Rows Table 1
+          row_values=c(scaling[,1]*optpoint+scaling[,2],optpoint,optoutputs)
+          col_names <- c(paste0("v",1:qvars),paste0("cod",1:qvars),paste0("yie",1))
+          names(row_values) <- col_names
+          row=as.list(row_values)
+          table1$addRow(rowKey=1,row)
         },
         .colpalletes=function(...){
           color1=self$options$colorselection
