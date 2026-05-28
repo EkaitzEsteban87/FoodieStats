@@ -141,6 +141,7 @@ createdesignClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                                "ff2k"="2k Fractional Factorial",
                                "bbd"="Box-Behnken",
                                "ccd"="Central Composite",
+                               "scd"="Simplex Centroid Mixture",
                                "sld"="Simplex Lattice Mixture"
                                )
           return(designname)
