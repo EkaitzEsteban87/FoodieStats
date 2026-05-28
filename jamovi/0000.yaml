@@ -1,12 +1,12 @@
 ---
 title: Gastronomic Data Analysis Tool
 name: FoodieStats
-version: 0.9.8
+version: 0.9.9
 jms: '1.0'
 authors:
   - Ekaitz Esteban
 maintainer: Ekaitz Esteban <eesteban@bculinary.com>
-date: '2024-12-31'
+date: '2026-05-28'
 type: R
 description: >-
   FoodieStats is a dedicated statistical module designed for gastronomy
