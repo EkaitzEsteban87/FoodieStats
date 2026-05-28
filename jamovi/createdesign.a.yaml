@@ -32,8 +32,8 @@ options:
           name:  bbd
         - title: Central Composite design
           name:  ccd
-        - title: Simplex Centroid Mixture design
-          name:  scd
+#        - title: Simplex Centroid Mixture design
+#          name:  scd
         - title: Simplex Lattice Mixture design
           name:  sld   
       default: 2k
