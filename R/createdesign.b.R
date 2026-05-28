@@ -91,7 +91,7 @@ createdesignClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
           }
           
           # Simplex Centroid Mixture design
-          if (design0=="scd"){design=mixexp::SCD(qvars)}
+          # if (design0=="scd"){design=mixexp::SCD(qvars)}
           
           # Simplex Lattice Mixture design
           if (design0=="sld"){design=AlgDesign::gen.mixture(niveles,navar)}          
@@ -141,7 +141,6 @@ createdesignClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
                                "ff2k"="2k Fractional Factorial",
                                "bbd"="Box-Behnken",
                                "ccd"="Central Composite",
-                               "scd"="Simplex Central Mixture",
                                "sld"="Simplex Lattice Mixture"
                                )
           return(designname)
@@ -160,11 +159,11 @@ createdesignClass <- if (requireNamespace('jmvcore', quietly=TRUE)) R6::R6Class(
           design=image1$state
           design0=self$options$expdesign
           qvars=as.numeric(self$options$nvars)
-          if (design0=="scd"){a0=1}
+          # if (design0=="scd"){a0=1}
           if (design0=="sld"){a0=1}
           if (is.null(image1$state) || a0==0 || qvars!=3){return(FALSE)}
           
-          mixexp::DesignPoints(design)
+          # mixexp::DesignPoints(design)
           TRUE
         },
         .saveOutputs = function(design,...) {
